@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 public class HomeScreen extends AppCompatActivity {
+    int ciao;
 
     Menu menu= findViewById(R.id.profilo);
 
