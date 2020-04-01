@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "597716535957",
+    "firebase_url": "https://bartapp-bb57b.firebaseio.com",
+    "project_id": "bartapp-bb57b",
+    "storage_bucket": "bartapp-bb57b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:597716535957:android:62a3e987812051337f299c",
+        "android_client_info": {
+          "package_name": "com.univpm.bartapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "597716535957-8erllujf9dd18upvri1o19ttkugtqrmd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZnp1vC2yGH8AQFwptLXvijHiTAkZPEKE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "597716535957-8erllujf9dd18upvri1o19ttkugtqrmd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
