@@ -38,6 +38,7 @@ public class Registrazione extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+
         textNome= findViewById(R.id.text_nome);
         textCognome= findViewById(R.id.text_cognome);
         textEmail=findViewById(R.id.text_email);
@@ -49,8 +50,8 @@ public class Registrazione extends AppCompatActivity {
                 try {
                     final String nome= textNome.getText().toString();
                     final String cognome= textCognome.getText().toString();
-                    String email=textEmail.getText().toString();
-                    String password=textPassword.getText().toString();
+                    final String email=textEmail.getText().toString();
+                    final String password=textPassword.getText().toString();
 
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -67,6 +68,8 @@ public class Registrazione extends AppCompatActivity {
                                         Intent intent= new Intent();
                                         intent.putExtra("nome", textNome.getText().toString());
                                         intent.putExtra("cognome", textCognome.getText().toString());
+                                        intent.putExtra("email", textEmail.getText().toString());
+                                        intent.putExtra("password",textPassword.getText().toString());
                                         setResult(RESULT_OK, intent);
                                         finish();
 

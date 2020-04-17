@@ -22,7 +22,7 @@
         tools:layout_editor_absoluteY="168dp" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -41,7 +41,7 @@
         android:textColor="@android:color/holo_blue_light"/>
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -50,7 +50,7 @@
         android:inputType="textPersonName" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="55dp"
@@ -66,7 +66,7 @@
         android:textAlignment="center" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btn_registra"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#00BCD4"
