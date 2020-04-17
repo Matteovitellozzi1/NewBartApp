@@ -47,6 +47,7 @@ public class Login_Screen extends AppCompatActivity {
                             startActivity(intent);
                         }
                         else{
+                            task.getException();
                             Toast.makeText(Login_Screen.this, "errore!",Toast.LENGTH_SHORT).show();
                         }
                     }

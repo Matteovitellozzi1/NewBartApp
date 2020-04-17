@@ -17,13 +17,13 @@ public class HomeScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login__screen);
+        setContentView(R.layout.activity_home_screen);
     }
 
     @Override
     public boolean onCreateOptionsMenu (Menu menu) {
         MenuInflater inflater= getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
+        inflater.inflate(R.menu.navbar_home, menu);
         return true;
     }
     public void profilo(MenuItem item){
@@ -31,3 +31,4 @@ public class HomeScreen extends AppCompatActivity {
         startActivity(intent);
     }
 }
+
