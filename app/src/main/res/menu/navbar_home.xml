@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/prova"
+        android:id="@+id/Contattaci"
         android:icon="@drawable/ic_person_black_24dp"
-        android:title="prova"/>
+        android:title="Contattaci"/>
+
+    <item
+        android:id="@+id/Home"
+        android:icon="@drawable/images"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/Impostazioni"
+        android:icon="@drawable/images"
+        android:title="Impostazioni"/>
 
 
 </menu>

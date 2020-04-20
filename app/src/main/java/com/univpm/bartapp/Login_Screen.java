@@ -43,12 +43,12 @@ public class Login_Screen extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
-                            Intent intent = new Intent(Login_Screen.this, Profilo.class);
+                            Intent intent = new Intent(Login_Screen.this, HomeScreen.class);
                             startActivity(intent);
                         }
                         else{
                             task.getException();
-                            Toast.makeText(Login_Screen.this, "errore!",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Login_Screen.this, "Email/Password errati!",Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
