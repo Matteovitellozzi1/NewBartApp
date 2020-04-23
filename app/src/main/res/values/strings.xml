@@ -9,4 +9,6 @@
     <string name="errorsignup">C\' è stato un errore in fase di registrazione</string>
     <string name="Benvenuto">Benvenuto</string>
     <string name="selSorgente">Seleziona la sorgente</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>
