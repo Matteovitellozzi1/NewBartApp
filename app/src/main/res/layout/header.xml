@@ -6,25 +6,29 @@
     android:layout_marginTop="15dp"
     android:padding="15dp"
     android:orientation="vertical"
+    android:id="@+id/header"
     android:gravity="bottom">
 
     <ImageButton
-        android:id="@+id/button_add"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:background="@drawable/circle"
-        android:layout_marginBottom="5dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:src="@drawable/ic_person_black_24dp"
-        android:tint="@android:color/white" />
-    
+    android:id="@+id/button_add"
+    android:layout_width="70dp"
+    android:layout_height="70dp"
+    android:background="@drawable/circle"
+    android:layout_marginBottom="5dp"
+    android:layout_alignParentEnd="true"
+    android:layout_alignParentBottom="true"
+    android:src="@drawable/ic_person_black_24dp"
+    android:tint="@android:color/white"
+    android:onClick="headerNavigation"/>
+
     <TextView
+        android:id="@+id/nomeHeader"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:name="Nome Profilo"
         android:text="Nome"
-        android:gravity="start"/>
+        android:gravity="start"
+        android:onClick="headerNavigation"/>
 
 
 </LinearLayout>

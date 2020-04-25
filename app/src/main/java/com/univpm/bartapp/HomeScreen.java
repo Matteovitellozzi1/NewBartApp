@@ -9,22 +9,27 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+
 import androidx.appcompat.widget.Toolbar;
 
 
 
 import com.google.android.material.navigation.NavigationView;
+import com.univpm.bartapp.fragment.fragment_profilo;
 
 public class HomeScreen extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private fragment_profilo fragmentProfilo;
     MenuItem menuItem;
 
     @Override
@@ -43,6 +48,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
+
         NavigationView navView = (NavigationView) findViewById(R.id.navigation);
         navView.setNavigationItemSelectedListener(this);
     }
@@ -58,10 +64,14 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) { // con uno switch potrò scegliere cosa fare in base a cosa premuto
-
-        Log.i("a", "MESSAGGIO");
-
-        invioMail();
+        switch (item.getItemId()) {
+            case R.id.Contattaci : invioMail(); break;
+            case R.id.Home : {
+                Intent intent = new Intent(this, HomeScreen.class);
+                startActivity(intent);
+                break;
+            }
+        }
         return true;
     }
 
@@ -72,5 +82,11 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         intent.setData(Uri.parse("mailto:mattiasospetti@libero.it"));
         startActivity(intent);
     }
+
+    public void headerNavigation (View v) {
+        Intent intent = new Intent(this, Profilo.class);
+        startActivity(intent);
+    }
+
 }
 
