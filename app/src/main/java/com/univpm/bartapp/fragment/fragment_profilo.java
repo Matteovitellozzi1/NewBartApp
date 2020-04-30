@@ -1,7 +1,9 @@
 package com.univpm.bartapp.fragment;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -13,6 +15,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +44,11 @@ import static android.app.Activity.RESULT_OK;
 public class fragment_profilo extends Fragment {
 
     private FirebaseAuth mAuth;
+
+    private Button btnModificaNome;
+    private Button btnModificaPassword;
+    private Button deleteUser;
+
 
     private ImageView proPic;
     private TextView textNome;
@@ -217,5 +225,7 @@ public class fragment_profilo extends Fragment {
             }
         }
     }
+
+
 
 }

@@ -2,6 +2,7 @@ package com.univpm.bartapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -56,6 +57,9 @@ public class Inserimento extends AppCompatActivity {
                     oggetto.setDescrizione(descrizione);
                     oggetto.setData(data);
                     databaseReference.push().setValue(oggetto);
+                    Toast.makeText(Inserimento.this, "Oggetto inserito", Toast.LENGTH_LONG).show();
+                    Intent intent= new Intent(Inserimento.this, HomeScreen.class);
+                    startActivity(intent);
 
         } catch (NullPointerException e) {
             Toast.makeText(Inserimento.this, getString(R.string.inforequired), Toast.LENGTH_SHORT).show();

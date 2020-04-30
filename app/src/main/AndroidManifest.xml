@@ -21,7 +21,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Inserimento"></activity>
+        <activity android:name=".ChangeUsername"></activity>
+        <activity android:name=".Inserimento" />
         <activity
             android:name=".HomeScreen"
             android:theme="@style/NoActionBar" />
