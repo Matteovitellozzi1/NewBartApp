@@ -17,11 +17,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.univpm.bartapp.R;
 
 import java.io.File;
@@ -37,11 +44,10 @@ public class fragment_profilo extends Fragment {
 
     private ImageView proPic;
     private TextView textNome;
-
     private ArrayList<String> permissionsToRequest;
     private ArrayList<String> permissionsRejected = new ArrayList<>();
     private ArrayList<String> permissions = new ArrayList<>();
-
+    private StorageReference storageReference;
     private final static int ALL_PERMISSIONS_RESULT = 107;
     private final static int PICK_IMAGE = 200;
 
@@ -211,4 +217,5 @@ public class fragment_profilo extends Fragment {
             }
         }
     }
+
 }

@@ -104,6 +104,5 @@ public class Registrazione extends AppCompatActivity {
         FirebaseFirestore db= FirebaseFirestore.getInstance();
         db.collection("utenti"). document(uid).set(user);
 
-
     }
 }

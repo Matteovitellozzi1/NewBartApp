@@ -19,7 +19,8 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.Toolbar;
-
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.google.android.material.navigation.NavigationView;
@@ -30,6 +31,9 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private fragment_profilo fragmentProfilo;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
     MenuItem menuItem;
 
     @Override
@@ -48,9 +52,16 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-
         NavigationView navView = (NavigationView) findViewById(R.id.navigation);
         navView.setNavigationItemSelectedListener(this);
+
+        /*recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        layoutManager= new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        //mAdapter = new MyAdapter();
+        recyclerView.setAdapter(mAdapter);*/
+
     }
 
     @Override
@@ -68,6 +79,11 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
             case R.id.Contattaci : invioMail(); break;
             case R.id.Home : {
                 Intent intent = new Intent(this, HomeScreen.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.aggiungi_prodotto : {
+                Intent intent= new Intent (this, Inserimento.class);
                 startActivity(intent);
                 break;
             }

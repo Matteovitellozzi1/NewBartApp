@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:isScrollContainer="true"
+    tools:context=".Inserimento">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:hint="Aggiungi una foto del prodotto" />
+
+    <ImageView
+        android:id="@+id/foto_prodotto"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"/>
+
+
+    <EditText
+        android:id="@+id/nome_prodotto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:hint="Nome Prodotto" />
+
+    <EditText
+        android:id="@+id/descrizione"
+        android:layout_width="300dp"
+        android:layout_height="160dp"
+        android:inputType="textMultiLine"
+        android:lines="5"
+        android:scrollbars="vertical"
+        android:hint="Inserisci la descrizione del prodotto"
+        android:layout_gravity="center"
+        android:scrollHorizontally="false"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="Aggiungi prezzo di vendita o scambio" />
+
+    <EditText
+        android:id="@+id/input_prezzo"
+        android:layout_width="130dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="12dp"
+        android:layout_gravity="center"
+        android:hint="coins"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/btn_invio_prodoto"
+        android:layout_width="237dp"
+        android:layout_height="57dp"
+        android:text="Inserisci Prodotto"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center"/>
+
+    </LinearLayout>
+</ScrollView>

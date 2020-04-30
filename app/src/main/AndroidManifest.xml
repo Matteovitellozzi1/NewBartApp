@@ -6,7 +6,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.hardware.camera2" android:required="false"/>
+    <uses-permission
+        android:name="android.hardware.camera2"
+        android:required="false" />
 
     <uses-feature
         android:name="android.hardware.camera2"
@@ -19,7 +21,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HomeScreen" android:theme="@style/NoActionBar"></activity>
+        <activity android:name=".Inserimento"></activity>
+        <activity
+            android:name=".HomeScreen"
+            android:theme="@style/NoActionBar" />
         <activity android:name=".Profilo" />
         <activity android:name=".Registrazione" />
         <activity android:name=".Login_Screen" />
