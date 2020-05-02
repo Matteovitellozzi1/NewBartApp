@@ -53,6 +53,9 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener{
             case R.id.btn_eliminaAccount:  eliminaAccount(v);
             break;
             case R.id.btn_modificaNome: modificaNome(v);
+            break;
+            case R.id.btn_modificaPassword: modificaPassword(v);
+            break;
         }
     }
 
@@ -60,6 +63,12 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener{
     public void modificaNome(View v){
 
         Intent intent= new Intent(Profilo.this, ChangeUsername.class);
+        startActivity(intent);
+    }
+
+    public void modificaPassword(View v){
+
+        Intent intent= new Intent(Profilo.this, ChangePassword.class);
         startActivity(intent);
     }
 
