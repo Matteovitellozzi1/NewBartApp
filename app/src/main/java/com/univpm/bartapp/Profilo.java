@@ -2,48 +2,142 @@ package com.univpm.bartapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.univpm.bartapp.fragment.fragment_profilo;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
-public class Profilo extends AppCompatActivity implements View.OnClickListener{
+import java.io.IOException;
+
+public class Profilo extends AppCompatActivity implements View.OnClickListener {
 
 // DEVO METTERE IL SALDO DELLA MONETA VIRTUALE!
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
+    private FirebaseStorage firebaseStorage;
+    private StorageReference storageReference;
+    private static int PICK_IMAGE=123;
+
 
     Button btnDelete;
     Button btnModificaNome;
     Button btnModificaPassword;
+    Button btnModificaImmagine;
+    TextView nomeCognome;
+    ImageView immagineProfilo;
+    Uri imagePath;
+    FrameLayout frameLayout;
 
     public static final int LOGIN_REQUEST=101;
-    private fragment_profilo fragmentProfilo;
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data.getData() != null) {
+            imagePath = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imagePath);
+                immagineProfilo.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profilo);
-        fragmentProfilo = new fragment_profilo();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container , fragmentProfilo).commit();
-        btnDelete=(Button) findViewById(R.id.btn_eliminaAccount);
-        btnModificaNome=(Button) findViewById(R.id.btn_modificaNome);
-        btnModificaPassword=(Button) findViewById(R.id.btn_modificaPassword);
+
+        nomeCognome = (TextView) findViewById(R.id.text_nome);
+        immagineProfilo = (ImageView) findViewById(R.id.propic);
+        btnDelete = (Button) findViewById(R.id.btn_eliminaAccount);
+        btnModificaNome = (Button) findViewById(R.id.btn_modificaNome);
+        btnModificaPassword = (Button) findViewById(R.id.btn_modificaPassword);
+        btnModificaImmagine = (Button) findViewById(R.id.btn_modifica_immagine);
         btnDelete.setOnClickListener(this);
         btnModificaNome.setOnClickListener(this);
         btnModificaPassword.setOnClickListener(this);
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        nomeCognome.setText(currentUser.getDisplayName());
+
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
+
+        storageReference.child("Image").child("Profile Pic").child(mAuth.getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).fit().centerCrop().into(immagineProfilo);
+            }
+        });
+
+
+        immagineProfilo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent activityProfilo = new Intent();
+                activityProfilo.setType("image/*");
+                activityProfilo.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(activityProfilo, "Seleziona immagine."), PICK_IMAGE);
+            }
+        });
+
+
+        btnModificaImmagine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendUserData();
+            }
+        });
+    }
+
+    private void sendUserData() {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference(mAuth.getUid());
+        StorageReference imageReference = storageReference.child("Image").child("Profile Pic").child(mAuth.getUid()); //User id/Images/Profile Pic.jpg
+        UploadTask uploadTask = imageReference.putFile(imagePath);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(Profilo.this, "Error: Uploading profile picture", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(Profilo.this, "Profile picture uploaded", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
@@ -51,11 +145,11 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_eliminaAccount:  eliminaAccount(v);
-            break;
+                break;
             case R.id.btn_modificaNome: modificaNome(v);
-            break;
+                break;
             case R.id.btn_modificaPassword: modificaPassword(v);
-            break;
+                break;
         }
     }
 

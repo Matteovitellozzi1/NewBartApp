@@ -1,12 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
+    android:isScrollContainer="true"
     tools:context=".MainActivity"
     android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:orientation="vertical"
+        android:background="@color/colorPrimaryDark">
+
+        <ImageView
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:id="@+id/propic"
+            android:padding="1dp"
+            android:background="@android:color/white"/>
+
+        <TextView
+            android:id="@+id/text_nome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -30,6 +62,14 @@
         android:text="Modifica password" />
 
     <Button
+        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/btn_modifica_immagine"
+        android:text="Modifica Immagine"/>
+
+    <Button
         android:id="@+id/btn_eliminaAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,7 +78,9 @@
         android:textColor="@android:color/holo_red_light"
         android:text="Elimina Account" />
 
+    </LinearLayout>
 
 
 
-</LinearLayout>
+
+</ScrollView>

@@ -24,13 +24,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.google.android.material.navigation.NavigationView;
-import com.univpm.bartapp.fragment.fragment_profilo;
 
 public class HomeScreen extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    private fragment_profilo fragmentProfilo;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
