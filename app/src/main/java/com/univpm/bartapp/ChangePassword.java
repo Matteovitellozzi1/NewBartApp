@@ -47,7 +47,6 @@ public class ChangePassword extends AppCompatActivity {
                 }
                 else{
 
-
                     Log.i("a", "password modificata");
                     currentUser.updatePassword(nuova_password).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

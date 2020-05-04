@@ -45,15 +45,15 @@
         android:layout_height="wrap_content"
         android:id="@+id/fragment_container"/>
 
-    <Button
-        android:id="@+id/btn_modificaNome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="55dp"
-        android:text="Modifica nome utente" />
+        <Button
+            android:id="@+id/btn_modificaNome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="55dp"
+            android:text="Modifica nome utente" />
 
-    <Button
+        <Button
         android:id="@+id/btn_modificaPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -67,9 +67,15 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:id="@+id/btn_modifica_immagine"
-        android:text="Modifica Immagine"/>
+        android:text="Carica/Modifica Immagine"/>
 
-    <Button
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="50dp"
+            android:text="N.B. Caricare l'immagine prima di caricarla online" />
+
+        <Button
         android:id="@+id/btn_eliminaAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
