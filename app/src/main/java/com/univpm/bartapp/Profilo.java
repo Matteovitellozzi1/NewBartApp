@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,10 +50,10 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
 
 
     Button btnDelete;
-    Button btnModificaNome;
-    Button btnModificaPassword;
-    Button btnModificaImmagine;
-    TextView nomeCognome;
+    ImageButton btnModificaNome;
+    ImageButton btnModificaPassword;
+    Button btnSalvaModifica;
+    TextView nomeCognome, nomeUtente, emailProfilo;
     ImageView immagineProfilo;
     Uri imagePath;
     FrameLayout frameLayout;
@@ -79,18 +80,25 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_profilo);
 
         nomeCognome = (TextView) findViewById(R.id.text_nome);
+        nomeUtente = (TextView) findViewById(R.id.nome_utente);
+        emailProfilo = (TextView) findViewById(R.id.emailProfilo);
         immagineProfilo = (ImageView) findViewById(R.id.propic);
         btnDelete = (Button) findViewById(R.id.btn_eliminaAccount);
-        btnModificaNome = (Button) findViewById(R.id.btn_modificaNome);
-        btnModificaPassword = (Button) findViewById(R.id.btn_modificaPassword);
-        btnModificaImmagine = (Button) findViewById(R.id.btn_modifica_immagine);
+        btnModificaNome = (ImageButton) findViewById(R.id.edit1);
+        btnModificaPassword = (ImageButton) findViewById(R.id.edit2);
+        btnSalvaModifica = (Button) findViewById(R.id.btn_modifica_immagine);
         btnDelete.setOnClickListener(this);
         btnModificaNome.setOnClickListener(this);
         btnModificaPassword.setOnClickListener(this);
 
+        btnSalvaModifica.setVisibility(View.INVISIBLE);
+
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         nomeCognome.setText(currentUser.getDisplayName());
+        nomeUtente.setText(currentUser.getDisplayName());
+        emailProfilo.setText(currentUser.getEmail());
+
 
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
@@ -110,16 +118,17 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
                 activityProfilo.setType("image/*");
                 activityProfilo.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(activityProfilo, "Seleziona immagine."), PICK_IMAGE);
+
+                btnSalvaModifica.setVisibility(View.VISIBLE);
+                btnSalvaModifica.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sendUserData();
+                    }
+                });
             }
         });
 
-
-        btnModificaImmagine.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendUserData();
-            }
-        });
     }
 
     private void sendUserData() {
@@ -146,9 +155,9 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
         switch (v.getId()){
             case R.id.btn_eliminaAccount:  eliminaAccount(v);
                 break;
-            case R.id.btn_modificaNome: modificaNome(v);
+            case R.id.edit1: modificaNome(v);
                 break;
-            case R.id.btn_modificaPassword: modificaPassword(v);
+            case R.id.edit2: modificaPassword(v);
                 break;
         }
     }
