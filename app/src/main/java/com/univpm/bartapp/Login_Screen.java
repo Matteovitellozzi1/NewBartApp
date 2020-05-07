@@ -23,7 +23,6 @@ public class Login_Screen extends AppCompatActivity {
     private EditText inputEmail;
     private EditText inputPassword;
     private Button btnLogin;
-    private FirebaseUser firebaseUser;
 
 
     @Override

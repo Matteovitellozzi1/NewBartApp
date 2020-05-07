@@ -12,25 +12,18 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
-    FirebaseAuth mAuth;
-    FirebaseUser firebaseUser;
-
+    Button bottone;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SchermataLogin();
+
+        bottone = (Button) findViewById(R.id.button2);
     }
-    public void SchermataLogin(){
-        mAuth = FirebaseAuth.getInstance();
-        firebaseUser = mAuth.getCurrentUser();
-        if (firebaseUser != null) {
-            Intent intent = new Intent(this, HomeScreen.class);
-            startActivity(intent);
-        } else {
+
+    public void SchermataLogin(View view){
             Intent intent = new Intent(this, Login_Screen.class);
             startActivity(intent);
-        }
     }
 
 
