@@ -38,8 +38,9 @@ public class Inserimento extends AppCompatActivity {
         inviodati = findViewById(R.id.btn_invio_prodoto);
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+        oggetto= new Oggetto();
 
-        oggetto = new Oggetto();
+
         databaseReference = FirebaseDatabase.getInstance().getReference().child("oggetti");
         inviodati.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,14 +49,14 @@ public class Inserimento extends AppCompatActivity {
                     final String nome = nomeProdotto.getText().toString();
                     final int prezzo = Integer.parseInt(input_prezzo.getText().toString());
                     final String nome_venditore = currentUser.getDisplayName();
-                    final Timestamp data = Timestamp.now();
+                    //final Timestamp data = Timestamp.now();
                     final String descrizione = input_descrizione.getText().toString();
 
                     oggetto.setPrezzo(prezzo);
                     oggetto.setNomeVenditore(nome_venditore);
                     oggetto.setNome(nome);
                     oggetto.setDescrizione(descrizione);
-                    oggetto.setData(data);
+                    //oggetto.setData(data);
                     databaseReference.push().setValue(oggetto);
                     Toast.makeText(Inserimento.this, "Oggetto inserito", Toast.LENGTH_LONG).show();
                     Intent intent= new Intent(Inserimento.this, HomeScreen.class);

@@ -1,5 +1,7 @@
 package com.univpm.bartapp;
 
+import android.util.Log;
+
 import com.google.firebase.Timestamp;
 
 import java.sql.Time;
@@ -11,12 +13,14 @@ public class Oggetto {
     private int prezzo;
     private String descrizione;
 
-    public Oggetto(/*String nome, com.google.firebase.Timestamp data, String nomeVenditore, int prezzo, String descrizione*/) {
-        /*this.nome = nome;
-        this.data = data;
-        this.nomeVenditore = nomeVenditore;
-        this.prezzo = prezzo;
-        this.descrizione = descrizione;*/
+    public Oggetto(String nome, String nomeVenditore, String descrizione, int prezzo){
+        this.nome=nome;
+        this.nomeVenditore=nomeVenditore;
+        this.descrizione=descrizione;
+        this.prezzo=prezzo;
+    }
+    public Oggetto (){
+        Log.i("a", "COSTRUTTORE OGGETTO NO PARAMS");
     }
 
     public String getNome() {

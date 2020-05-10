@@ -11,10 +11,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -23,16 +25,38 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 public class HomeScreen extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private FirebaseRecyclerOptions<Oggetto> options;
+    private FirebaseRecyclerAdapter<Oggetto, FirebaseViewHolder> adapter;
     private RecyclerView.LayoutManager layoutManager;
     MenuItem menuItem;
+    private DatabaseReference databaseReference;
+    ArrayList<Oggetto> arrayList;
+
+
+    /*@Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }*/
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +64,42 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         setContentView(R.layout.activity_home_screen);
 
         menuItem= (MenuItem) findViewById(R.id.Contattaci); //N.B.: NON SO SE SERVA VERAMENTE
-        Log.i("a", "SONO QUI"); // ricordati di cancellare tutti i Log
+        Log.i("a", "SONO QUI1"); // ricordati di cancellare tutti i Log
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // nuovo, data 10/5
+        arrayList= new ArrayList<Oggetto>();
+        databaseReference= FirebaseDatabase.getInstance().getReference().child("oggetti");
+        databaseReference.keepSynced(true);
+        options = new FirebaseRecyclerOptions.Builder<Oggetto>().setQuery(databaseReference, Oggetto.class).build();
+        Log.i("a", "SONO QUI2");
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        layoutManager= new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        Log.i("a", "SONO QUI5");
+        fetch();
+        /*adapter= new FirebaseRecyclerAdapter<Oggetto, FirebaseViewHolder>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull FirebaseViewHolder firebaseViewHolder, int i, @NonNull Oggetto oggetto) {
+                firebaseViewHolder.nome.setText(oggetto.getNome());
+                Log.i("a", "SONO QUI3");
+                firebaseViewHolder.nomeVenditore.setText(oggetto.getNomeVenditore());
+                firebaseViewHolder.prezzo.setText(String.valueOf(oggetto.getPrezzo()));
+
+            }
+
+            @NonNull
+            @Override
+            public FirebaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                return new FirebaseViewHolder(LayoutInflater.from(HomeScreen.this).inflate(R.layout.rv_row, parent, false));
+            }
+        };*/
+
+
+        Log.i("a", "SONO QUI4");
 
         drawerLayout = findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
@@ -53,12 +109,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         NavigationView navView = (NavigationView) findViewById(R.id.navigation);
         navView.setNavigationItemSelectedListener(this);
 
-        /*recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        layoutManager= new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        //mAdapter = new MyAdapter();
-        recyclerView.setAdapter(mAdapter);*/
+        //recyclerView.setAdapter(adapter);
 
     }
 
@@ -102,5 +153,24 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         startActivity(intent);
     }
 
+    public void fetch(){
+        adapter= new FirebaseRecyclerAdapter<Oggetto, FirebaseViewHolder>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull FirebaseViewHolder firebaseViewHolder, int i, @NonNull Oggetto oggetto) {
+                firebaseViewHolder.nome.setText(oggetto.getNome());
+                Log.i("a", "SONO QUI3");
+                firebaseViewHolder.nomeVenditore.setText(oggetto.getNomeVenditore());
+                firebaseViewHolder.prezzo.setText(String.valueOf(oggetto.getPrezzo()));
+
+            }
+
+            @NonNull
+            @Override
+            public FirebaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                return new FirebaseViewHolder(LayoutInflater.from(HomeScreen.this).inflate(R.layout.rv_row, parent, false));
+            }
+        };
+        recyclerView.setAdapter(adapter);
+    }
 }
 
