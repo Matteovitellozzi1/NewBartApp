@@ -99,7 +99,6 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
         nomeUtente.setText(currentUser.getDisplayName());
         emailProfilo.setText(currentUser.getEmail());
 
-
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
 

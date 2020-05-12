@@ -3,17 +3,17 @@
     android:id="@+id/navbarmenu">
     <item
         android:id="@+id/Contattaci"
-        android:icon="@drawable/ic_person_black_24dp"
+        android:icon="@drawable/contattaci_mail"
         android:title="Contattaci" />
 
     <item
         android:id="@+id/Home"
-        android:icon="@drawable/images"
+        android:icon="@drawable/home_nav"
         android:title="Home" />
 
     <item
         android:id="@+id/aggiungi_prodotto"
-        android:icon="@drawable/images"
+        android:icon="@drawable/aggiungi_nav"
         android:title="Aggiungi Prodotto"/>
 
 

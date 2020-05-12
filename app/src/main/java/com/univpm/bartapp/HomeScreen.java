@@ -49,11 +49,11 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
     ArrayList<Oggetto> arrayList;
 
 
-    /*@Override
+    @Override
     protected void onStop() {
         super.onStop();
         adapter.stopListening();
-    }*/
+    }
 
     @Override
     protected void onStart() {
@@ -73,6 +73,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         setSupportActionBar(toolbar);
 
         // nuovo, data 10/5
+        //settaggio della recycler view con il riferimento al database
         arrayList= new ArrayList<Oggetto>();
         databaseReference= FirebaseDatabase.getInstance().getReference().child("oggetti");
         databaseReference.keepSynced(true);
@@ -83,24 +84,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         Log.i("a", "SONO QUI5");
-        fetch();
-        /*adapter= new FirebaseRecyclerAdapter<Oggetto, FirebaseViewHolder>(options) {
-            @Override
-            protected void onBindViewHolder(@NonNull FirebaseViewHolder firebaseViewHolder, int i, @NonNull Oggetto oggetto) {
-                firebaseViewHolder.nome.setText(oggetto.getNome());
-                Log.i("a", "SONO QUI3");
-                firebaseViewHolder.nomeVenditore.setText(oggetto.getNomeVenditore());
-                firebaseViewHolder.prezzo.setText(String.valueOf(oggetto.getPrezzo()));
-
-            }
-
-            @NonNull
-            @Override
-            public FirebaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                return new FirebaseViewHolder(LayoutInflater.from(HomeScreen.this).inflate(R.layout.rv_row, parent, false));
-            }
-        };*/
-
+        fetch(); //recycler view presa dei dati
 
         Log.i("a", "SONO QUI4");
 
@@ -111,8 +95,6 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
         NavigationView navView = (NavigationView) findViewById(R.id.navigation);
         navView.setNavigationItemSelectedListener(this);
-
-        //recyclerView.setAdapter(adapter);
 
     }
 
