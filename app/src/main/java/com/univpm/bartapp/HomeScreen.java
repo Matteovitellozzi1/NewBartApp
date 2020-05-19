@@ -27,7 +27,7 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.SearchView;
+import androidx.appcompat.widget.SearchView;
 
 
 import android.widget.TextView;
@@ -67,11 +67,6 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
     private DatabaseReference databaseReference;
     ArrayList<Oggetto> arrayList;
     SearchView mySearchView;
-    ArrayList<Oggetto> arrayList1;
-
-
-
-
 
 
 
@@ -185,7 +180,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                 mySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
-                        Query query1 = databaseReference.orderByChild("nome").startAt(query).endAt(query + "\uf8ff");
+                        //Query query1 = databaseReference.orderByChild("nome").startAt(query).endAt(query + "\uf8ff");
                         return false;
                     }
 
