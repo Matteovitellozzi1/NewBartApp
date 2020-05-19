@@ -1,9 +1,11 @@
 package com.univpm.bartapp;
 
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.google.firebase.Timestamp;
 
+import java.io.Serializable;
 import java.sql.Time;
 
 public class Oggetto {

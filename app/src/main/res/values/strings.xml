@@ -12,4 +12,5 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="selsorgente">Seleziona la sorgente</string>
+    <string name="search">Search</string>
 </resources>

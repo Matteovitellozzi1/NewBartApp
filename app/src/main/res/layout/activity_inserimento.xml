@@ -21,6 +21,7 @@
         android:gravity="center"
         android:hint="Aggiungi una foto del prodotto" />
 
+
     <ImageView
         android:id="@+id/foto_prodotto"
         android:layout_width="150dp"

@@ -134,7 +134,7 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference(mAuth.getUid());
         StorageReference imageReference = storageReference.child("Image").child("Profile Pic").child(mAuth.getUid()); //User id/Images/Profile Pic.jpg
-        UploadTask uploadTask = imageReference.putFile(imagePath);
+        UploadTask uploadTask = imageReference.putFile(imagePath); //uri dell'immagine
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {

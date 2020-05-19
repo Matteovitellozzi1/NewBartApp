@@ -3,62 +3,65 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="match_parent"
     android:layout_marginBottom="8dp"
     android:layout_marginEnd="7dp"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="16dp"
     android:layout_marginStart="7dp"
-    android:layout_marginTop="5dp">
+    android:layout_marginTop="5dp"
+    android:background="#00BCD4"
+    tools:context=".VisualizzaProdotto">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="4dp"
-        android:background="?attr/selectableItemBackground">
+        android:background="#00BCD4"
+        >
 
         <ImageView
-            android:id="@+id/immagine_oggetto"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:padding="12dp"/>
+            android:id="@+id/immagine_oggetto1"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:padding="12dp"
+            android:layout_centerHorizontal="true"/>
 
         <TextView
-            android:id="@+id/nome_oggetto"
+            android:id="@+id/nome_oggetto1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="200dp"
             android:textStyle="bold"
-            android:textSize="18dp"
-            android:layout_toEndOf="@id/immagine_oggetto"
-            android:layout_marginLeft="10dp"/>
+            android:textSize="25dp"
+            />
 
         <TextView
-            android:id="@+id/nome_venditore"
+            android:id="@+id/nome_venditore1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/immagine_oggetto"
-            android:layout_below="@id/nome_oggetto"
-            android:textSize="15dp"
-            android:layout_marginTop="18dp"
-            android:layout_marginLeft="10dp"/>
+
+            android:textSize="20dp"
+            android:layout_marginTop="300dp"
+            android:layout_marginLeft="30dp"/>
 
         <TextView
-            android:id="@+id/prezzo_stringa"
+            android:id="@+id/prezzo_stringa1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="270dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="250dp"
             android:text="Prezzo:  "
-            android:textSize="16dp"/>
+            android:textSize="15dp"/>
         <TextView
-            android:id="@+id/prezzo"
+            android:id="@+id/prezzo1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
+            android:textSize="15dp"
             android:textStyle="bold"
-            android:layout_marginTop="20dp"
-            android:layout_toRightOf="@id/prezzo_stringa"/>
+            android:layout_marginTop="250dp"
+            android:layout_toRightOf="@id/prezzo_stringa1"/>
 
 
 
