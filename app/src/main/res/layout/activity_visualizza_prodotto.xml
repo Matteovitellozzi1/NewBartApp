@@ -47,4 +47,17 @@
             android:id="@+id/btn_offerta"
             android:text="Formula Offerta"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/prodotto_offerta"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/diff_prezzo"/>
+
+
+
 </LinearLayout>
