@@ -42,6 +42,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -170,8 +171,6 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         startActivity(intent);
     }
 
-
-
     public void fetch() {
         adapter = new FirebaseRecyclerAdapter<Oggetto, FirebaseViewHolder>(options) {
             @Override
@@ -195,7 +194,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                 Log.i("a", "SONO QUI3");
                 firebaseViewHolder.nomeVenditore.setText(oggetto.getNomeVenditore());
                 firebaseViewHolder.prezzo.setText(String.valueOf(oggetto.getPrezzo()));
-
+                firebaseViewHolder.idUser.setText(oggetto.getIdUser());
 
                 firebaseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -207,8 +206,8 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                         String NomeVend = nomeVend.getText().toString();
                         TextView prezzo1 = v.findViewById(R.id.prezzo);
                         String Prezzo1 = prezzo1.getText().toString();
-                        //String descrizione = getRef(i).getKey();
-                        //String nomeVend = getRef(i).getKey();
+                        TextView idUser1 = v.findViewById(R.id.id_venditore);
+                        String IdUser1 = idUser1.getText().toString();
 
                         Intent intent = new Intent(v.getContext(), VisualizzaProdotto.class);
                         //intent.putExtra("descrizione", descrizione);
@@ -217,6 +216,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                         intent.putExtra("Nome1", Nome1);
                         intent.putExtra("NomeVend", NomeVend);
                         intent.putExtra("Prezzo1", Prezzo1);
+                        intent.putExtra("idUser", IdUser1);
                         startActivity(intent);
 
                     }
@@ -238,7 +238,6 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         recyclerView.setAdapter(adapter);
 
     }
-
 
 }
 

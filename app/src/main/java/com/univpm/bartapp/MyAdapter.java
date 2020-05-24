@@ -21,7 +21,7 @@ class FirebaseViewHolder extends RecyclerView.ViewHolder {
 
     ImageView immagineOggetto;
     public TextView nome;
-    TextView nomeVenditore, prezzo;
+    TextView nomeVenditore, prezzo, idUser;
 
 
 
@@ -30,7 +30,8 @@ class FirebaseViewHolder extends RecyclerView.ViewHolder {
             immagineOggetto = itemView.findViewById(R.id.immagine_oggetto);
             nome = itemView.findViewById(R.id.nome_oggetto);
             nomeVenditore = itemView.findViewById(R.id.nome_venditore);
-
+            prezzo = itemView.findViewById(R.id.prezzo);
+            idUser = itemView.findViewById(R.id.id_venditore);
         }
 
 

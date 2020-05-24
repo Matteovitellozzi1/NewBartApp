@@ -49,14 +49,13 @@ public class Inserimento extends AppCompatActivity {
                     final String nome = nomeProdotto.getText().toString();
                     final int prezzo = Integer.parseInt(input_prezzo.getText().toString());
                     final String nome_venditore = currentUser.getDisplayName();
-                    //final Timestamp data = Timestamp.now();
                     final String descrizione = input_descrizione.getText().toString();
 
                     oggetto.setPrezzo(prezzo);
                     oggetto.setNomeVenditore(nome_venditore);
                     oggetto.setNome(nome);
                     oggetto.setDescrizione(descrizione);
-                    //oggetto.setData(data);
+                    oggetto.setIdUser(currentUser.getUid());
                     databaseReference.push().setValue(oggetto);
                     Toast.makeText(Inserimento.this, "Oggetto inserito", Toast.LENGTH_LONG).show();
                     Intent intent= new Intent(Inserimento.this, HomeScreen.class);
@@ -71,36 +70,4 @@ public class Inserimento extends AppCompatActivity {
         });
     }
 
-    /*protected void invioDati () {
-        try {
-            final String nome = nomeProdotto.getText().toString();
-            final int prezzo1 = Integer.parseInt(prezzo.getText().toString());
-            final String nomeVenditore = currentUser.getDisplayName();
-            final Timestamp data = Timestamp.now();
-            final String descrizione1 = descrizione.getText().toString();
-
-            oggetto.setPrezzo(prezzo1);
-            oggetto.setNomeVenditore(nomeVenditore);
-            oggetto.setNome(nome);
-            oggetto.setDescrizione(descrizione1);
-            oggetto.setData(data);
-            databaseReference.push().setValue(oggetto);
-            /*databaseReference.child("nome").setValue(nome);
-            databaseReference.child("prezzo").setValue(prezzo1);
-            databaseReference.child("descrizione").setValue(descrizione1);
-            databaseReference.child("nome_venditore").setValue(nomeVenditore);
-            databaseReference.child("data").setValue(data);
-
-        } catch (NullPointerException e) {
-            Toast.makeText(Inserimento.this, getString(R.string.inforequired), Toast.LENGTH_SHORT).show();
-        } catch (IllegalArgumentException e){
-            Toast.makeText(Inserimento.this, getString(R.string.inforequired), Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    @Override
-    public void onClick(View v) {
-        invioDati();
-    }*/
 }

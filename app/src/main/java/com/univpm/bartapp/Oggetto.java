@@ -10,16 +10,18 @@ import java.sql.Time;
 
 public class Oggetto {
     private String nome;
-    private com.google.firebase.Timestamp data;
     private String nomeVenditore;
     private int prezzo;
     private String descrizione;
 
-    public Oggetto(String nome, String nomeVenditore, String descrizione, int prezzo){
+    private String idUser;
+
+    public Oggetto(String nome, String nomeVenditore, String descrizione, int prezzo, String idUser){
         this.nome=nome;
         this.nomeVenditore=nomeVenditore;
         this.descrizione=descrizione;
         this.prezzo=prezzo;
+        this.idUser=idUser;
     }
     public Oggetto (){
         Log.i("a", "COSTRUTTORE OGGETTO NO PARAMS");
@@ -31,11 +33,6 @@ public class Oggetto {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-
-    public void setData(Timestamp data) {
-        this.data = data;
     }
 
     public String getNomeVenditore() {
@@ -60,5 +57,13 @@ public class Oggetto {
 
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
+    }
+
+    public String getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
     }
 }
