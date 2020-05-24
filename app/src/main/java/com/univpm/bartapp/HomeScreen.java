@@ -126,6 +126,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         navView.setNavigationItemSelectedListener(this);
 
         mySearchView =(SearchView) findViewById(R.id.searchview);
+
     }
 
 
@@ -239,5 +240,9 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }
 

@@ -25,10 +25,9 @@
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchview"
-
             android:queryHint="Search Here"
             android:layout_width="match_parent"
-            app:iconifiedByDefault="false"
+            app:iconifiedByDefault="true"
             android:layout_height="?attr/actionBarSize">
 
         </androidx.appcompat.widget.SearchView>

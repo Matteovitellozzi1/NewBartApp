@@ -6,6 +6,8 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -100,9 +102,7 @@ public class SceltaProdotto extends AppCompatActivity {
                         TextView idUser1 = v.findViewById(R.id.id_venditore);
                         String IdUser1 = idUser1.getText().toString();
 
-                        Intent intent = new Intent(v.getContext(), VisualizzaProdotto.class);
-                        //intent.putExtra("descrizione", descrizione);
-                        //intent.putExtra("nomeVend", nomeVend);
+                        final Intent intent = new Intent(v.getContext(), VisualizzaProdotto.class);
 
                         intent.putExtra("Nome1", nome);
                         intent.putExtra("NomeVend", venditore);
@@ -112,7 +112,36 @@ public class SceltaProdotto extends AppCompatActivity {
                         intent.putExtra("nome_venditore", NomeVend);
                         intent.putExtra("prezzo_offerta", Prezzo1);
                         intent.putExtra("idUser", IdUser1);
-                        startActivity(intent);
+
+                        int differenza= (Integer.parseInt(prezzo))-(Integer.parseInt(Prezzo1));
+
+                        Log.i("TAG", String.valueOf(differenza));
+
+                        if(differenza >= 0) {
+                            startActivity(intent);
+                        }
+
+                        else if (differenza < 0){
+
+                            AlertDialog.Builder dialog= new AlertDialog.Builder(SceltaProdotto.this);
+                            dialog.setTitle("Attenzione");
+                            dialog.setMessage("Stai offrendo un prodotto con un prezzo inferiore a quello desiderato. Nota bene che non ci saranno rimborsi");
+                            dialog.setPositiveButton("Conferma", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    startActivity(intent);
+                                }
+                            });
+                            dialog.setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                            AlertDialog alertDialog= dialog.create();
+                            alertDialog.show();
+                        }
 
                     }
                 });

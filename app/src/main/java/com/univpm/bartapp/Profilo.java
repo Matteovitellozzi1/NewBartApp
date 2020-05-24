@@ -122,7 +122,15 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
                 btnSalvaModifica.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        sendUserData();
+                        StorageReference imageReference = storageReference.child("Image").child("Profile Pic").child(mAuth.getUid());
+                        Log.i("TAG", "prima dell'uri");
+                        //UploadTask uploadTask = imageReference.putFile(imagePath);
+                        if (imagePath != null) {
+                            sendUserData();
+                        }
+                        else{
+                            Toast.makeText(Profilo.this, "Non hai inserito alcuna immagine!", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
             }
