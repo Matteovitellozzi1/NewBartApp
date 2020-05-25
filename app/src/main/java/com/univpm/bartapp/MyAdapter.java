@@ -32,6 +32,7 @@ class FirebaseViewHolder extends RecyclerView.ViewHolder {
             nomeVenditore = itemView.findViewById(R.id.nome_venditore);
             prezzo = itemView.findViewById(R.id.prezzo);
             idUser = itemView.findViewById(R.id.id_venditore);
+
         }
 
 

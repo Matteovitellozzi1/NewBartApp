@@ -13,10 +13,9 @@ public class Oggetto {
     private String nomeVenditore;
     private int prezzo;
     private String descrizione;
-
     private String idUser;
 
-    public Oggetto(String nome, String nomeVenditore, String descrizione, int prezzo, String idUser){
+    public Oggetto(String nome, String nomeVenditore, String descrizione, int prezzo, String idUser, String imageid){
         this.nome=nome;
         this.nomeVenditore=nomeVenditore;
         this.descrizione=descrizione;
@@ -66,4 +65,5 @@ public class Oggetto {
     public void setIdUser(String idUser) {
         this.idUser = idUser;
     }
+
 }

@@ -31,8 +31,8 @@
             android:theme="@style/NoActionBar" />
         <activity android:name=".Profilo" />
         <activity android:name=".Registrazione" />
-        <activity android:name=".Login_Screen" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".Login_Screen" android:noHistory="true"/>
+        <activity android:name=".MainActivity" android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

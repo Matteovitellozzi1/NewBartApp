@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="120dp"
     android:layout_marginBottom="8dp"
     android:layout_marginEnd="7dp"
     android:layout_marginLeft="5dp"
@@ -19,8 +19,8 @@
 
         <ImageView
             android:id="@+id/immagine_oggetto"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
             android:padding="12dp"/>
 
         <TextView
@@ -31,6 +31,7 @@
             android:textStyle="bold"
             android:textSize="18dp"
             android:layout_toEndOf="@id/immagine_oggetto"
+            android:textColor="@color/design_default_color_primary_dark"
             android:layout_marginLeft="10dp"/>
 
         <TextView
@@ -41,6 +42,7 @@
             android:layout_below="@id/nome_oggetto"
             android:textSize="15dp"
             android:layout_marginTop="18dp"
+            android:textColor="@color/design_default_color_primary_dark"
             android:layout_marginLeft="10dp"/>
 
         <TextView
@@ -50,6 +52,7 @@
             android:layout_marginLeft="270dp"
             android:layout_marginTop="20dp"
             android:text="Prezzo:  "
+            android:textColor="@color/design_default_color_primary_dark"
             android:textSize="16dp"/>
         <TextView
             android:id="@+id/prezzo"
@@ -58,12 +61,14 @@
             android:textSize="16dp"
             android:textStyle="bold"
             android:layout_marginTop="20dp"
+            android:textColor="@color/design_default_color_primary_dark"
             android:layout_toRightOf="@id/prezzo_stringa"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/id_venditore"
+            android:textColor="@color/design_default_color_primary_dark"
             android:visibility="invisible"/>
 
     </RelativeLayout>

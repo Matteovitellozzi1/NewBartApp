@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -18,12 +19,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 public class VisualizzaProdotto extends AppCompatActivity {
 
@@ -31,6 +37,9 @@ public class VisualizzaProdotto extends AppCompatActivity {
     private TextView nomeOggetto, nomeVenditore, prezzoOggetto, nomeOggettoOfferta, differenzaPrezzo, introduzione;
     private Button btnOfferta, btnConferma, btnCambia;
     private FirebaseUser currentUser;
+    private ImageView immagineOggetto;
+    private FirebaseStorage firebaseStorage;
+    private StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +54,7 @@ public class VisualizzaProdotto extends AppCompatActivity {
         nomeOggetto = findViewById(R.id.nome_oggetto1);
         nomeVenditore = findViewById(R.id.nome_venditore1);
         prezzoOggetto = findViewById(R.id.prezzo1);
+        immagineOggetto = findViewById(R.id.immagine_oggetto1);
         nomeOggettoOfferta = findViewById(R.id.prodotto_offerta);
         btnOfferta = (Button) findViewById(R.id.btn_offerta);
         differenzaPrezzo = findViewById(R.id.diff_prezzo);
@@ -63,6 +73,17 @@ public class VisualizzaProdotto extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         String utente = mAuth.getUid();
+
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
+
+        storageReference.child("Image").child("ImmaginiOggetti").child(idUser).child(nome).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).fit().centerCrop().into(immagineOggetto);
+            }
+        });
+
         if (idUser.equals(utente)) {
             btnOfferta.setVisibility(View.INVISIBLE);
             //introduzione.setText("è un oggetto da te messo in vendita");

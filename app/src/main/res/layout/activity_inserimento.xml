@@ -10,70 +10,81 @@
     tools:context=".Inserimento">
 
     <LinearLayout
+        android:padding="15dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:gravity="center"
-        android:hint="Aggiungi una foto del prodotto" />
 
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
+            android:hint="Aggiungi una foto del prodotto" />
 
-    <ImageView
-        android:id="@+id/foto_prodotto"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="12dp"/>
+        <ImageView
+            android:id="@+id/foto_prodotto"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/inserimento_background"/>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nome_prodotto"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:hint="Nome Prodotto" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/nome_prodotto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:hint="Nome Prodotto" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/descrizione"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:hint="Descrizione del prodotto"
+                android:inputType="textMultiLine"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/descrizione"
-        android:layout_width="300dp"
-        android:layout_height="160dp"
-        android:inputType="textMultiLine"
-        android:lines="5"
-        android:scrollbars="vertical"
-        android:hint="Inserisci la descrizione del prodotto"
-        android:layout_gravity="center"
-        android:scrollHorizontally="false"
-        android:layout_marginTop="10dp"/>
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:text="Aggiungi prezzo di vendita o scambio" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:text="Aggiungi prezzo di vendita o scambio" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_prezzo"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:inputType="number"
+                android:hint="Coins" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/input_prezzo"
-        android:layout_width="130dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="12dp"
-        android:layout_gravity="center"
-        android:hint="coins"
-        android:inputType="number" />
-
-    <Button
-        android:id="@+id/btn_invio_prodoto"
-        android:layout_width="237dp"
-        android:layout_height="57dp"
-        android:text="Inserisci Prodotto"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center"/>
+        <Button
+            android:id="@+id/btn_invio_prodoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Inserisci Prodotto"
+            android:layout_marginTop="35dp"
+            android:layout_gravity="center"/>
 
     </LinearLayout>
 </ScrollView>

@@ -41,6 +41,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -49,6 +50,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -196,6 +200,18 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                 firebaseViewHolder.nomeVenditore.setText(oggetto.getNomeVenditore());
                 firebaseViewHolder.prezzo.setText(String.valueOf(oggetto.getPrezzo()));
                 firebaseViewHolder.idUser.setText(oggetto.getIdUser());
+                final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                StorageReference storageReference = firebaseStorage.getReference();
+
+                String idUser = oggetto.getIdUser();
+                String nome = oggetto.getNome();
+                storageReference.child("Image").child("ImmaginiOggetti").child(idUser).child(nome).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri).fit().centerCrop().into(firebaseViewHolder.immagineOggetto);
+                    }
+                });
+
 
                 firebaseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
