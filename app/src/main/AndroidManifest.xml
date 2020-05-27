@@ -21,7 +21,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SceltaProdotto"></activity>
+        <activity android:name=".MieiOggetti"></activity>
+        <activity android:name=".SceltaProdotto" />
         <activity android:name=".VisualizzaProdotto" />
         <activity android:name=".ChangePassword" />
         <activity android:name=".ChangeUsername" />

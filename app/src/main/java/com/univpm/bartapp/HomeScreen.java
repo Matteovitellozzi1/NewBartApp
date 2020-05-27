@@ -131,6 +131,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
         mySearchView =(SearchView) findViewById(R.id.searchview);
 
+
     }
 
 
@@ -156,6 +157,11 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
             }
             case R.id.aggiungi_prodotto: {
                 Intent intent = new Intent(this, Inserimento.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.Miei_Oggetti:{
+                Intent intent = new Intent(this, MieiOggetti.class );
                 startActivity(intent);
                 break;
             }
@@ -225,11 +231,14 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                         String Prezzo1 = prezzo1.getText().toString();
                         TextView idUser1 = v.findViewById(R.id.id_venditore);
                         String IdUser1 = idUser1.getText().toString();
+                        String IdOggetto = getRef(i).toString();
+
 
                         Intent intent = new Intent(v.getContext(), VisualizzaProdotto.class);
                         //intent.putExtra("descrizione", descrizione);
                         //intent.putExtra("nomeVend", nomeVend);
 
+                        intent.putExtra("IdOggetto", IdOggetto);
                         intent.putExtra("Nome1", Nome1);
                         intent.putExtra("NomeVend", NomeVend);
                         intent.putExtra("Prezzo1", Prezzo1);

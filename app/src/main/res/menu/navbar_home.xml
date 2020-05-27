@@ -15,6 +15,14 @@
         android:id="@+id/aggiungi_prodotto"
         android:icon="@drawable/aggiungi_nav"
         android:title="Aggiungi Prodotto"/>
+    <item
+        android:id="@+id/Miei_Oggetti"
+        android:icon="@drawable/ic_arrow_drop_down_circle_black_24dp"
+        android:title="Miei Oggetti"/>
+    <item
+        android:id="@+id/WishList"
+        android:icon="@drawable/aggiungi_nav"
+        android:title="WishList"/>
 
 
 </menu>
