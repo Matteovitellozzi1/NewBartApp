@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -19,10 +20,14 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -88,6 +93,17 @@ public class SceltaProdotto extends AppCompatActivity {
                 firebaseViewHolder.nomeVenditore.setText(oggetto.getNomeVenditore());
                 firebaseViewHolder.prezzo.setText(String.valueOf(oggetto.getPrezzo()));
                 firebaseViewHolder.idUser.setText(oggetto.getIdUser());
+                final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                StorageReference storageReference = firebaseStorage.getReference();
+
+                final String idUser = oggetto.getIdUser();
+                final String nome = oggetto.getNome();
+                storageReference.child("Image").child("ImmaginiOggetti").child(idUser).child(nome).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri).fit().centerCrop().into(firebaseViewHolder.immagineOggetto);
+                    }
+                });
 
                 firebaseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -55,7 +55,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="55dp"
         android:backgroundTint="#00BCD4"
-        android:text="Accedi" />
+        android:text="Accedi"
+        android:textColor="#FFFFFF"/>
 
     <TextView
         android:id="@+id/textView5"

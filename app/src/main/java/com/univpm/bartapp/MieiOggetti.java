@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,10 +17,14 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -80,12 +85,24 @@ public class MieiOggetti extends AppCompatActivity {
         Log.i("a", "SONO nella fetch");
         adapter = new FirebaseRecyclerAdapter<Oggetto, FirebaseViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull FirebaseViewHolder firebaseViewHolder, final int i, @NonNull final Oggetto oggetto) {
+            protected void onBindViewHolder(@NonNull final FirebaseViewHolder firebaseViewHolder, final int i, @NonNull final Oggetto oggetto) {
                 firebaseViewHolder.nome.setText(oggetto.getNome());
                 Log.i("a", "SONO QUI");
                 firebaseViewHolder.nomeVenditore.setText(oggetto.getNomeVenditore());
                 firebaseViewHolder.prezzo.setText(String.valueOf(oggetto.getPrezzo()));
                 firebaseViewHolder.idUser.setText(oggetto.getIdUser());
+
+                final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                StorageReference storageReference = firebaseStorage.getReference();
+
+                String idUser = oggetto.getIdUser();
+                String nome = oggetto.getNome();
+                storageReference.child("Image").child("ImmaginiOggetti").child(idUser).child(nome).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri).fit().centerCrop().into(firebaseViewHolder.immagineOggetto);
+                    }
+                });
 
                 firebaseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

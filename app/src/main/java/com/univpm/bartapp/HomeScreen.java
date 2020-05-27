@@ -25,6 +25,7 @@ import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import androidx.appcompat.widget.SearchView;
@@ -59,14 +60,12 @@ import java.util.List;
 
 public class HomeScreen extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    int ciao;
-
-
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private RecyclerView recyclerView;
-    private FirebaseRecyclerOptions<Oggetto> options;
+    public FirebaseRecyclerOptions<Oggetto> options;
     private FirebaseRecyclerAdapter<Oggetto, FirebaseViewHolder> adapter;
+    private FirebaseRecyclerAdapter<Oggetto, FirebaseViewHolder> firebaseRecyclerAdapter; // l'adapter del filtro
     private RecyclerView.LayoutManager layoutManager;
     MenuItem menuItem;
     private DatabaseReference databaseReference;
@@ -74,14 +73,11 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
     SearchView mySearchView;
 
 
-
-    //private Button showDetails;
-
-
     @Override
     protected void onStop() {
         super.onStop();
         adapter.stopListening();
+        //firebaseRecyclerAdapter.stopListening(); è da implementare
     }
 
     @Override
@@ -97,13 +93,11 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
-        menuItem = (MenuItem) findViewById(R.id.Contattaci); //N.B.: NON SO SE SERVA VERAMENTE
-        Log.i("a", "SONO QUI1"); // ricordati di cancellare tutti i Log
+        menuItem = (MenuItem) findViewById(R.id.Contattaci);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // nuovo, data 10/5
         //settaggio della recycler view con il riferimento al database
         arrayList = new ArrayList<Oggetto>();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("oggetti");
@@ -112,12 +106,29 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         databaseReference.keepSynced(true);
         options = new FirebaseRecyclerOptions.Builder<Oggetto>().setQuery(databaseReference, Oggetto.class).build();
         Log.i("a", "SONO QUI2");
+
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        Log.i("a", "SONO QUI5");
-        fetch(); //recycler view presa dei dati
+
+        mySearchView =(SearchView) findViewById(R.id.searchview);
+        mySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+               firebaseSearch(query);
+                firebaseRecyclerAdapter.startListening();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+
+                //Toast.makeText(HomeScreen.this, "change", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        fetch();
 
         Log.i("a", "SONO QUI4");
 
@@ -128,8 +139,6 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
         NavigationView navView = (NavigationView) findViewById(R.id.navigation);
         navView.setNavigationItemSelectedListener(this);
-
-        mySearchView =(SearchView) findViewById(R.id.searchview);
 
 
     }
@@ -187,20 +196,6 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
             @Override
             protected void onBindViewHolder(@NonNull final FirebaseViewHolder firebaseViewHolder, final int i, @NonNull final Oggetto oggetto) {
 
-                mySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        //Query query1 = databaseReference.orderByChild("nome").startAt(query).endAt(query + "\uf8ff");
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onQueryTextChange(String query) {
-
-                        return true;
-                    }
-                });
-
                 firebaseViewHolder.nome.setText(oggetto.getNome());
                 Log.i("a", "SONO QUI3");
                 firebaseViewHolder.nomeVenditore.setText(oggetto.getNomeVenditore());
@@ -218,7 +213,6 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                     }
                 });
 
-
                 firebaseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -232,7 +226,6 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                         TextView idUser1 = v.findViewById(R.id.id_venditore);
                         String IdUser1 = idUser1.getText().toString();
                         String IdOggetto = getRef(i).toString();
-
 
                         Intent intent = new Intent(v.getContext(), VisualizzaProdotto.class);
                         //intent.putExtra("descrizione", descrizione);
@@ -248,17 +241,13 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                     }
                 });
 
-
             }
-
 
             @NonNull
             @Override
             public FirebaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 return new FirebaseViewHolder(LayoutInflater.from(HomeScreen.this).inflate(R.layout.rv_row, parent, false));
             }
-
-
 
         };
         recyclerView.setAdapter(adapter);
@@ -269,5 +258,60 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
     protected void onResume() {
         super.onResume();
     }
-}
 
+
+    protected void firebaseSearch (String searchText) {
+        final Query query= databaseReference.orderByChild("nome").equalTo(searchText);
+        options = new FirebaseRecyclerOptions.Builder<Oggetto>().setQuery(query, Oggetto.class).build();
+       firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Oggetto, FirebaseViewHolder>(options) {
+                    @Override
+                    protected void onBindViewHolder(@NonNull final FirebaseViewHolder firebaseViewHolder, final int i, @NonNull Oggetto oggetto) {
+                        firebaseViewHolder.nome.setText(oggetto.getNome());
+                        firebaseViewHolder.nomeVenditore.setText(oggetto.getNomeVenditore());
+                        firebaseViewHolder.prezzo.setText(String.valueOf(oggetto.getPrezzo()));
+                        firebaseViewHolder.idUser.setText(oggetto.getIdUser());
+                        final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                        StorageReference storageReference = firebaseStorage.getReference();
+
+                        String idUser = oggetto.getIdUser();
+                        String nome = oggetto.getNome();
+                        storageReference.child("Image").child("ImmaginiOggetti").child(idUser).child(nome).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                Picasso.get().load(uri).fit().centerCrop().into(firebaseViewHolder.immagineOggetto);
+                            }
+                        });
+                        firebaseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                TextView nome1 = v.findViewById(R.id.nome_oggetto);
+                                String Nome1 = nome1.getText().toString();
+                                TextView nomeVend = v.findViewById(R.id.nome_venditore);
+                                String NomeVend = nomeVend.getText().toString();
+                                TextView prezzo1 = v.findViewById(R.id.prezzo);
+                                String Prezzo1 = prezzo1.getText().toString();
+                                TextView idUser1 = v.findViewById(R.id.id_venditore);
+                                String IdUser1 = idUser1.getText().toString();
+                                String IdOggetto = getRef(i).toString();
+
+                                Intent intent = new Intent(v.getContext(), VisualizzaProdotto.class);
+                                intent.putExtra("IdOggetto", IdOggetto);
+                                intent.putExtra("Nome1", Nome1);
+                                intent.putExtra("NomeVend", NomeVend);
+                                intent.putExtra("Prezzo1", Prezzo1);
+                                intent.putExtra("idUser", IdUser1);
+                                startActivity(intent);
+
+                            }
+                        });
+                    }
+                    @NonNull
+                    @Override
+                    public FirebaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                        return new FirebaseViewHolder(LayoutInflater.from(HomeScreen.this).inflate(R.layout.rv_row, parent, false));
+                    }
+                };
+        recyclerView.setAdapter(firebaseRecyclerAdapter);
+    }
+}
