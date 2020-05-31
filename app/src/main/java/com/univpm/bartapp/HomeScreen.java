@@ -28,20 +28,20 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import androidx.appcompat.widget.SearchView;
 
+import androidx.appcompat.widget.SearchView;
 
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -62,31 +62,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    private RecyclerView recyclerView;
-    public FirebaseRecyclerOptions<Oggetto> options;
-    private FirebaseRecyclerAdapter<Oggetto, FirebaseViewHolder> adapter;
-    private FirebaseRecyclerAdapter<Oggetto, FirebaseViewHolder> firebaseRecyclerAdapter; // l'adapter del filtro
-    private RecyclerView.LayoutManager layoutManager;
     MenuItem menuItem;
-    private DatabaseReference databaseReference;
-    ArrayList<Oggetto> arrayList;
-    SearchView mySearchView;
-
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        adapter.stopListening();
-        //firebaseRecyclerAdapter.stopListening(); è da implementare
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        adapter.startListening();
-
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,40 +74,6 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //settaggio della recycler view con il riferimento al database
-        arrayList = new ArrayList<Oggetto>();
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("oggetti");
-
-
-        databaseReference.keepSynced(true);
-        options = new FirebaseRecyclerOptions.Builder<Oggetto>().setQuery(databaseReference, Oggetto.class).build();
-        Log.i("a", "SONO QUI2");
-
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
-
-        mySearchView =(SearchView) findViewById(R.id.searchview);
-        mySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-               firebaseSearch(query);
-                firebaseRecyclerAdapter.startListening();
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String query) {
-
-                //Toast.makeText(HomeScreen.this, "change", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-        fetch();
-
-        Log.i("a", "SONO QUI4");
-
         drawerLayout = findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
@@ -140,7 +82,11 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         NavigationView navView = (NavigationView) findViewById(R.id.navigation);
         navView.setNavigationItemSelectedListener(this);
 
-
+        RecyclerViewFragment recyclerViewFragment = new RecyclerViewFragment();
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.add(R.id.fragment_container_visualizza, recyclerViewFragment, "");
+        ft.commit();
     }
 
 
@@ -169,8 +115,8 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                 startActivity(intent);
                 break;
             }
-            case R.id.Miei_Oggetti:{
-                Intent intent = new Intent(this, MieiOggetti.class );
+            case R.id.Miei_Oggetti: {
+                Intent intent = new Intent(this, MieiOggetti.class);
                 startActivity(intent);
                 break;
             }
@@ -191,127 +137,9 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         startActivity(intent);
     }
 
-    public void fetch() {
-        adapter = new FirebaseRecyclerAdapter<Oggetto, FirebaseViewHolder>(options) {
-            @Override
-            protected void onBindViewHolder(@NonNull final FirebaseViewHolder firebaseViewHolder, final int i, @NonNull final Oggetto oggetto) {
-
-                firebaseViewHolder.nome.setText(oggetto.getNome());
-                Log.i("a", "SONO QUI3");
-                firebaseViewHolder.nomeVenditore.setText(oggetto.getNomeVenditore());
-                firebaseViewHolder.prezzo.setText(String.valueOf(oggetto.getPrezzo()));
-                firebaseViewHolder.idUser.setText(oggetto.getIdUser());
-                final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-                StorageReference storageReference = firebaseStorage.getReference();
-
-                String idUser = oggetto.getIdUser();
-                String nome = oggetto.getNome();
-                storageReference.child("Image").child("ImmaginiOggetti").child(idUser).child(nome).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Picasso.get().load(uri).fit().centerCrop().into(firebaseViewHolder.immagineOggetto);
-                    }
-                });
-
-                firebaseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        TextView nome1 = v.findViewById(R.id.nome_oggetto);
-                        String Nome1 = nome1.getText().toString();
-                        TextView nomeVend = v.findViewById(R.id.nome_venditore);
-                        String NomeVend = nomeVend.getText().toString();
-                        TextView prezzo1 = v.findViewById(R.id.prezzo);
-                        String Prezzo1 = prezzo1.getText().toString();
-                        TextView idUser1 = v.findViewById(R.id.id_venditore);
-                        String IdUser1 = idUser1.getText().toString();
-                        String IdOggetto = getRef(i).toString();
-
-                        Intent intent = new Intent(v.getContext(), VisualizzaProdotto.class);
-                        //intent.putExtra("descrizione", descrizione);
-                        //intent.putExtra("nomeVend", nomeVend);
-
-                        intent.putExtra("IdOggetto", IdOggetto);
-                        intent.putExtra("Nome1", Nome1);
-                        intent.putExtra("NomeVend", NomeVend);
-                        intent.putExtra("Prezzo1", Prezzo1);
-                        intent.putExtra("idUser", IdUser1);
-                        startActivity(intent);
-
-                    }
-                });
-
-            }
-
-            @NonNull
-            @Override
-            public FirebaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                return new FirebaseViewHolder(LayoutInflater.from(HomeScreen.this).inflate(R.layout.rv_row, parent, false));
-            }
-
-        };
-        recyclerView.setAdapter(adapter);
-
-    }
 
     @Override
     protected void onResume() {
         super.onResume();
-    }
-
-
-    protected void firebaseSearch (String searchText) {
-        final Query query= databaseReference.orderByChild("nome").equalTo(searchText);
-        options = new FirebaseRecyclerOptions.Builder<Oggetto>().setQuery(query, Oggetto.class).build();
-       firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Oggetto, FirebaseViewHolder>(options) {
-                    @Override
-                    protected void onBindViewHolder(@NonNull final FirebaseViewHolder firebaseViewHolder, final int i, @NonNull Oggetto oggetto) {
-                        firebaseViewHolder.nome.setText(oggetto.getNome());
-                        firebaseViewHolder.nomeVenditore.setText(oggetto.getNomeVenditore());
-                        firebaseViewHolder.prezzo.setText(String.valueOf(oggetto.getPrezzo()));
-                        firebaseViewHolder.idUser.setText(oggetto.getIdUser());
-                        final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-                        StorageReference storageReference = firebaseStorage.getReference();
-
-                        String idUser = oggetto.getIdUser();
-                        String nome = oggetto.getNome();
-                        storageReference.child("Image").child("ImmaginiOggetti").child(idUser).child(nome).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                Picasso.get().load(uri).fit().centerCrop().into(firebaseViewHolder.immagineOggetto);
-                            }
-                        });
-                        firebaseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                                TextView nome1 = v.findViewById(R.id.nome_oggetto);
-                                String Nome1 = nome1.getText().toString();
-                                TextView nomeVend = v.findViewById(R.id.nome_venditore);
-                                String NomeVend = nomeVend.getText().toString();
-                                TextView prezzo1 = v.findViewById(R.id.prezzo);
-                                String Prezzo1 = prezzo1.getText().toString();
-                                TextView idUser1 = v.findViewById(R.id.id_venditore);
-                                String IdUser1 = idUser1.getText().toString();
-                                String IdOggetto = getRef(i).toString();
-
-                                Intent intent = new Intent(v.getContext(), VisualizzaProdotto.class);
-                                intent.putExtra("IdOggetto", IdOggetto);
-                                intent.putExtra("Nome1", Nome1);
-                                intent.putExtra("NomeVend", NomeVend);
-                                intent.putExtra("Prezzo1", Prezzo1);
-                                intent.putExtra("idUser", IdUser1);
-                                startActivity(intent);
-
-                            }
-                        });
-                    }
-                    @NonNull
-                    @Override
-                    public FirebaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                        return new FirebaseViewHolder(LayoutInflater.from(HomeScreen.this).inflate(R.layout.rv_row, parent, false));
-                    }
-                };
-        recyclerView.setAdapter(firebaseRecyclerAdapter);
     }
 }

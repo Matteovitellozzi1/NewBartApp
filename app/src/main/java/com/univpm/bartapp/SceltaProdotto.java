@@ -37,7 +37,7 @@ public class SceltaProdotto extends AppCompatActivity {
     FirebaseUser currentUser;
     private RecyclerView recyclerView;
     private FirebaseRecyclerOptions<Oggetto> options;
-    private FirebaseRecyclerAdapter<Oggetto, FirebaseViewHolder> adapter;
+    //private FirebaseRecyclerAdapter<Oggetto, FirebaseViewHolder> adapter;
     private RecyclerView.LayoutManager layoutManager;
     private DatabaseReference databaseReference;
     ArrayList<Oggetto> arrayList;
@@ -49,14 +49,13 @@ public class SceltaProdotto extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        adapter.stopListening();
+        //adapter.stopListening();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        adapter.startListening();
-
+        //adapter.startListening();
     }
 
     @Override
@@ -64,7 +63,7 @@ public class SceltaProdotto extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scelta_prodotto);
 
-        nome = getIntent().getStringExtra("nome");
+        /*nome = getIntent().getStringExtra("nome");
         venditore = getIntent().getStringExtra("nomevend");
         prezzo = getIntent().getStringExtra("prezzo");
         idUser = getIntent().getStringExtra("idUser");
@@ -80,9 +79,9 @@ public class SceltaProdotto extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        fetch();
+        fetch();*/
     }
-
+/*
     public void fetch() {
         adapter = new FirebaseRecyclerAdapter<Oggetto, FirebaseViewHolder>(options) {
             @Override
@@ -178,4 +177,6 @@ public class SceltaProdotto extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
     }
+
+ */
 }
