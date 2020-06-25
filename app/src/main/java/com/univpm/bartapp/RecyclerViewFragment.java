@@ -88,6 +88,8 @@ public class RecyclerViewFragment extends Fragment {
         FirebaseRecyclerOptions<Oggetto> options = new FirebaseRecyclerOptions.Builder<Oggetto>()
                 .setQuery(databaseReference, Oggetto.class)
                 .build();
+
+
         adapter= new MyAdapter(options);
         recyclerView.setAdapter(adapter);
         return view;

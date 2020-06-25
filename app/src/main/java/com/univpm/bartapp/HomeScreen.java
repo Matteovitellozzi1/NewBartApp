@@ -35,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -101,8 +102,9 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) { // con uno switch potrò scegliere cosa fare in base a cosa premuto
+        Fragment selected = null;
         switch (item.getItemId()) {
-            case R.id.Contattaci:
+            /*case R.id.Contattaci:
                 invioMail();
                 break;
             case R.id.Home: {
@@ -114,15 +116,18 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                 Intent intent = new Intent(this, Inserimento.class);
                 startActivity(intent);
                 break;
-            }
+            }*/
             case R.id.Miei_Oggetti: {
-                Intent intent = new Intent(this, MieiOggetti.class);
-                startActivity(intent);
+                selected = new MieiOggettiFragment();
+
                 break;
             }
         }
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_visualizza, selected).commit();
         return true;
     }
+
+
 
     public void invioMail() {
         Intent intent = new Intent(Intent.ACTION_SENDTO);

@@ -100,7 +100,7 @@ class MyAdapter extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewH
                 bundle.putString("Prezzo1", Prezzo1);
 
                 bundle.putString( "Immagine1", storageReference.child("Image").child("ImmaginiOggetti").child(IdUser1).child(Nome1).getDownloadUrl().toString());
-                //bundle.putString("idUser", IdUser1);
+                bundle.putString("idUser", IdUser1);
                 AppCompatActivity abc= (AppCompatActivity) v.getContext();
                 VisualizzaProdottoFragment visualizzaProdottoFragment= new VisualizzaProdottoFragment();
                 visualizzaProdottoFragment.setArguments(bundle);
@@ -119,7 +119,7 @@ class MyAdapter extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewH
     }
 
 
-    class FirebaseViewHolder extends RecyclerView.ViewHolder {
+    static class FirebaseViewHolder extends RecyclerView.ViewHolder {
         public ImageView immagineOggetto;
         public TextView nome;
         TextView nomeVenditore, prezzo, idUser;

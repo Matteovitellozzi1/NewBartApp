@@ -35,7 +35,7 @@ public class MieiOggetti extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private RecyclerView recyclerView;
     private FirebaseRecyclerOptions<Oggetto> options;
-   // private FirebaseRecyclerAdapter<Oggetto, FirebaseViewHolder> adapter;
+   private FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewHolder> adapter;
     private RecyclerView.LayoutManager layoutManager;
     private DatabaseReference databaseReference;
     ArrayList<Oggetto> arrayList;
@@ -61,7 +61,7 @@ public class MieiOggetti extends AppCompatActivity {
         setContentView(R.layout.activity_miei_oggetti);
 
 
-        /*mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         //String utente = mAuth.getUid();
 
@@ -78,14 +78,14 @@ public class MieiOggetti extends AppCompatActivity {
         fetch();
 
 
-        drawerLayout = findViewById(R.id.drawer_layout1);*/
+        drawerLayout = findViewById(R.id.drawer_layout1);
     }
 
-    /*public void fetch() {
+    public void fetch() {
         Log.i("a", "SONO nella fetch");
-        adapter = new FirebaseRecyclerAdapter<Oggetto, FirebaseViewHolder>(options) {
+        adapter = new FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull final FirebaseViewHolder firebaseViewHolder, final int i, @NonNull final Oggetto oggetto) {
+            protected void onBindViewHolder(@NonNull final MyAdapter.FirebaseViewHolder firebaseViewHolder, final int i, @NonNull final Oggetto oggetto) {
                 firebaseViewHolder.nome.setText(oggetto.getNome());
                 Log.i("a", "SONO QUI");
                 firebaseViewHolder.nomeVenditore.setText(oggetto.getNomeVenditore());
@@ -134,11 +134,11 @@ public class MieiOggetti extends AppCompatActivity {
 
             @NonNull
             @Override
-            public FirebaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                return new FirebaseViewHolder(LayoutInflater.from(MieiOggetti.this).inflate(R.layout.rv_row, parent, false));
+            public MyAdapter.FirebaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                return new MyAdapter.FirebaseViewHolder(LayoutInflater.from(MieiOggetti.this).inflate(R.layout.rv_row, parent, false));
             }
         };
         recyclerView.setAdapter(adapter);
-    }*/
+    }
 
 }
