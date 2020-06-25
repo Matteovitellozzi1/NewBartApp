@@ -104,19 +104,23 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
     public boolean onNavigationItemSelected(@NonNull MenuItem item) { // con uno switch potrò scegliere cosa fare in base a cosa premuto
         Fragment selected = null;
         switch (item.getItemId()) {
-            /*case R.id.Contattaci:
-                invioMail();
-                break;
-            case R.id.Home: {
-                Intent intent = new Intent(this, HomeScreen.class);
-                startActivity(intent);
-                break;
-            }
+            /*
             case R.id.aggiungi_prodotto: {
                 Intent intent = new Intent(this, Inserimento.class);
                 startActivity(intent);
                 break;
             }*/
+
+            case R.id.Contattaci: {
+                invioMail();
+                return true;
+            }
+
+            case R.id.Home: {
+                selected = new RecyclerViewFragment();
+                break;
+            }
+
             case R.id.Miei_Oggetti: {
                 selected = new MieiOggettiFragment();
 
@@ -124,6 +128,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
             }
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_visualizza, selected).commit();
+        drawerLayout.closeDrawers();
         return true;
     }
 
