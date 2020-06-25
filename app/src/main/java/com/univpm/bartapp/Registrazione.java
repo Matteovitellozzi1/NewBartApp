@@ -72,7 +72,6 @@ public class Registrazione extends AppCompatActivity {
                                         intent.putExtra("password",textPassword.getText().toString());
                                         setResult(RESULT_OK, intent);
                                         finish();
-
                                     }
                                 });
 
