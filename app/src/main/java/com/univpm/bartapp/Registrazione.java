@@ -71,8 +71,8 @@ public class Registrazione extends AppCompatActivity {
                                         intent.putExtra("cognome", textCognome.getText().toString());
                                         intent.putExtra("email", textEmail.getText().toString());
                                         intent.putExtra("password",textPassword.getText().toString());
-                                        setResult(RESULT_OK, intent);
-                                        finish();
+                                        Intent intent1 = new Intent(Registrazione.this, Login_Screen.class);
+                                        startActivity(intent1);
                                     }
                                 });
 

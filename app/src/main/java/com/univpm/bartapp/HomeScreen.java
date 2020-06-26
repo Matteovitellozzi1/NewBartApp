@@ -3,12 +3,14 @@ package com.univpm.bartapp;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.Image;
@@ -108,7 +110,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         storageReference.child("Image").child("Profile Pic").child(firebaseAuth.getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Glide.with(HomeScreen.this).load(uri).centerInside().into(imageHeader);
+                Picasso.get().load(uri).fit().centerCrop().into(imageHeader);
             }
         });
 
@@ -155,6 +157,11 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
                 break;
             }
+
+            case R.id.Logout: {
+                logout();
+                return true;
+            }
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_visualizza, selected).commit();
         drawerLayout.closeDrawers();
@@ -179,5 +186,30 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    protected void logout () {
+        AlertDialog.Builder dialog= new AlertDialog.Builder(HomeScreen.this);
+        dialog.setTitle("Attenzione");
+        dialog.setCancelable(false);
+        dialog.setMessage("Sei sicuro di voler effettuare il Logout?");
+        dialog.setPositiveButton("Conferma", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                mAuth.signOut();
+                Intent intent = new Intent(HomeScreen.this, Login_Screen.class );
+                startActivity(intent);
+            }
+        });
+        dialog.setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alertDialog= dialog.create();
+        alertDialog.show();
     }
 }

@@ -17,8 +17,8 @@
         android:layout_marginBottom="5dp"
         android:background="@drawable/circle"
         android:onClick="headerNavigation"
-        android:src="@drawable/ic_person_black_24dp"
-        android:tint="@android:color/white" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_person_black_24dp" />
 
     <TextView
         android:id="@+id/nomeHeader"
