@@ -3,6 +3,7 @@ package com.univpm.bartapp;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,6 +34,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 import com.univpm.bartapp.R;
 
 public class VisualizzaProdottoFragment extends Fragment {
@@ -44,6 +47,7 @@ public class VisualizzaProdottoFragment extends Fragment {
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
     private DatabaseReference databaseReference;
+    private String nome, nomeVend, prezzo;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,10 +70,14 @@ public class VisualizzaProdottoFragment extends Fragment {
         introduzione = view.findViewById(R.id.header_offerta);
         nomeOggetto = view.findViewById(R.id.nome_oggetto1);
         nomeOggetto.setText(getArguments().getString("Nome1"));
+        nome = getArguments().getString("Nome1");
         nomeVenditore = view.findViewById(R.id.nome_venditore1);
         nomeVenditore.setText(getArguments().getString("NomeVend"));
+        nomeVend = getArguments().getString("NomeVend");
         prezzoOggetto = view.findViewById(R.id.prezzo1);
         prezzoOggetto.setText(getArguments().getString("Prezzo1"));
+        prezzo = getArguments().getString("Prezzo1");
+
 
 
         final String idUser = getArguments().getString("idUser");
@@ -79,9 +87,6 @@ public class VisualizzaProdottoFragment extends Fragment {
         final String IdOggetto = getArguments().getString("IdOggetto");
 
         immagineOggetto = view.findViewById(R.id.immagine_oggetto1);
-        String immagine = getArguments().getString("Immagine1");
-        Bitmap bitmap = BitmapFactory.decodeFile(immagine);
-        immagineOggetto.setImageBitmap(bitmap);
         nomeOggettoOfferta = view.findViewById(R.id.prodotto_offerta);
         btnOfferta = (Button) view.findViewById(R.id.btn_offerta);
         differenzaPrezzo = view.findViewById(R.id.diff_prezzo);
@@ -92,6 +97,18 @@ public class VisualizzaProdottoFragment extends Fragment {
         btnElimina = (Button) view.findViewById(R.id.button_elimina);
         btnElimina.setVisibility(View.INVISIBLE);
 
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("oggetti");
+        databaseReference.keepSynced(true);
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
+
+
+        storageReference.child("Image").child("ImmaginiOggetti").child(idUser).child(nome).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).fit().centerCrop().into(immagineOggetto);
+            }
+        });
 
         if (idUser.equals(utente)) {
             btnOfferta.setVisibility(View.INVISIBLE);
@@ -130,10 +147,18 @@ public class VisualizzaProdottoFragment extends Fragment {
         btnOfferta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MieiOggettiFragment mieiOggettiFragment = new MieiOggettiFragment();
+                /*Bundle bundle= new Bundle();
+                bundle.putString("oggetto", IdOggetto);
+                bundle.putString("nome", nome);
+                bundle.putString("nomeVend", nomeVend);
+                bundle.putString("prezzo", prezzo);
+                bundle.putString("idUser", utente);
+                RiepilogoOfferta riepilogoOfferta= new RiepilogoOfferta();
+                riepilogoOfferta.setArguments(bundle);*/
+                SceltaProdottoFragment sceltaProdottoFragment = new SceltaProdottoFragment();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container_visualizza, mieiOggettiFragment);
+                fragmentTransaction.replace(R.id.fragment_container_visualizza, sceltaProdottoFragment);
                 fragmentTransaction.commit();
             }
         });

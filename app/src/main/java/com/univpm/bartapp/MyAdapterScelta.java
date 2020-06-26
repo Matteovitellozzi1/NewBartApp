@@ -1,54 +1,56 @@
 package com.univpm.bartapp;
 
-import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.card.MaterialCardView;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.List;
 
-class MyAdapter extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewHolder> {
+public class MyAdapterScelta extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewHolder>  {
 
     private ArrayList<Oggetto> oggetto;
     private DatabaseReference databaseReference;
 
+    static class FirebaseViewHolder extends RecyclerView.ViewHolder {
+        public ImageView immagineOggetto;
+        public TextView nome;
+        TextView nomeVenditore, prezzo, idUser;
 
-    public MyAdapter(@NonNull FirebaseRecyclerOptions<Oggetto> option) {
+        public FirebaseViewHolder(@NonNull View itemView) {
+            super(itemView);
+            immagineOggetto = itemView.findViewById(R.id.immagine_oggetto);
+            nome = itemView.findViewById(R.id.nome_oggetto);
+            nomeVenditore = itemView.findViewById(R.id.nome_venditore);
+            prezzo = itemView.findViewById(R.id.prezzo);
+            idUser = itemView.findViewById(R.id.id_venditore);
+
+        }
+    }
+
+    public MyAdapterScelta(@NonNull FirebaseRecyclerOptions<Oggetto> option) {
         super(option);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull final FirebaseViewHolder firebaseViewHolder, final int i, @NonNull Oggetto oggetto) {
+    protected void onBindViewHolder(@NonNull final MyAdapter.FirebaseViewHolder firebaseViewHolder, final int i, @NonNull Oggetto oggetto) {
         firebaseViewHolder.nome.setText(oggetto.getNome());
         Log.i("a", "SONO QUI3");
         firebaseViewHolder.nomeVenditore.setText(oggetto.getNomeVenditore());
@@ -87,11 +89,11 @@ class MyAdapter extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewH
 
                 StorageReference storageReference = firebaseStorage.getReference();
                 Bundle bundle= new Bundle();
-                bundle.putString("IdOggetto", IdOggetto);
-                bundle.putString("Nome1", Nome1);
-                bundle.putString("NomeVend", NomeVend);
-                bundle.putString("Prezzo1", Prezzo1);
-                bundle.putString("idUser", IdUser1);
+                bundle.putString("oggetto_scelta", IdOggetto);
+                bundle.putString("nome_scelta", Nome1);
+                bundle.putString("nomeVend_scelta", NomeVend);
+                bundle.putString("prezzo_scelta", Prezzo1);
+                bundle.putString("idUser_scelta", IdUser1);
                 AppCompatActivity abc= (AppCompatActivity) v.getContext();
                 VisualizzaProdottoFragment visualizzaProdottoFragment= new VisualizzaProdottoFragment();
                 visualizzaProdottoFragment.setArguments(bundle);
@@ -104,26 +106,8 @@ class MyAdapter extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewH
 
     @NonNull
     @Override
-    public FirebaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new FirebaseViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_row, parent, false));
+    public MyAdapter.FirebaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new MyAdapter.FirebaseViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_row, parent, false));
 
     }
-
-
-    static class FirebaseViewHolder extends RecyclerView.ViewHolder {
-        public ImageView immagineOggetto;
-        public TextView nome;
-        TextView nomeVenditore, prezzo, idUser;
-
-        public FirebaseViewHolder(@NonNull View itemView) {
-            super(itemView);
-            immagineOggetto = itemView.findViewById(R.id.immagine_oggetto);
-            nome = itemView.findViewById(R.id.nome_oggetto);
-            nomeVenditore = itemView.findViewById(R.id.nome_venditore);
-            prezzo = itemView.findViewById(R.id.prezzo);
-            idUser = itemView.findViewById(R.id.id_venditore);
-
-        }
-    }
-
 }
