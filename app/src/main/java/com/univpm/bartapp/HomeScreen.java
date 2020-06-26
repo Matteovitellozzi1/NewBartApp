@@ -10,9 +10,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,6 +30,8 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.SearchView;
@@ -41,11 +46,13 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -56,6 +63,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +72,12 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private TextView nomeHeader;
+    private FirebaseUser firebaseUser;
+    private FirebaseAuth firebaseAuth;
+    private ImageView imageHeader;
+    private StorageReference storageReference;
+    private FirebaseStorage firebaseStorage;
     MenuItem menuItem;
 
     @Override
@@ -82,6 +97,20 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
         NavigationView navView = (NavigationView) findViewById(R.id.navigation);
         navView.setNavigationItemSelectedListener(this);
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        View headerView = navView.getHeaderView(0);
+        nomeHeader = (TextView) headerView.findViewById(R.id.nomeHeader);
+        nomeHeader.setText(firebaseUser.getDisplayName());
+        imageHeader = (ImageView) headerView.findViewById(R.id.button_add);
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
+        storageReference.child("Image").child("Profile Pic").child(firebaseAuth.getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(HomeScreen.this).load(uri).centerInside().into(imageHeader);
+            }
+        });
 
         RecyclerViewFragment recyclerViewFragment = new RecyclerViewFragment();
         FragmentManager fm = getSupportFragmentManager();
@@ -131,7 +160,6 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         drawerLayout.closeDrawers();
         return true;
     }
-
 
 
     public void invioMail() {

@@ -35,7 +35,7 @@ public class MieiOggetti extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private RecyclerView recyclerView;
     private FirebaseRecyclerOptions<Oggetto> options;
-   private FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewHolder> adapter;
+    private FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewHolder> adapter;
     private RecyclerView.LayoutManager layoutManager;
     private DatabaseReference databaseReference;
     ArrayList<Oggetto> arrayList;
@@ -51,7 +51,7 @@ public class MieiOggetti extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-       // adapter.startListening();
+        // adapter.startListening();
 
     }
 
