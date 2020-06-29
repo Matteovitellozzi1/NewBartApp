@@ -1,5 +1,6 @@
 package com.univpm.bartapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
@@ -47,7 +50,8 @@ public class VisualizzaProdottoFragment extends Fragment {
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
     private DatabaseReference databaseReference;
-    private String nome, nomeVend, prezzo;
+    private String nome, nomeVend, prezzo, utente;
+    private String IdOggetto;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,12 +83,11 @@ public class VisualizzaProdottoFragment extends Fragment {
         prezzo = getArguments().getString("Prezzo1");
 
 
-
         final String idUser = getArguments().getString("idUser");
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-        final String utente = mAuth.getUid();
-        final String IdOggetto = getArguments().getString("IdOggetto");
+        utente = mAuth.getUid();
+        IdOggetto = getArguments().getString("IdOggetto");
 
         immagineOggetto = view.findViewById(R.id.immagine_oggetto1);
         nomeOggettoOfferta = view.findViewById(R.id.prodotto_offerta);
@@ -122,32 +125,14 @@ public class VisualizzaProdottoFragment extends Fragment {
         btnElimina.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Query query = databaseReference.orderByChild("idUser").equalTo(utente);
-                query.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot ds: dataSnapshot.getChildren()){
-                            Log.i("a", ds.getRef().toString());
-                            if (ds.getRef().toString().equals(IdOggetto)) {
-                                ds.getRef().removeValue();
-                                Toast.makeText(getContext(), "Prodotto cancellato correttamente",Toast.LENGTH_LONG).show();
-                                getActivity().getSupportFragmentManager().popBackStack(); //Serve per eliminare il fragment dallo stack
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-
+                eliminaAlert();
             }
         });
 
         btnOfferta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle= new Bundle();
+                Bundle bundle = new Bundle();
                 bundle.putString("oggetto", IdOggetto);
                 SceltaProdottoFragment sceltaProdottoFragment = new SceltaProdottoFragment();
                 sceltaProdottoFragment.setArguments(bundle);
@@ -157,8 +142,43 @@ public class VisualizzaProdottoFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
-            return view;
-        }
+        return view;
+    }
+
+    public void eliminaAlert() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this.getContext());
+        dialog.setTitle("Attenzione!");
+        dialog.setCancelable(false);
+        dialog.setMessage("Sei sicuro di voler eliminare l'oggetto?");
+        dialog.setPositiveButton("Conferma", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Query query = databaseReference.orderByChild("idUser").equalTo(utente);
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Log.i("a", dataSnapshot.child(IdOggetto).getKey());
+                        dataSnapshot.child(IdOggetto).getRef().removeValue();
+                        Toast.makeText(getContext(), "Prodotto cancellato correttamente", Toast.LENGTH_LONG).show();
+                        getActivity().getSupportFragmentManager().popBackStack(); //Serve per eliminare il fragment dallo stack
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+            }
+        });
+        dialog.setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alertDialog = dialog.create();
+        alertDialog.show();
+    }
 
 
 }
