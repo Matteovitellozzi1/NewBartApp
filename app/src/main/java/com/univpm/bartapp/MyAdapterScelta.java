@@ -24,10 +24,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class MyAdapterScelta extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewHolder>  {
+public class MyAdapterScelta extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewHolder> {
 
     private ArrayList<Oggetto> oggetto;
     private DatabaseReference databaseReference;
+    private String idOggetto;
 
     static class FirebaseViewHolder extends RecyclerView.ViewHolder {
         public ImageView immagineOggetto;
@@ -56,6 +57,7 @@ public class MyAdapterScelta extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.
         firebaseViewHolder.nomeVenditore.setText(oggetto.getNomeVenditore());
         firebaseViewHolder.prezzo.setText(String.valueOf(oggetto.getPrezzo()));
         firebaseViewHolder.idUser.setText(oggetto.getIdUser());
+        final String keyId = this.getRef(i).getKey();
         final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();
 
@@ -88,16 +90,9 @@ public class MyAdapterScelta extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.
                 String IdOggetto = getRef(i).toString();
 
                 StorageReference storageReference = firebaseStorage.getReference();
-                Bundle bundle= new Bundle();
-                bundle.putString("oggetto_scelta", IdOggetto);
-                bundle.putString("nome_scelta", Nome1);
-                bundle.putString("nomeVend_scelta", NomeVend);
-                bundle.putString("prezzo_scelta", Prezzo1);
-                bundle.putString("idUser_scelta", IdUser1);
-                AppCompatActivity abc= (AppCompatActivity) v.getContext();
-                VisualizzaProdottoFragment visualizzaProdottoFragment= new VisualizzaProdottoFragment();
-                visualizzaProdottoFragment.setArguments(bundle);
-                abc.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_visualizza, visualizzaProdottoFragment, "").addToBackStack(null).commit();
+                AppCompatActivity abc = (AppCompatActivity) v.getContext();
+                RecyclerViewFragment recyclerViewFragment = new RecyclerViewFragment();
+                abc.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_visualizza, recyclerViewFragment, "").addToBackStack(null).commit();
 
             }
         });
@@ -108,6 +103,5 @@ public class MyAdapterScelta extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.
     @Override
     public MyAdapter.FirebaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new MyAdapter.FirebaseViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_row, parent, false));
-
     }
 }

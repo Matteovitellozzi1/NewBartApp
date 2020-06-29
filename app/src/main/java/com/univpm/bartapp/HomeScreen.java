@@ -89,6 +89,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
         menuItem = (MenuItem) findViewById(R.id.Contattaci);
 
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -135,12 +136,12 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
     public boolean onNavigationItemSelected(@NonNull MenuItem item) { // con uno switch potrò scegliere cosa fare in base a cosa premuto
         Fragment selected = null;
         switch (item.getItemId()) {
-            /*
+
             case R.id.aggiungi_prodotto: {
                 Intent intent = new Intent(this, Inserimento.class);
                 startActivity(intent);
                 break;
-            }*/
+            }
 
             case R.id.Contattaci: {
                 invioMail();
@@ -154,7 +155,6 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
 
             case R.id.Miei_Oggetti: {
                 selected = new MieiOggettiFragment();
-
                 break;
             }
 

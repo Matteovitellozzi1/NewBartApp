@@ -147,15 +147,10 @@ public class VisualizzaProdottoFragment extends Fragment {
         btnOfferta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Bundle bundle= new Bundle();
+                Bundle bundle= new Bundle();
                 bundle.putString("oggetto", IdOggetto);
-                bundle.putString("nome", nome);
-                bundle.putString("nomeVend", nomeVend);
-                bundle.putString("prezzo", prezzo);
-                bundle.putString("idUser", utente);
-                RiepilogoOfferta riepilogoOfferta= new RiepilogoOfferta();
-                riepilogoOfferta.setArguments(bundle);*/
                 SceltaProdottoFragment sceltaProdottoFragment = new SceltaProdottoFragment();
+                sceltaProdottoFragment.setArguments(bundle);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container_visualizza, sceltaProdottoFragment);

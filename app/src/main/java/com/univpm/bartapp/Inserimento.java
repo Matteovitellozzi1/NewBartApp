@@ -123,10 +123,9 @@ public class Inserimento extends AppCompatActivity {
                         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                Toast.makeText(Inserimento.this, "Profile picture uploaded", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Inserimento.this, "Immagine Inserita", Toast.LENGTH_SHORT).show();
                             }
                         });
-
                         Toast.makeText(Inserimento.this, "Oggetto inserito", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(Inserimento.this, HomeScreen.class);
                         startActivity(intent);

@@ -26,7 +26,7 @@
         <activity android:name=".VisualizzaProdotto" />
         <activity android:name=".ChangePassword" />
         <activity android:name=".ChangeUsername" />
-        <activity android:name=".Inserimento" />
+        <activity android:name=".Inserimento"/>
         <activity
             android:name=".HomeScreen"
             android:theme="@style/NoActionBar" />

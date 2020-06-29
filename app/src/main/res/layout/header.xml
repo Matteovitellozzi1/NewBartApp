@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/header"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:layout_marginTop="15dp"
+    android:layout_height="145dp"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:padding="15dp">
+    android:padding="20dp"
+    android:background="@color/colorAccent">
 
     <ImageView
         android:id="@+id/button_add"
@@ -14,7 +14,7 @@
         android:layout_height="70dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="12dp"
         android:background="@drawable/circle"
         android:onClick="headerNavigation"
         android:scaleType="centerCrop"
@@ -27,6 +27,7 @@
         android:layout_height="match_parent"
         android:gravity="start"
         android:onClick="headerNavigation"
+        android:layout_marginTop="5dp"
         android:text="Nome" />
 
 

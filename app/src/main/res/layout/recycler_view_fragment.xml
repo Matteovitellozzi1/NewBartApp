@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/recycler_view_fragment"
@@ -9,21 +8,18 @@
     android:background="@android:color/white"
     android:fitsSystemWindows="true">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
 
-
-
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchview"
-            android:queryHint="Search Here"
             android:layout_width="match_parent"
-            app:iconifiedByDefault="true"
-            android:layout_height="?attr/actionBarSize">
+            android:layout_height="?attr/actionBarSize"
+            android:queryHint="Search Here"
+            app:iconifiedByDefault="true">
 
         </androidx.appcompat.widget.SearchView>
 
@@ -39,10 +35,9 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:fitsSystemWindows="true"
         app:headerLayout="@layout/header"
-        app:menu="@menu/navbar_home"
-        android:fitsSystemWindows="true"/>
-
+        app:menu="@menu/navbar_home" />
 
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -54,6 +54,7 @@ class MyAdapter extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewH
         firebaseViewHolder.nomeVenditore.setText(oggetto.getNomeVenditore());
         firebaseViewHolder.prezzo.setText(String.valueOf(oggetto.getPrezzo()));
         firebaseViewHolder.idUser.setText(oggetto.getIdUser());
+        final String keyId = this.getRef(i).getKey();
         final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();
 
@@ -83,11 +84,9 @@ class MyAdapter extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewH
                 String Prezzo1 = prezzo1.getText().toString();
                 TextView idUser1 = v.findViewById(R.id.id_venditore);
                 String IdUser1 = idUser1.getText().toString();
-                String IdOggetto = getRef(i).toString();
-
                 StorageReference storageReference = firebaseStorage.getReference();
                 Bundle bundle= new Bundle();
-                bundle.putString("IdOggetto", IdOggetto);
+                bundle.putString("IdOggetto", keyId);
                 bundle.putString("Nome1", Nome1);
                 bundle.putString("NomeVend", NomeVend);
                 bundle.putString("Prezzo1", Prezzo1);
