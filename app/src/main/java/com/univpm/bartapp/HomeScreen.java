@@ -140,7 +140,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
             case R.id.aggiungi_prodotto: {
                 Intent intent = new Intent(this, Inserimento.class);
                 startActivity(intent);
-                break;
+                return true;
             }
 
             case R.id.Contattaci: {
@@ -200,6 +200,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                 mAuth.signOut();
                 Intent intent = new Intent(HomeScreen.this, Login_Screen.class );
                 startActivity(intent);
+                finish();
             }
         });
         dialog.setNegativeButton("Annulla", new DialogInterface.OnClickListener() {

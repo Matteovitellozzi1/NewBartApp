@@ -36,7 +36,7 @@ public class SceltaProdottoFragment extends Fragment {
     private FirebaseAuth mAuth;
     ArrayList<Oggetto> arrayList;
     private FirebaseUser currentUser;
-    private String idOggetto;
+    private String idOggettoScelto;
     private TextView prezzo, nome, nome_venditore;
 
     @Override
@@ -69,15 +69,15 @@ public class SceltaProdottoFragment extends Fragment {
                 .setQuery(databaseReference.orderByChild("idUser").equalTo(utente), Oggetto.class)
                 .build();
 
-        adapter = new MyAdapterScelta(options);
+        idOggettoScelto = getArguments().getString("oggetto");
+        adapter = new MyAdapterScelta(options, getContext(), idOggettoScelto);
         recyclerView.setAdapter(adapter);
 
         //Dati oggetto
         nome = (TextView) view.findViewById(R.id.nome_oggetto_desiderato);
         prezzo = (TextView) view.findViewById(R.id.prezzo_oggetto_desiderato);
         nome_venditore = (TextView) view.findViewById(R.id.nome_venditore_oggetto);
-        idOggetto = getArguments().getString("oggetto");
-        databaseReference.child(idOggetto.toString()).addValueEventListener(new ValueEventListener() {
+        databaseReference.child(idOggettoScelto.toString()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 nome.setText(dataSnapshot.child("nome").getValue().toString());
@@ -107,6 +107,6 @@ public class SceltaProdottoFragment extends Fragment {
     }
 
     public void recuperaDati() {
-        idOggetto = getArguments().getString("oggetto");
+        idOggettoScelto = getArguments().getString("oggetto");
     }
 }

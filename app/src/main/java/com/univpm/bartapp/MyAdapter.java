@@ -76,6 +76,7 @@ class MyAdapter extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewH
             @Override
             public void onClick(View v) {
 
+
                 TextView nome1 = v.findViewById(R.id.nome_oggetto);
                 String Nome1 = nome1.getText().toString();
                 TextView nomeVend = v.findViewById(R.id.nome_venditore);

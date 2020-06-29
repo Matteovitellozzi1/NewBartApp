@@ -147,5 +147,8 @@ public class Inserimento extends AppCompatActivity {
         return true;
     }
 
-
+    @Override
+    public void onBackPressed() {
+        this.finish();
+    }
 }
