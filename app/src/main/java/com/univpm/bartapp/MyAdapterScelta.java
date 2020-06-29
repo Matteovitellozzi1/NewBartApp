@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.remote.WriteStream;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -40,9 +41,9 @@ public class MyAdapterScelta extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.
 
     private ArrayList<Oggetto> oggetto;
     private DatabaseReference databaseReference;
-    private String idOggettoSceltoCompro;
+    private String idOggAcquisto;
     private String idOggettoVenduto;
-    private String idUserCompro;
+    private String idUserOggAcquisto;
     Context context;
 
     static class FirebaseViewHolder extends RecyclerView.ViewHolder {
@@ -63,7 +64,7 @@ public class MyAdapterScelta extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.
     public MyAdapterScelta(@NonNull FirebaseRecyclerOptions<Oggetto> option, Context context, String idOggettoSceltoCompro) {
         super(option);
         this.context = context;
-        this.idOggettoSceltoCompro = idOggettoSceltoCompro;
+        this.idOggAcquisto = idOggettoSceltoCompro;
     }
 
     @Override
@@ -72,7 +73,7 @@ public class MyAdapterScelta extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.
         firebaseViewHolder.nomeVenditore.setText(oggetto.getNomeVenditore());
         firebaseViewHolder.prezzo.setText(String.valueOf(oggetto.getPrezzo()));
         firebaseViewHolder.idUser.setText(oggetto.getIdUser());
-        idOggettoVenduto = this.getRef(i).getKey();
+        final String keyId = this.getRef(i).getKey();
         final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();
 
@@ -93,18 +94,9 @@ public class MyAdapterScelta extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.
         firebaseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                TextView nome1 = v.findViewById(R.id.nome_oggetto);
-                String Nome1 = nome1.getText().toString();
-                TextView nomeVend = v.findViewById(R.id.nome_venditore);
-                String NomeVend = nomeVend.getText().toString();
-                TextView prezzo1 = v.findViewById(R.id.prezzo);
-                String Prezzo1 = prezzo1.getText().toString();
                 TextView idUser1 = v.findViewById(R.id.id_venditore);
                 String idUserVenduto = idUser1.getText().toString(); //sono io che propongo l'oggetto
-                String IdOggetto = getRef(i).toString();
-
-                invioOfferta(v, idOggettoVenduto, idUserVenduto);
+                invioOfferta(v, keyId, idUserVenduto);
             }
         });
 
@@ -141,24 +133,29 @@ public class MyAdapterScelta extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.
         alertDialog.show();
     }
 
-    protected void invioDati(String idOggettoVenduto, String idUserVenduto) {
-        databaseReference.child(idOggettoSceltoCompro).addValueEventListener(new ValueEventListener() {
+
+
+    protected void invioDati(final String idOggettoVenduto, final String idUserVenduto) {
+        DatabaseReference databaseReferencedati = FirebaseDatabase.getInstance().getReference();
+        databaseReferencedati.child("oggetti").child(idOggAcquisto).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                idUserCompro = dataSnapshot.child("idUser").getValue().toString();
+                idUserOggAcquisto = dataSnapshot.child("idUser").getValue().toString();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                final Map<String, Object> scambio = new HashMap<>();
+                scambio.put("idAcq", idUserOggAcquisto);
+                scambio.put("idProdAcq", idOggAcquisto);
+                scambio.put("idVend", idUserVenduto);
+                scambio.put("idProdVend", idOggettoVenduto);
+                db.collection("scambi").document().set(scambio);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
         });
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Map<String, Object> scambio = new HashMap<>();
-        scambio.put("idAcq", idUserCompro);
-        scambio.put("idProdAcq", idOggettoSceltoCompro);
-        scambio.put("idVend", idUserVenduto);
-        scambio.put("idProdVend", idOggettoVenduto);
-        db.collection("scambi").document().set(scambio);
     }
+
 }

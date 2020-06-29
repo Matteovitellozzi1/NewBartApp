@@ -158,6 +158,11 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                 break;
             }
 
+            case R.id.Offerte_ricevute: {
+                selected = new OfferteRicevute();
+                break;
+            }
+
             case R.id.Logout: {
                 logout();
                 return true;
@@ -188,8 +193,8 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         super.onResume();
     }
 
-    protected void logout () {
-        AlertDialog.Builder dialog= new AlertDialog.Builder(HomeScreen.this);
+    protected void logout() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(HomeScreen.this);
         dialog.setTitle("Attenzione");
         dialog.setCancelable(false);
         dialog.setMessage("Sei sicuro di voler effettuare il Logout?");
@@ -198,7 +203,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
             public void onClick(DialogInterface dialog, int which) {
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
                 mAuth.signOut();
-                Intent intent = new Intent(HomeScreen.this, Login_Screen.class );
+                Intent intent = new Intent(HomeScreen.this, Login_Screen.class);
                 startActivity(intent);
                 finish();
             }
@@ -210,7 +215,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
             }
         });
 
-        AlertDialog alertDialog= dialog.create();
+        AlertDialog alertDialog = dialog.create();
         alertDialog.show();
     }
 }

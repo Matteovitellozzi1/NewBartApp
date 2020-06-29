@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/navbarmenu">
-    <item
-        android:id="@+id/Contattaci"
-        android:icon="@drawable/contattaci_mail"
-        android:title="Contattaci" />
 
     <item
         android:id="@+id/Home"
@@ -15,14 +11,21 @@
         android:id="@+id/aggiungi_prodotto"
         android:icon="@drawable/aggiungi_nav"
         android:title="Aggiungi Prodotto"/>
+
     <item
         android:id="@+id/Miei_Oggetti"
         android:icon="@drawable/ic_arrow_drop_down_circle_black_24dp"
         android:title="Miei Oggetti"/>
     <item
-        android:id="@+id/WishList"
-        android:icon="@drawable/aggiungi_nav"
-        android:title="WishList"/>
+        android:id="@+id/Offerte_ricevute"
+        android:icon="@drawable/offerte_ricevute"
+        android:title="Offerte Ricevute"/>
+
+    <item
+        android:id="@+id/Contattaci"
+        android:icon="@drawable/contattaci_mail"
+        android:title="Contattaci" />
+
     <item
         android:id="@+id/Logout"
         android:icon="@drawable/logout"
