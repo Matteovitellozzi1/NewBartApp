@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MyAdapterScelta extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewHolder> {
+public class MyAdapterScelta extends FirebaseRecyclerAdapter<Oggetto, MyAdapterScelta.FirebaseViewHolder> {
 
     private ArrayList<Oggetto> oggetto;
     private DatabaseReference databaseReference;
@@ -45,6 +45,11 @@ public class MyAdapterScelta extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.
     private String idOggettoVenduto;
     private String idUserOggAcquisto;
     Context context;
+
+    //le uso nell'estrazione dati
+    Offerta offerta;
+    private String prezzoOggettoVend;
+    private String nomeOggettoVend;
 
     static class FirebaseViewHolder extends RecyclerView.ViewHolder {
         public ImageView immagineOggetto;
@@ -68,7 +73,7 @@ public class MyAdapterScelta extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull final MyAdapter.FirebaseViewHolder firebaseViewHolder, final int i, @NonNull Oggetto oggetto) {
+    protected void onBindViewHolder(@NonNull final MyAdapterScelta.FirebaseViewHolder firebaseViewHolder, final int i, @NonNull Oggetto oggetto) {
         firebaseViewHolder.nome.setText(oggetto.getNome());
         firebaseViewHolder.nomeVenditore.setText(oggetto.getNomeVenditore());
         firebaseViewHolder.prezzo.setText(String.valueOf(oggetto.getPrezzo()));
@@ -104,8 +109,8 @@ public class MyAdapterScelta extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.
 
     @NonNull
     @Override
-    public MyAdapter.FirebaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MyAdapter.FirebaseViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_row, parent, false));
+    public MyAdapterScelta.FirebaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new MyAdapterScelta.FirebaseViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_row, parent, false));
     }
 
     protected void invioOfferta(final View v, final String idOggettoVenduto, final String idUserVenduto) {
@@ -137,25 +142,59 @@ public class MyAdapterScelta extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.
 
     protected void invioDati(final String idOggettoVenduto, final String idUserVenduto) {
         DatabaseReference databaseReferencedati = FirebaseDatabase.getInstance().getReference();
-        databaseReferencedati.child("oggetti").child(idOggAcquisto).addListenerForSingleValueEvent(new ValueEventListener() {
+
+        final String mAuth= FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        databaseReferencedati.child("oggetti").child(idOggettoVenduto).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                idUserOggAcquisto = dataSnapshot.child("idUser").getValue().toString();
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                final Map<String, Object> scambio = new HashMap<>();
-                scambio.put("idAcq", idUserOggAcquisto);
-                scambio.put("idProdAcq", idOggAcquisto);
-                scambio.put("idVend", idUserVenduto);
-                scambio.put("idProdVend", idOggettoVenduto);
-                db.collection("scambi").document().set(scambio);
+
+                //valorizzo le variabili per il put sotto
+                prezzoOggettoVend= dataSnapshot.child("prezzo").getValue().toString();
+                nomeOggettoVend= dataSnapshot.child("nome").getValue().toString();
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.i("errore", "c'è stato un errore");
+            }
+        });
 
+
+        databaseReferencedati.child("oggetti").child(idOggAcquisto).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                idUserOggAcquisto = dataSnapshot.child("idUser").getValue().toString();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                final Map<String, Object> scambio = new HashMap<>();
+
+                //oggetto che voglio acquistare
+                scambio.put("idAcq", idUserOggAcquisto);
+                scambio.put("idProdAcq", idOggAcquisto);
+                scambio.put("nomeOggettoAcq", dataSnapshot.child("nome").getValue().toString());
+                scambio.put("nomeAcq", dataSnapshot.child("nomeVenditore").getValue().toString());
+                scambio.put("prezzoAcq",  dataSnapshot.child("prezzo").getValue().toString());
+                //oggetto che voglio vendere
+                scambio.put("idVend", idUserVenduto);
+                scambio.put("idProdVend", idOggettoVenduto);
+                scambio.put("nomeOggettoVend", nomeOggettoVend);
+                scambio.put("prezzoOggettoVend", prezzoOggettoVend);
+                scambio.put("nomeVend", mAuth);
+
+                db.collection("scambi").document().set(scambio);
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                Log.i("errore", "c'è stato un errore");
             }
 
         });
+
     }
 
 }

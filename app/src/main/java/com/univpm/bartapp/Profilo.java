@@ -222,4 +222,11 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
         alertDialog.show();
 
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, HomeScreen.class);
+        startActivity(intent);
+        this.finish();
+    }
 }

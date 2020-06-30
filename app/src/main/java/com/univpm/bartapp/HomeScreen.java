@@ -185,6 +185,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
     public void headerNavigation(View v) {
         Intent intent = new Intent(this, Profilo.class);
         startActivity(intent);
+        this.finish();
     }
 
 
