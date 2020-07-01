@@ -54,6 +54,7 @@ class MyAdapter extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewH
         firebaseViewHolder.nomeVenditore.setText(oggetto.getNomeVenditore());
         firebaseViewHolder.prezzo.setText(String.valueOf(oggetto.getPrezzo()));
         firebaseViewHolder.idUser.setText(oggetto.getIdUser());
+        final String descrizione = oggetto.getDescrizione();
         final String keyId = this.getRef(i).getKey();
         final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();
@@ -92,6 +93,7 @@ class MyAdapter extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewH
                 bundle.putString("NomeVend", NomeVend);
                 bundle.putString("Prezzo1", Prezzo1);
                 bundle.putString("idUser", IdUser1);
+                bundle.putString("descrizione", descrizione);
                 AppCompatActivity abc= (AppCompatActivity) v.getContext();
                 VisualizzaProdottoFragment visualizzaProdottoFragment= new VisualizzaProdottoFragment();
                 visualizzaProdottoFragment.setArguments(bundle);

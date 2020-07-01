@@ -7,7 +7,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:isScrollContainer="true"
-    tools:context=".Inserimento">
+    tools:context=".Inserimento"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <LinearLayout
         android:padding="15dp"
@@ -84,6 +86,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Inserisci Prodotto"
+            android:backgroundTint="@android:color/white"
+            android:textColor="@color/colorPrimary"
             android:layout_marginTop="35dp"
             android:layout_gravity="center"/>
 

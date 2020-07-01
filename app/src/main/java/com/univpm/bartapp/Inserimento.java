@@ -129,6 +129,7 @@ public class Inserimento extends AppCompatActivity {
                         Toast.makeText(Inserimento.this, "Oggetto inserito", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(Inserimento.this, HomeScreen.class);
                         startActivity(intent);
+                        finish();
 
         } catch (NullPointerException e) {
             Toast.makeText(Inserimento.this, getString(R.string.inforequired), Toast.LENGTH_SHORT).show();

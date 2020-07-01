@@ -1,6 +1,7 @@
 package com.univpm.bartapp;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -13,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -78,6 +80,10 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profilo);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Profilo");
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         nomeCognome = (TextView) findViewById(R.id.text_nome);
         nomeUtente = (TextView) findViewById(R.id.nome_utente);
@@ -221,6 +227,14 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
         AlertDialog alertDialog= dialog.create();
         alertDialog.show();
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected (MenuItem menuItem) {
+        Intent intent = new Intent(this, HomeScreen.class);
+        startActivity(intent);
+        this.finish();
+        return true;
     }
 
     @Override

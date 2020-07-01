@@ -43,7 +43,7 @@ import com.univpm.bartapp.R;
 public class VisualizzaProdottoFragment extends Fragment {
 
     private FirebaseAuth mAuth;
-    private TextView nomeOggetto, nomeVenditore, prezzoOggetto, nomeOggettoOfferta, differenzaPrezzo, introduzione;
+    private TextView nomeOggetto, nomeVenditore, prezzoOggetto, descrizione;
     private Button btnOfferta, btnConferma, btnCambia, btnElimina;
     private FirebaseUser currentUser;
     private ImageView immagineOggetto;
@@ -51,7 +51,7 @@ public class VisualizzaProdottoFragment extends Fragment {
     private StorageReference storageReference;
     private DatabaseReference databaseReference;
     private String nome, nomeVend, prezzo, utente;
-    private String IdOggetto;
+    private String IdOggetto, descrizioneOggetto;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,8 +70,8 @@ public class VisualizzaProdottoFragment extends Fragment {
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Dettagli del prodotto");
 
-
-        introduzione = view.findViewById(R.id.header_offerta);
+        descrizione = view.findViewById(R.id.descrizione);
+        descrizione.setText(getArguments().getString("descrizione"));
         nomeOggetto = view.findViewById(R.id.nome_oggetto1);
         nomeOggetto.setText(getArguments().getString("Nome1"));
         nome = getArguments().getString("Nome1");
@@ -90,13 +90,7 @@ public class VisualizzaProdottoFragment extends Fragment {
         IdOggetto = getArguments().getString("IdOggetto");
 
         immagineOggetto = view.findViewById(R.id.immagine_oggetto1);
-        nomeOggettoOfferta = view.findViewById(R.id.prodotto_offerta);
         btnOfferta = (Button) view.findViewById(R.id.btn_offerta);
-        differenzaPrezzo = view.findViewById(R.id.diff_prezzo);
-        btnConferma = (Button) view.findViewById(R.id.btn_conferma);
-        btnConferma.setVisibility(View.INVISIBLE);
-        btnCambia = (Button) view.findViewById(R.id.btn_cambia);
-        btnCambia.setVisibility(View.INVISIBLE);
         btnElimina = (Button) view.findViewById(R.id.button_elimina);
         btnElimina.setVisibility(View.INVISIBLE);
 

@@ -60,19 +60,19 @@ public class RecyclerViewFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view= inflater.inflate(R.layout.recycler_view_fragment, container, false);
-        RecyclerView recyclerView= (RecyclerView) view.findViewById(R.id.recycler_view);
+        View view = inflater.inflate(R.layout.recycler_view_fragment, container, false);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(layoutManager);
-        //recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
 
-       /* mySearchView = (SearchView) view.findViewById(R.id.searchview);
+        mySearchView = (SearchView) view.findViewById(R.id.searchview);
 
         mySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //firebaseSearch(query);
-                //firebaseRecyclerAdapter.startListening();
+                firebaseSearch(query);
+                firebaseRecyclerAdapter.startListening();
                 return false;
             }
 
@@ -80,7 +80,7 @@ public class RecyclerViewFragment extends Fragment {
             public boolean onQueryTextChange(String query) {
                 return true;
             }
-        }); */
+        });
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("oggetti");
         databaseReference.keepSynced(true);
@@ -90,19 +90,19 @@ public class RecyclerViewFragment extends Fragment {
                 .build();
 
 
-        adapter= new MyAdapter(options);
+        adapter = new MyAdapter(options);
         recyclerView.setAdapter(adapter);
         return view;
     }
 
 
 
-    /*protected void firebaseSearch(String searchText) {
+    protected void firebaseSearch(String searchText) {
         final Query query = databaseReference.orderByChild("nome").equalTo(searchText);
         options = new FirebaseRecyclerOptions.Builder<Oggetto>().setQuery(query, Oggetto.class).build();
-        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Oggetto, FirebaseViewHolder>(options) {
+        FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull final FirebaseViewHolder firebaseViewHolder, final int i, @NonNull Oggetto oggetto) {
+            protected void onBindViewHolder(@NonNull final MyAdapter.FirebaseViewHolder firebaseViewHolder, final int i, @NonNull Oggetto oggetto) {
                 firebaseViewHolder.nome.setText(oggetto.getNome());
                 firebaseViewHolder.nomeVenditore.setText(oggetto.getNomeVenditore());
                 firebaseViewHolder.prezzo.setText(String.valueOf(oggetto.getPrezzo()));

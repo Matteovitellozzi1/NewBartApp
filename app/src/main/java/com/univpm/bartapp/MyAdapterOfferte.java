@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,9 +31,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -78,8 +83,8 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
             }
         });
 
-        DocumentSnapshot documentSnapshot= getSnapshots().getSnapshot(position);
-        final String a= documentSnapshot.getId();
+        DocumentSnapshot documentSnapshot = getSnapshots().getSnapshot(position);
+        final String a = documentSnapshot.getId();
         viewHolder.nomeAcq.setText(offerta.getNomeVend());
         viewHolder.nomeVend.setText(offerta.getNomeAcq());
         viewHolder.nomeOggettoAcq.setText(offerta.getNomeOggettoVend());
@@ -87,8 +92,11 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
         viewHolder.prezzoAcq.setText(offerta.getPrezzoOggettoVend());
         viewHolder.prezzoVend.setText(offerta.getPrezzoAcq());
 
+        idProdAcq = offerta.getIdProdAcq();
+        idProdVend = offerta.getIdProdVend();
+        Log.i("PRODOTTO VERDE" , idProdVend);
 
-        final Long keyId =  this.getItemId(position);
+        final Long keyId = this.getItemId(position);
 
         viewHolder.btnRifiuta.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,8 +104,12 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
                 rifiuta(a);
             }
         });
-
-        Log.i("valore nomeAcq:", offerta.getNomeAcq());
+        viewHolder.btnAccetta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                accetta(a, idProdAcq, idProdVend);
+            }
+        });
     }
 
     @NonNull
@@ -128,19 +140,6 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
         }
 
     }
-    /*public void estrazioneDati(){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String mAuth= FirebaseAuth.getInstance().getUid();
-        Log.i("id", mAuth);
-
-        db.collection("scambi").whereEqualTo("idAcq", mAuth).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                Log.i("aaaaa", "sono dentro l'onComplete!");
-            }
-        });
-
-        }*/
 
     public void rifiuta(final String keyId) {
 
@@ -151,10 +150,10 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
         dialog.setPositiveButton("Rifiuta", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                FirebaseFirestore db= FirebaseFirestore.getInstance();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
                 //Query query=db.collection("scambi").orderBy(a);
                 db.collection("scambi").document(keyId).delete();
-             
+
             }
         });
         dialog.setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
@@ -167,5 +166,104 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
         AlertDialog alertDialog = dialog.create();
         alertDialog.show();
     }
+
+    public void accetta(final String keyId, final String idProdAcq, final String idProdVend) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        dialog.setTitle("Attenzione!");
+        dialog.setCancelable(false);
+        dialog.setMessage("Sei sicuro di voler accettare l'offerta?");
+        dialog.setPositiveButton("Accetta", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                operazione1(idProdAcq);
+                operazione2(idProdAcq);
+                operazione3(idProdVend);
+                //operazione4(idProdVend);
+            }
+        });
+        dialog.setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alertDialog = dialog.create();
+        alertDialog.show();
+    }
+
+    public void operazione1 (String idProdAcq) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("scambi").whereEqualTo("idProdAcq", idProdAcq).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                Log.i("ciao1 ", "ciao1");
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot document : task.getResult()) {
+                        Log.d("cascadsscciaoaciacoaico", document.getId() + "->" + document.getData());
+                        document.getReference().delete();
+                        Toast.makeText(context, "Scambio effettuato", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Log.i("errore" , "c'e stato un errore");
+                }
+            }
+        });
+    } //oggetto rosso corretto
+    public void operazione2 (String idProdAcq) { //oggetto verde dell'altro
+        FirebaseFirestore db0 = FirebaseFirestore.getInstance();
+        db0.collection("scambi").whereEqualTo("idProdVend", idProdAcq).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                Log.i("ciao2 ", "ciao2");
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot document : task.getResult()) {
+                        Log.d("cascadsscciaoaciacoaico", document.getId() + "->" + document.getData());
+                        document.getReference().delete();
+                        Toast.makeText(context, "Scambio effettuato", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Log.i("errore" , "c'e stato un errore");
+                }
+            }
+        });
+
+    } //oggetto verde dell'altro corretto
+    public void operazione3 (String idProdVend) {
+        FirebaseFirestore db1 = FirebaseFirestore.getInstance();
+        db1.collection("scambi").whereEqualTo("idProdAcq", idProdVend).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                Log.i("ciao3", "ciao3");
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot document : task.getResult()) {
+                        Log.d("cascadsscciaoaciacoaico", document.getId() + "->" + document.getData());
+                        document.getReference().delete();
+                    }
+                } else {
+                    Log.i("errore" , "c'e stato un errore");
+                }
+            }
+        });
+    } //offerte che IO HO INVIATO ad un altro utente dello stesso oggetto
+    // che scambio a causa di una offerta ricevuta
+    /*public void operazione4 (String idProdVend) { //oggetto offerto
+        FirebaseFirestore db2 = FirebaseFirestore.getInstance();
+        db2.collection("scambi").whereEqualTo("idProdVend", idProdVend).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                Log.i("ciao4 ", "ciao4");
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot document : task.getResult()) {
+                        Log.d("cascadsscciaoaciacoaico", document.getId() + "->" + document.getData());
+                        document.getReference().delete();
+                        Toast.makeText(context, "Scambio effettuato", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Log.i("errore" , "c'e stato un errore");
+                }
+            }
+        });
+    }*/
 
 }
