@@ -58,6 +58,8 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
     private String idProdVend;
     private String idAcq;
     private String idVend;
+    private String nomeOggettoVend;
+    private String nomeOggettoAcq;
     Context context;
 
     public MyAdapterOfferte(@NonNull FirestoreRecyclerOptions<Offerta> options, Context context) {
@@ -107,7 +109,11 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
             public void onClick(View v) {
                 idProdAcq = offerta.getIdProdAcq();
                 idProdVend = offerta.getIdProdVend();
-                accetta(a, idProdAcq, idProdVend);
+                nomeOggettoAcq = offerta.getNomeOggettoAcq();
+                nomeOggettoVend = offerta.getNomeOggettoVend();
+                idAcq = offerta.getIdAcq();
+                idVend = offerta.getIdVend();
+                accetta(a, idProdAcq, idProdVend,idAcq, idVend, nomeOggettoAcq, nomeOggettoVend);
             }
 
         });
@@ -168,7 +174,8 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
         alertDialog.show();
     }
 
-    public void accetta(final String keyId, final String idProdAcq, final String idProdVend) {
+    public void accetta(final String keyId, final String idProdAcq, final String idProdVend, final String idAcq, final
+                        String idVend, final String nomeOggettoAcq, final String nomeOggettoVend) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         dialog.setTitle("Attenzione!");
         dialog.setCancelable(false);
@@ -179,7 +186,7 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
                 operazione1(idProdAcq);
                 operazione2(idProdAcq);
                 operazione3(idProdVend);
-                operazione4(idProdVend, idProdAcq);
+                operazione4(idProdVend, idProdAcq, idAcq, idVend, nomeOggettoAcq, nomeOggettoVend);
 
             }
         });
@@ -252,7 +259,7 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
         });
     } //offerte che IO HO INVIATO ad un altro utente dello stesso oggetto
     // che scambio a causa di una offerta ricevuta
-    public void operazione4 (final String idProdVend, final  String idProdAcq) { //oggetto offerto
+    public void operazione4 (final String idProdVend, final  String idProdAcq, final String idAcq, final String idVend, final String nomeOggettoAcq, final String nomeOggettoVend) { //oggetto offerto
         FirebaseFirestore db2 = FirebaseFirestore.getInstance();
         db2.collection("scambi").whereEqualTo("idProdVend", idProdVend).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -263,7 +270,7 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
                         Log.d("cascadsscciaoaciacoaico", document.getId() + "->" + document.getData());
                         document.getReference().delete();
                         Toast.makeText(context, "Scambio effettuato", Toast.LENGTH_SHORT).show();
-                        eliminaProdotti(idProdVend, idProdAcq);
+                        eliminaProdotti(idProdVend, idProdAcq, idAcq, idVend, nomeOggettoAcq, nomeOggettoVend);
                     }
                 } else {
                     Log.i("errore" , "c'e stato un errore");
@@ -272,9 +279,13 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
         });
     }
 
-    public void eliminaProdotti (String idProdVend, String idProdAcq){
+    public void eliminaProdotti (String idProdVend, String idProdAcq, String idAcq, String idVend, String nomeOggettoAcq, String nomeOggettoVend){
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseDatabase.getReference("oggetti").child(idProdVend).removeValue();
         firebaseDatabase.getReference("oggetti").child(idProdAcq).removeValue();
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Image").child("ImmaginiOggetti").child(idAcq);
+        storageReference.child(nomeOggettoAcq).delete();
+        StorageReference storageReference1 = FirebaseStorage.getInstance().getReference().child("Image").child("ImmaginiOggetti").child(idVend);
+        storageReference1.child(nomeOggettoVend).delete();
     }
 }

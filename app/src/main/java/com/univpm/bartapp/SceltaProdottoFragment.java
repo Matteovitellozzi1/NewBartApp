@@ -72,24 +72,6 @@ public class SceltaProdottoFragment extends Fragment {
         idOggettoScelto = getArguments().getString("oggetto");
         adapter = new MyAdapterScelta(options, getContext(), idOggettoScelto);
         recyclerView.setAdapter(adapter);
-
-        //Dati oggetto
-        nome = (TextView) view.findViewById(R.id.nome_oggetto_desiderato);
-        prezzo = (TextView) view.findViewById(R.id.prezzo_oggetto_desiderato);
-        nome_venditore = (TextView) view.findViewById(R.id.nome_venditore_oggetto);
-        databaseReference.child(idOggettoScelto.toString()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                nome.setText(dataSnapshot.child("nome").getValue().toString());
-                prezzo.setText(dataSnapshot.child("prezzo").getValue().toString());
-                nome_venditore.setText(dataSnapshot.child("nomeVenditore").getValue().toString());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w("a", "listener canceled", databaseError.toException());
-            }
-        });
         return view;
     }
 
