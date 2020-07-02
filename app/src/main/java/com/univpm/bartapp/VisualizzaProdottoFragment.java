@@ -153,6 +153,9 @@ public class VisualizzaProdottoFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Log.i("a", dataSnapshot.child(IdOggetto).getKey());
                         dataSnapshot.child(IdOggetto).getRef().removeValue();
+                        String mAuth= FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Image").child("ImmaginiOggetti").child(mAuth);
+                        storageReference.child(nome).delete();
                         Toast.makeText(getContext(), "Prodotto cancellato correttamente", Toast.LENGTH_LONG).show();
                         getActivity().getSupportFragmentManager().popBackStack(); //Serve per eliminare il fragment dallo stack
                     }

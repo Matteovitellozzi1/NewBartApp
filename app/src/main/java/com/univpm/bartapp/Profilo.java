@@ -202,6 +202,9 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
         dialog.setPositiveButton("Elimina", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
+                String idUser =currentUser.getUid();
+                StorageReference storageReference=FirebaseStorage.getInstance().getReference().child("Image").child("Profile Pic");
+                storageReference.child(idUser).delete();
                 currentUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
