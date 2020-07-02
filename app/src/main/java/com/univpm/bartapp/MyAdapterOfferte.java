@@ -64,7 +64,7 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull final FirestoreViewHolder viewHolder, int position, @NonNull Offerta offerta) {
+    protected void onBindViewHolder(@NonNull final FirestoreViewHolder viewHolder, int position, @NonNull final Offerta offerta) {
 
         final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();
@@ -92,10 +92,6 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
         viewHolder.prezzoAcq.setText(offerta.getPrezzoOggettoVend());
         viewHolder.prezzoVend.setText(offerta.getPrezzoAcq());
 
-        idProdAcq = offerta.getIdProdAcq();
-        idProdVend = offerta.getIdProdVend();
-        Log.i("PRODOTTO VERDE" , idProdVend);
-
         final Long keyId = this.getItemId(position);
 
         viewHolder.btnRifiuta.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +103,8 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
         viewHolder.btnAccetta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                idProdAcq = offerta.getIdProdAcq();
+                idProdVend = offerta.getIdProdVend();
                 accetta(a, idProdAcq, idProdVend);
             }
         });
@@ -175,10 +173,11 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
         dialog.setPositiveButton("Accetta", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                eliminaProdotti(idProdVend, idProdAcq);
                 operazione1(idProdAcq);
                 operazione2(idProdAcq);
                 operazione3(idProdVend);
-                //operazione4(idProdVend);
+                operazione4(idProdVend);
             }
         });
         dialog.setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
@@ -194,7 +193,8 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
 
     public void operazione1 (String idProdAcq) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("scambi").whereEqualTo("idProdAcq", idProdAcq).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("scambi").whereEqualTo("idProdAcq", idProdAcq)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 Log.i("ciao1 ", "ciao1");
@@ -247,7 +247,7 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
         });
     } //offerte che IO HO INVIATO ad un altro utente dello stesso oggetto
     // che scambio a causa di una offerta ricevuta
-    /*public void operazione4 (String idProdVend) { //oggetto offerto
+    public void operazione4 (String idProdVend) { //oggetto offerto
         FirebaseFirestore db2 = FirebaseFirestore.getInstance();
         db2.collection("scambi").whereEqualTo("idProdVend", idProdVend).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -264,6 +264,11 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
                 }
             }
         });
-    }*/
+    }
 
+    public void eliminaProdotti (String idProdVend, String idProdAcq){
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseDatabase.getReference("oggetti").child(idProdVend).removeValue();
+        firebaseDatabase.getReference("oggetti").child(idProdAcq).removeValue();
+    }
 }

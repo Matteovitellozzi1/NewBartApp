@@ -66,7 +66,7 @@ public class RecyclerViewFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        mySearchView = (SearchView) view.findViewById(R.id.searchview);
+        /*mySearchView = (SearchView) view.findViewById(R.id.searchview);
 
         mySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -80,7 +80,7 @@ public class RecyclerViewFragment extends Fragment {
             public boolean onQueryTextChange(String query) {
                 return true;
             }
-        });
+        });*/
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("oggetti");
         databaseReference.keepSynced(true);
@@ -97,7 +97,7 @@ public class RecyclerViewFragment extends Fragment {
 
 
 
-    protected void firebaseSearch(String searchText) {
+    /*protected void firebaseSearch(String searchText) {
         final Query query = databaseReference.orderByChild("nome").equalTo(searchText);
         options = new FirebaseRecyclerOptions.Builder<Oggetto>().setQuery(query, Oggetto.class).build();
         FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewHolder>(options) {
