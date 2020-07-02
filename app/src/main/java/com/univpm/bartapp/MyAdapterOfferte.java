@@ -17,6 +17,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -107,6 +109,7 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
                 idProdVend = offerta.getIdProdVend();
                 accetta(a, idProdAcq, idProdVend);
             }
+
         });
     }
 
@@ -173,22 +176,24 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
         dialog.setPositiveButton("Accetta", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                eliminaProdotti(idProdVend, idProdAcq);
                 operazione1(idProdAcq);
                 operazione2(idProdAcq);
                 operazione3(idProdVend);
-                operazione4(idProdVend);
+                operazione4(idProdVend, idProdAcq);
+
             }
         });
         dialog.setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+
             }
         });
 
         AlertDialog alertDialog = dialog.create();
         alertDialog.show();
+
     }
 
     public void operazione1 (String idProdAcq) {
@@ -247,7 +252,7 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
         });
     } //offerte che IO HO INVIATO ad un altro utente dello stesso oggetto
     // che scambio a causa di una offerta ricevuta
-    public void operazione4 (String idProdVend) { //oggetto offerto
+    public void operazione4 (final String idProdVend, final  String idProdAcq) { //oggetto offerto
         FirebaseFirestore db2 = FirebaseFirestore.getInstance();
         db2.collection("scambi").whereEqualTo("idProdVend", idProdVend).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -258,6 +263,7 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
                         Log.d("cascadsscciaoaciacoaico", document.getId() + "->" + document.getData());
                         document.getReference().delete();
                         Toast.makeText(context, "Scambio effettuato", Toast.LENGTH_SHORT).show();
+                        eliminaProdotti(idProdVend, idProdAcq);
                     }
                 } else {
                     Log.i("errore" , "c'e stato un errore");
