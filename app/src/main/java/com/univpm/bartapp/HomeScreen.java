@@ -163,6 +163,11 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                 break;
             }
 
+            case R.id.Riepilogo_scambi: {
+                selected= new Riepilogo();
+                break;
+            }
+
             case R.id.Logout: {
                 logout();
                 return true;

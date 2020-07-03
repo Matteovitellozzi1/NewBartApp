@@ -151,7 +151,7 @@ public class VisualizzaProdottoFragment extends Fragment {
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Log.i("a", dataSnapshot.child(IdOggetto).getKey());
+
                         dataSnapshot.child(IdOggetto).getRef().removeValue();
                         String mAuth= FirebaseAuth.getInstance().getCurrentUser().getUid();
                         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Image").child("ImmaginiOggetti").child(mAuth);

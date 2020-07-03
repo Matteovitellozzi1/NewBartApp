@@ -65,7 +65,7 @@ public class Registrazione extends AppCompatActivity {
                                 user.updateProfile(profileChangeRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        writeuserToDb(nome, cognome, user.getUid());
+                                        writeuserToDb(nome, cognome, user.getUid(), email);
                                         Intent intent= new Intent();
                                         intent.putExtra("nome", textNome.getText().toString());
                                         intent.putExtra("cognome", textCognome.getText().toString());
@@ -97,10 +97,11 @@ public class Registrazione extends AppCompatActivity {
 
     }
 
-    private void writeuserToDb(String nome, String cognome, String uid){
+    private void writeuserToDb(String nome, String cognome, String uid, String email){
         Map<String, Object> user= new HashMap<>();
         user.put("nome", nome);
         user.put("cognome", cognome);
+        user.put("email", email);
         FirebaseFirestore db= FirebaseFirestore.getInstance();
         db.collection("utenti"). document(uid).set(user);
 

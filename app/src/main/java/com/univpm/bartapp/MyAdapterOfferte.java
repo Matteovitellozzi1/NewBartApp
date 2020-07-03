@@ -49,6 +49,8 @@ import com.squareup.picasso.Picasso;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapterOfferte.FirestoreViewHolder> {
 
@@ -58,9 +60,10 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
     private String idProdVend;
     private String idAcq;
     private String idVend;
-    private String nomeOggettoVend;
+    private String nomeOggettoVend, nomeVend;
     private String nomeOggettoAcq;
     Context context;
+    FirebaseFirestore firebaseFirestore;
 
     public MyAdapterOfferte(@NonNull FirestoreRecyclerOptions<Offerta> options, Context context) {
         super(options);
@@ -70,6 +73,7 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
     @Override
     protected void onBindViewHolder(@NonNull final FirestoreViewHolder viewHolder, int position, @NonNull final Offerta offerta) {
 
+        firebaseFirestore= FirebaseFirestore.getInstance();
         final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();
 
@@ -98,6 +102,7 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
 
         final Long keyId = this.getItemId(position);
 
+
         viewHolder.btnRifiuta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,7 +118,8 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
                 nomeOggettoVend = offerta.getNomeOggettoVend();
                 idAcq = offerta.getIdAcq();
                 idVend = offerta.getIdVend();
-                accetta(a, idProdAcq, idProdVend,idAcq, idVend, nomeOggettoAcq, nomeOggettoVend);
+                nomeVend=offerta.getNomeVend();
+                accetta(a, idProdAcq, idProdVend,idAcq, idVend, nomeOggettoAcq, nomeOggettoVend, nomeVend);
             }
 
         });
@@ -175,7 +181,7 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
     }
 
     public void accetta(final String keyId, final String idProdAcq, final String idProdVend, final String idAcq, final
-                        String idVend, final String nomeOggettoAcq, final String nomeOggettoVend) {
+                        String idVend, final String nomeOggettoAcq, final String nomeOggettoVend, final String nomeVend) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         dialog.setTitle("Attenzione!");
         dialog.setCancelable(false);
@@ -183,10 +189,33 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
         dialog.setPositiveButton("Accetta", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                DocumentReference documentReference= FirebaseFirestore.getInstance().collection("utenti").document(idVend);
+                final Map<String, Object> map= new HashMap<>();
+                documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            FirebaseFirestore firebaseFirestore= FirebaseFirestore.getInstance();
+                            DocumentSnapshot document = task.getResult();
+                            String email= document.getString("email");
+                            Log.i("email è=", email);
+                            final Map<String, Object> map= new HashMap<>();
+                            map.put("EmailVend", email);
+                            map.put("NomeOggettoAcq", nomeOggettoAcq);
+                            map.put("NomeOggettoVend", nomeOggettoVend);
+                            map.put("NomeUtenteVend", nomeVend);
+                            map.put("IdAcq", idAcq);
+                            firebaseFirestore.collection("riepilogoscambi").document().set(map);
+                        }
+                    }
+                });
+
                 operazione1(idProdAcq);
                 operazione2(idProdAcq);
                 operazione3(idProdVend);
                 operazione4(idProdVend, idProdAcq, idAcq, idVend, nomeOggettoAcq, nomeOggettoVend);
+
 
             }
         });

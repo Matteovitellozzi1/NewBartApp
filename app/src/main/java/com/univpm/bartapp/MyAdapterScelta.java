@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -20,7 +21,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,6 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.remote.WriteStream;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -121,10 +125,13 @@ public class MyAdapterScelta extends FirebaseRecyclerAdapter<Oggetto, MyAdapterS
         dialog.setPositiveButton("Conferma", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                invioDati(idOggettoVenduto, idUserVenduto);
-                AppCompatActivity abc = (AppCompatActivity) v.getContext();
-                RecyclerViewFragment recyclerViewFragment = new RecyclerViewFragment();
-                abc.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_visualizza, recyclerViewFragment, "").addToBackStack(null).commit();
+                //if(controlloOfferta(idOggettoVenduto, idOggAcquisto)){
+                    invioDati(idOggettoVenduto, idUserVenduto);
+                    AppCompatActivity abc = (AppCompatActivity) v.getContext();
+                    RecyclerViewFragment recyclerViewFragment = new RecyclerViewFragment();
+                    abc.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_visualizza, recyclerViewFragment, "").addToBackStack(null).commit();
+
+                //}
             }
         });
         dialog.setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
@@ -197,4 +204,29 @@ public class MyAdapterScelta extends FirebaseRecyclerAdapter<Oggetto, MyAdapterS
 
     }
 
+
+    /*public boolean controlloOfferta(String idOggettoVenduto, String idOggAcquisto){
+
+        final Boolean[] valore = new Boolean[1];
+        valore[0]=true;
+        FirebaseFirestore firebaseFirestore= FirebaseFirestore.getInstance();
+        firebaseFirestore.collection("scambi").whereEqualTo("idProdAcq", idOggAcquisto)
+                .whereEqualTo("idProdVend", idOggettoVenduto).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+             valore[0] = true;
+             Log.i("valoreComplete", valore[0].toString());
+            }
+        });
+        if(valore[0]){
+            Log.i("valoreIf", valore[0].toString());
+            return valore[0];
+        }
+        else {
+            Log.i("valoreElse", valore[0].toString());
+            valore[0] =false;
+            return valore[0];
+        }
+    }*/
 }

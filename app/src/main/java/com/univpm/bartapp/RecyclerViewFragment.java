@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -42,10 +43,8 @@ public class RecyclerViewFragment extends Fragment {
 
     private MyAdapter adapter;
 
-    /*private FirebaseRecyclerAdapter<Oggetto, FirebaseViewHolder> adapter;
-    private FirebaseRecyclerAdapter<Oggetto, FirebaseViewHolder> firebaseRecyclerAdapter; // l'adapter del filtro*/
+    private FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewHolder> firebaseRecyclerAdapter; // l'adapter del filtro*/
     private RecyclerView.LayoutManager layoutManager;
-    MenuItem menuItem;
     private DatabaseReference databaseReference;
     ArrayList<Oggetto> arrayList;
     SearchView mySearchView;
@@ -53,7 +52,7 @@ public class RecyclerViewFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        arrayList = new ArrayList<Oggetto>();
+        arrayList = new ArrayList<>();
     }
 
     @Nullable
@@ -61,26 +60,28 @@ public class RecyclerViewFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.recycler_view_fragment, container, false);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        /*mySearchView = (SearchView) view.findViewById(R.id.searchview);
+        mySearchView = (SearchView) view.findViewById(R.id.searchview);
 
         mySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+
                 firebaseSearch(query);
+                recyclerView.setAdapter(firebaseRecyclerAdapter);
                 firebaseRecyclerAdapter.startListening();
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String query) {
-                return true;
+               return true;
             }
-        });*/
+        });
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("oggetti");
         databaseReference.keepSynced(true);
@@ -97,10 +98,12 @@ public class RecyclerViewFragment extends Fragment {
 
 
 
-    /* protected void firebaseSearch(String searchText) {
-        final Query query = databaseReference.orderByChild("nome").equalTo(searchText);
+     protected void firebaseSearch(String searchText) {
+        final Query query = databaseReference.orderByChild("nome").equalTo(searchText.toLowerCase());
+
         options = new FirebaseRecyclerOptions.Builder<Oggetto>().setQuery(query, Oggetto.class).build();
-        FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewHolder>(options) {
+        //FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewHolder>
+                firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull final MyAdapter.FirebaseViewHolder firebaseViewHolder, final int i, @NonNull Oggetto oggetto) {
                 firebaseViewHolder.nome.setText(oggetto.getNome());
@@ -109,6 +112,8 @@ public class RecyclerViewFragment extends Fragment {
                 firebaseViewHolder.idUser.setText(oggetto.getIdUser());
                 final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
                 StorageReference storageReference = firebaseStorage.getReference();
+                final String keyId = this.getRef(i).getKey();
+                final String descrizione = oggetto.getDescrizione();
 
                 String idUser = oggetto.getIdUser();
                 String nome = oggetto.getNome();
@@ -132,13 +137,26 @@ public class RecyclerViewFragment extends Fragment {
                         String IdUser1 = idUser1.getText().toString();
                         String IdOggetto = getRef(i).toString();
 
-                        Intent intent = new Intent(v.getContext(), VisualizzaProdotto.class);
+                        /*Intent intent = new Intent(v.getContext(), VisualizzaProdotto.class);
                         intent.putExtra("IdOggetto", IdOggetto);
                         intent.putExtra("Nome1", Nome1);
                         intent.putExtra("NomeVend", NomeVend);
                         intent.putExtra("Prezzo1", Prezzo1);
                         intent.putExtra("idUser", IdUser1);
-                        startActivity(intent);
+                        startActivity(intent);*/
+
+                        Bundle bundle= new Bundle();
+                        bundle.putString("IdOggetto", keyId);
+                        bundle.putString("Nome1", Nome1);
+                        bundle.putString("NomeVend", NomeVend);
+                        bundle.putString("Prezzo1", Prezzo1);
+                        bundle.putString("idUser", IdUser1);
+                        bundle.putString("descrizione", descrizione);
+                        AppCompatActivity abc= (AppCompatActivity) v.getContext();
+                        VisualizzaProdottoFragment visualizzaProdottoFragment= new VisualizzaProdottoFragment();
+                        visualizzaProdottoFragment.setArguments(bundle);
+                        firebaseRecyclerAdapter.stopListening();
+                        abc.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_visualizza, visualizzaProdottoFragment, "").addToBackStack(null).commit();
 
                     }
                 });
@@ -146,12 +164,13 @@ public class RecyclerViewFragment extends Fragment {
 
             @NonNull
             @Override
-            public FirebaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                return new FirebaseViewHolder(LayoutInflater.from(HomeScreen.this).inflate(R.layout.rv_row, parent, false));
+            public MyAdapter.FirebaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                return new MyAdapter.FirebaseViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_row, parent, false));
             }
         };
-        recyclerView.setAdapter(firebaseRecyclerAdapter);
-    }*/
+
+
+    }
 
 
     @Override

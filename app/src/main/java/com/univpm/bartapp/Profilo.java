@@ -31,8 +31,15 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -40,12 +47,15 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
+import io.grpc.Context;
+
 public class Profilo extends AppCompatActivity implements View.OnClickListener {
 
 // DEVO METTERE IL SALDO DELLA MONETA VIRTUALE!
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
+    private DatabaseReference firebaseDatabase;
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
     private static int PICK_IMAGE=123;
@@ -202,9 +212,31 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
         dialog.setPositiveButton("Elimina", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
-                String idUser =currentUser.getUid();
+                final String idUser =currentUser.getUid();
                 StorageReference storageReference=FirebaseStorage.getInstance().getReference().child("Image").child("Profile Pic");
                 storageReference.child(idUser).delete();
+
+                firebaseDatabase=FirebaseDatabase.getInstance().getReference().child("oggetti");
+                Query query=firebaseDatabase.orderByChild("idUser").equalTo(idUser);
+
+                query.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Log.i("ciao1 ", dataSnapshot.toString());
+                        for (DataSnapshot postsnapshot :dataSnapshot.getChildren()) {
+                            FirebaseStorage.getInstance().getReference().child("Image").child("ImmaginiOggetti").child(idUser).child(postsnapshot.child("nome").getValue().toString()).delete();
+                            postsnapshot.getRef().removeValue();
+                            operazione1(idUser);
+                            operazione2(idUser);
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
                 currentUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -212,6 +244,7 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
                             Toast.makeText(Profilo.this, "Account Eliminato", Toast.LENGTH_LONG).show();
                             Intent intent= new Intent(Profilo.this, MainActivity.class);
                             startActivity(intent);
+                            finish();
                         } else {
                             Toast.makeText(Profilo.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
@@ -245,5 +278,45 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
         Intent intent = new Intent(this, HomeScreen.class);
         startActivity(intent);
         this.finish();
+    }
+
+    public void operazione1 (String idUser) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("scambi").whereEqualTo("idAcq", idUser)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot document : task.getResult()) {
+
+                        document.getReference().delete();
+
+                    }
+                } else {
+                    Log.i("errore" , "c'e stato un errore");
+                }
+            }
+        });
+    }
+
+    public void operazione2 (String idVend) { //oggetto verde dell'altro
+        FirebaseFirestore db0 = FirebaseFirestore.getInstance();
+        db0.collection("scambi").whereEqualTo("idVend", idVend).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot document : task.getResult()) {
+
+                        document.getReference().delete();
+
+                    }
+                } else {
+                    Log.i("errore" , "c'e stato un errore");
+                }
+            }
+        });
+
     }
 }

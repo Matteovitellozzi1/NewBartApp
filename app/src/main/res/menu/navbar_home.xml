@@ -20,6 +20,9 @@
         android:id="@+id/Offerte_ricevute"
         android:icon="@drawable/offerte_ricevute"
         android:title="Offerte Ricevute"/>
+    <item
+        android:id="@+id/Riepilogo_scambi"
+        android:title="Riepilogo Scambi"/>
 
     <item
         android:id="@+id/Contattaci"
