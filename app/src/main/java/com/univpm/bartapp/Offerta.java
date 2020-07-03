@@ -13,6 +13,7 @@ public class Offerta {
     private String nomeOggettoVend;
     private String nomeVend;
     private String nomeAcq;
+    private int ciao;
 
     public Offerta (){
         Log.i("a", "COSTRUTTORE OFFERTA NO PARAMS");
