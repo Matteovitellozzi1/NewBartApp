@@ -6,7 +6,7 @@
     android:gravity="bottom"
     android:orientation="vertical"
     android:padding="20dp"
-    android:background="@color/colorAccent">
+    android:background="@drawable/sfondo_header">
 
     <ImageView
         android:id="@+id/button_add"

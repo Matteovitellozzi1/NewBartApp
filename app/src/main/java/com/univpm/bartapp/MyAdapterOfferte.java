@@ -201,11 +201,11 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
                             String email= document.getString("email");
                             Log.i("email è=", email);
                             final Map<String, Object> map= new HashMap<>();
-                            map.put("EmailVend", email);
-                            map.put("NomeOggettoAcq", nomeOggettoAcq);
-                            map.put("NomeOggettoVend", nomeOggettoVend);
-                            map.put("NomeUtenteVend", nomeVend);
-                            map.put("IdAcq", idAcq);
+                            map.put("emailVend", email);
+                            map.put("nomeOggettoAcq", nomeOggettoAcq);
+                            map.put("nomeOggettoVend", nomeOggettoVend);
+                            map.put("nomeUtenteVend", nomeVend);
+                            map.put("idAcq", idAcq);
                             firebaseFirestore.collection("riepilogoscambi").document().set(map);
                         }
                     }

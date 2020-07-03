@@ -164,7 +164,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
             }
 
             case R.id.Riepilogo_scambi: {
-                selected= new Riepilogo();
+                selected= new RiepilogoFragment();
                 break;
             }
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/AppTheme"
     android:layout_width="match_parent"
-    android:layout_height="400dp"
+    android:layout_height="180dp"
     android:layout_marginStart="7dp"
     android:layout_marginLeft="5dp"
     android:layout_marginTop="5dp"
@@ -17,68 +17,104 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:background="?attr/selectableItemBackground">
+        android:background="?attr/selectableItemBackground"
+        android:padding="20dp">
 
         <TextView
-            android:id="@+id/testo1"
+            android:id="@+id/testo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Oggetto proposto: "
-            android:textColor="#4CC552"/>
-
-
-        <TextView
-            android:id="@+id/nome_oggetto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_toEndOf="@id/testo1"
-            android:textColor="#4CC552"
-            android:textSize="18dp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/nome_venditore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/nome_oggetto"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="7dp"
-            android:layout_toEndOf="@id/nome_oggetto"
-            android:textColor="#4CC552"
-            android:textSize="15dp" />
-        <TextView
-            android:id="@+id/email_venditore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/nome_oggetto"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="7dp"
-            android:layout_toEndOf="@id/nome_venditore"
-            android:textColor="#4CC552"
-            android:textSize="15dp" />
+            android:text="Stai scambiando il tuo oggetto : "
+            android:textSize="15dp"
+            android:textColor="#F62817"/>
 
         <TextView
             android:id="@+id/oggetto_mio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/nome_oggetto"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="7dp"
-            android:layout_toEndOf="@id/email_venditore"
+            android:layout_below="@id/testo"
+            android:textColor="#F62817"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:id="@+id/testo1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/oggetto_mio"
+            android:textColor="#4CC552"
+            android:text="Con l'oggetto: "
+            android:textSize="15dp"/>
+
+        <TextView
+            android:id="@+id/nome_oggetto_vend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/testo1"
+            android:textColor="#4CC552"
+            android:textSize="15dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="Di: "
+            android:layout_below="@+id/nome_oggetto_vend"
+            android:id="@id/testo2"
+            android:textColor="#4CC552"/>
+
+        <TextView
+            android:id="@+id/nome_venditore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nome_oggetto_vend"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/testo2"
             android:textColor="#4CC552"
             android:textSize="15dp" />
 
-        <Button
-            android:id="@+id/btn_elimina"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/oggetto_mio"
+            android:id="@+id/testo3"
+            android:text="Email: "
+            android:textSize="15dp"
+            android:layout_below="@id/testo2"
+            android:textColor="#4CC552"/>
+
+        <TextView
+            android:id="@+id/email_venditore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/testo2"
+            android:layout_toRightOf="@id/testo3"
+            android:textColor="#4CC552"
+            android:textSize="15dp" />
+
+        <ImageButton
+            android:layout_alignParentRight="true"
+            android:id="@+id/btn_elimina"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/cestino"
+            android:backgroundTint="@android:color/white"
             android:text="Elimina"/>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/contatta"
+            android:text="Contatta"
+            android:backgroundTint="@android:color/white"
+            android:textColor="@color/colorPrimary"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/btn_elimina"
+            android:layout_marginTop="50dp"/>
 
     </RelativeLayout>
-
 
 </androidx.cardview.widget.CardView>

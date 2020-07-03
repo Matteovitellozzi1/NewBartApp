@@ -92,6 +92,7 @@
             android:layout_height="wrap_content"
             android:text="Oggetto richiesto: "
             android:textColor="#F62817"/>
+
         <ImageView
             android:layout_below="@id/testo2"
             android:id="@+id/immagine_mio_oggetto"
