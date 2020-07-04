@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
@@ -52,6 +53,7 @@ public class VisualizzaProdottoFragment extends Fragment {
     private DatabaseReference databaseReference;
     private String nome, nomeVend, prezzo, utente;
     private String IdOggetto, descrizioneOggetto;
+   
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,6 +61,7 @@ public class VisualizzaProdottoFragment extends Fragment {
         databaseReference.keepSynced(true);
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
+
         super.onCreate(savedInstanceState);
     }
 
@@ -66,6 +69,8 @@ public class VisualizzaProdottoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_visualizza_prodotto, container, false);
+
+
 
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Dettagli del prodotto");
@@ -115,6 +120,8 @@ public class VisualizzaProdottoFragment extends Fragment {
             btnOfferta.setVisibility(View.VISIBLE);
 
         }
+
+
 
         btnElimina.setOnClickListener(new View.OnClickListener() {
             @Override
