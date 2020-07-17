@@ -13,12 +13,14 @@ public class Offerta {
     private String nomeOggettoVend;
     private String nomeVend;
     private String nomeAcq;
+    private String emailVend;
     private int ciao;
 
     public Offerta (){
         Log.i("a", "COSTRUTTORE OFFERTA NO PARAMS");
     }
-    public Offerta(String idAcq, String idVend, String idProdAcq, String idProdVend, String prezzoAcq, String prezzoOggettoVend, String nomeOggettoAcq, String nomeOggettoVend, String nomeVend, String nomeAcq) {
+    public Offerta(String idAcq, String idVend, String idProdAcq, String idProdVend, String prezzoAcq, String prezzoOggettoVend,
+                   String nomeOggettoAcq, String nomeOggettoVend, String nomeVend, String nomeAcq, String emailVend) {
         this.idAcq = idAcq;
         this.idVend = idVend;
         this.idProdAcq = idProdAcq;
@@ -29,6 +31,7 @@ public class Offerta {
         this.nomeOggettoVend = nomeOggettoVend;
         this.nomeVend = nomeVend;
         this.nomeAcq = nomeAcq;
+        this.emailVend = emailVend;
     }
 
     public String getIdAcq() {
@@ -110,4 +113,7 @@ public class Offerta {
     public void setNomeAcq(String nomeAcq) {
         this.nomeAcq = nomeAcq;
     }
+
+    public String getEmailVend() {return emailVend;}
+    public void setEmailVend(String emailVend) {this.emailVend = emailVend;}
 }

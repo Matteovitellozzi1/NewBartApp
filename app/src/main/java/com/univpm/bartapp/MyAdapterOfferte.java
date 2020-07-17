@@ -119,7 +119,8 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
                 idAcq = offerta.getIdAcq();
                 idVend = offerta.getIdVend();
                 nomeVend=offerta.getNomeVend();
-                accetta(a, idProdAcq, idProdVend,idAcq, idVend, nomeOggettoAcq, nomeOggettoVend, nomeVend);
+                String emailVend=offerta.getEmailVend();
+                accetta(a, idProdAcq, idProdVend,idAcq, idVend, nomeOggettoAcq, nomeOggettoVend, nomeVend, emailVend);
             }
 
         });
@@ -181,7 +182,7 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
     }
 
     public void accetta(final String keyId, final String idProdAcq, final String idProdVend, final String idAcq, final
-                        String idVend, final String nomeOggettoAcq, final String nomeOggettoVend, final String nomeVend) {
+                        String idVend, final String nomeOggettoAcq, final String nomeOggettoVend, final String nomeVend, final String emailVend) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         dialog.setTitle("Attenzione!");
         dialog.setCancelable(false);
@@ -199,9 +200,8 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
                             FirebaseFirestore firebaseFirestore= FirebaseFirestore.getInstance();
                             FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
                             DocumentSnapshot document = task.getResult();
-                            String email = document.getString("emailVend");
                             final Map<String, Object> map= new HashMap<>();
-                            map.put("emailVend", email);
+                            map.put("emailVend", emailVend);
                             map.put("nomeOggettoAcq", nomeOggettoAcq);
                             map.put("nomeOggettoVend", nomeOggettoVend);
                             map.put("nomeUtenteVend", nomeVend);
