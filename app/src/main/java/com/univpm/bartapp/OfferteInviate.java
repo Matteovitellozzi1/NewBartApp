@@ -1,11 +1,9 @@
 package com.univpm.bartapp;
 
-import android.app.DownloadManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,11 +18,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-public class RiepilogoFragment extends Fragment {
+public class OfferteInviate extends Fragment {
 
     private RecyclerView.LayoutManager layoutManager;
-    private MyAdapterRiepilogo adapter;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    MyAdapterOfferteInviate adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,18 +31,20 @@ public class RiepilogoFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.recycler_nosearch, container, false);
-
+        View view = inflater.inflate(R.layout.recycler_nosearch, container, false);
         RecyclerView recyclerView= (RecyclerView) view.findViewById(R.id.recycler_view);
-        layoutManager= new LinearLayoutManager(this.getContext());
+        layoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(layoutManager);
-        FirebaseFirestore firebaseFirestore= FirebaseFirestore.getInstance();
-        Query query= firebaseFirestore.collection("riepilogoscambi").whereEqualTo("idAcq", FirebaseAuth.getInstance().getCurrentUser().getUid()).whereEqualTo("idVend", FirebaseAuth.getInstance().getCurrentUser().getUid());
-        FirestoreRecyclerOptions<Riepilogo> options = new FirestoreRecyclerOptions.Builder<Riepilogo>()
-                .setQuery(query, Riepilogo.class)
-                .build();
 
-        adapter= new MyAdapterRiepilogo(options, this.getContext());
+        String mAuth= FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseFirestore db=FirebaseFirestore.getInstance();
+        Query query = db.collection("scambi").whereEqualTo("idVend",mAuth);
+
+
+        FirestoreRecyclerOptions<Offerta> options = new FirestoreRecyclerOptions.Builder<Offerta>()
+                .setQuery(query , Offerta.class)
+                .build();
+        adapter = new MyAdapterOfferteInviate(options, this.getContext());
         recyclerView.setAdapter(adapter);
         return view;
     }
@@ -55,10 +54,10 @@ public class RiepilogoFragment extends Fragment {
         adapter.startListening();
         super.onStart();
     }
+
     @Override
     public void onStop() {
         adapter.stopListening();
         super.onStop();
     }
-
 }

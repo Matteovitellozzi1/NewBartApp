@@ -18,12 +18,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class MyAdapterRiepilogo extends FirestoreRecyclerAdapter<Riepilogo, MyAdapterRiepilogo.FirestoreViewHolder> {
     Context context;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public MyAdapterRiepilogo(FirestoreRecyclerOptions<Riepilogo> options, Context context) {
         super(options);

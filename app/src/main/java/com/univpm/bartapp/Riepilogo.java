@@ -5,12 +5,14 @@ public class Riepilogo {
     private String nomeOggettoAcq;
     private String nomeOggettoVend;
     private String nomeUtenteVend;
+    private String idVend;
 
-    public Riepilogo(String emailVend, String nomeOggettoAcq, String nomeOggettoVend, String nomeUtenteVend) {
+    public Riepilogo(String emailVend, String nomeOggettoAcq, String nomeOggettoVend, String nomeUtenteVend, String idVend) {
         this.emailVend = emailVend;
         this.nomeOggettoAcq = nomeOggettoAcq;
         this.nomeOggettoVend = nomeOggettoVend;
         this.nomeUtenteVend = nomeUtenteVend;
+        this.idVend = idVend;
     }
 
     public Riepilogo () {}
@@ -46,5 +48,9 @@ public class Riepilogo {
     public void setNomeUtenteVend(String nomeUtenteVend) {
         this.nomeUtenteVend = nomeUtenteVend;
     }
+
+    public String getIdVend() {return idVend;}
+
+    public void setIdVend(String idVend) {this.idVend = idVend;}
 
 }

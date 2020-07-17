@@ -43,23 +43,20 @@ public class ChangeUsername extends AppCompatActivity {
             public void onClick(View v) {
                 nuovo_nome= editText.getText().toString();
                 UserProfileChangeRequest profileUpdates;
-                if(nuovo_nome.equals(currentUser.getDisplayName().toString())){
+                if(nuovo_nome.equals(currentUser.getDisplayName())){
                     Toast.makeText(ChangeUsername.this, "Inserisci un nome utente diverso", Toast.LENGTH_LONG).show();
                 }
                 else if (nuovo_nome.length() == 0){
-                    Toast.makeText(ChangeUsername.this, "Inserisci dei caratteri", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ChangeUsername.this, "Inserisci un nome valido", Toast.LENGTH_LONG).show();
                 }
                 else{
                     profileUpdates= new UserProfileChangeRequest.Builder().setDisplayName(nuovo_nome).build();
-
-                    Log.i("a", "modificato nome utente");
                     currentUser.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){
                                 Toast.makeText(ChangeUsername.this, "Nome Utente cambiato", Toast.LENGTH_LONG).show();
-                                Intent intent= new Intent(ChangeUsername.this, Profilo.class);
-                                startActivity(intent);
+                                finish();
                             }
                         }
                     });

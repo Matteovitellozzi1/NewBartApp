@@ -23,35 +23,35 @@
             android:id="@+id/testo1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Oggetto proposto: "
+            android:text="Oggetto che hai richiesto: "
             android:textColor="#4CC552"/>
 
         <ImageView
-           android:layout_below="@+id/testo1"
-            android:id="@+id/immagine_oggetto"
+            android:layout_below="@+id/testo1"
+            android:id="@+id/immagine_oggetto_richiesto"
             android:layout_width="110dp"
             android:layout_height="110dp"
             android:padding="12dp" />
 
         <TextView
-            android:id="@+id/nome_oggetto"
+            android:id="@+id/nome_oggetto_richiesto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="22dp"
-            android:layout_toEndOf="@id/immagine_oggetto"
+            android:layout_toEndOf="@id/immagine_oggetto_richiesto"
             android:textColor="#4CC552"
             android:textSize="18dp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/nome_venditore"
+            android:id="@+id/nome_venditore_richiesto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/nome_oggetto"
+            android:layout_below="@id/nome_oggetto_richiesto"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="7dp"
-            android:layout_toEndOf="@id/immagine_oggetto"
+            android:layout_toEndOf="@id/immagine_oggetto_richiesto"
             android:textColor="#4CC552"
             android:textSize="15dp" />
 
@@ -59,19 +59,19 @@
             android:id="@+id/prezzo_stringa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/nome_venditore"
+            android:layout_below="@id/nome_venditore_richiesto"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:layout_toEndOf="@id/immagine_oggetto"
+            android:layout_toEndOf="@id/immagine_oggetto_richiesto"
             android:text="Prezzo: "
             android:textColor="#4CC552"
             android:textSize="15dp" />
 
         <TextView
-            android:id="@+id/prezzo"
+            android:id="@+id/prezzo_richiesto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/nome_venditore"
+            android:layout_below="@id/nome_venditore_richiesto"
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/prezzo_stringa"
             android:textColor="#4CC552"
@@ -90,35 +90,35 @@
             android:id="@+id/testo2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Oggetto richiesto: "
+            android:text="Oggetto che hai proposto: "
             android:textColor="#F62817"/>
 
         <ImageView
             android:layout_below="@id/testo2"
-            android:id="@+id/immagine_mio_oggetto"
+            android:id="@+id/immagine_oggetto_proposto"
             android:layout_width="110dp"
             android:layout_height="110dp"
             android:padding="12dp" />
 
         <TextView
-            android:id="@+id/nome_oggetto_vend"
+            android:id="@+id/nome_oggetto_proposto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="22dp"
-            android:layout_toEndOf="@id/immagine_mio_oggetto"
+            android:layout_toEndOf="@id/immagine_oggetto_proposto"
             android:textColor="#F62817"
             android:textSize="18dp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/nome_mio"
+            android:id="@+id/nome_venditore_proposto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/nome_oggetto_vend"
+            android:layout_below="@id/nome_oggetto_proposto"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="7dp"
-            android:layout_toEndOf="@id/immagine_mio_oggetto"
+            android:layout_toEndOf="@id/immagine_oggetto_proposto"
             android:textColor="#F62817"
             android:textSize="15dp" />
 
@@ -126,19 +126,19 @@
             android:id="@+id/prezzo_stringa2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/nome_mio"
+            android:layout_below="@id/nome_venditore_proposto"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="7dp"
-            android:layout_toEndOf="@id/immagine_mio_oggetto"
+            android:layout_toEndOf="@id/immagine_oggetto_proposto"
             android:text="Prezzo: "
             android:textColor="#F62817"
             android:textSize="15dp" />
 
         <TextView
-            android:id="@+id/prezzo_mio"
+            android:id="@+id/prezzo_proposto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/nome_mio"
+            android:layout_below="@id/nome_venditore_proposto"
             android:layout_marginTop="7dp"
             android:layout_toRightOf="@id/prezzo_stringa2"
             android:textColor="#F62817"
@@ -154,15 +154,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_accetta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/white"
-            android:textColor="#4CC552"
-            android:text="Accetta"/>
-
-        <Button
-            android:id="@+id/btn_rifiuta"
+            android:id="@+id/button_elimina"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Rifiuta"
@@ -170,6 +162,4 @@
             android:textColor="@android:color/holo_red_dark"/>
 
     </LinearLayout>
-
-
 </androidx.cardview.widget.CardView>

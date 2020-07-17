@@ -163,6 +163,11 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                 break;
             }
 
+            case R.id.Offerte_inviate: {
+                selected = new OfferteInviate();
+                break;
+            }
+
             case R.id.Riepilogo_scambi: {
                 selected= new RiepilogoFragment();
                 break;

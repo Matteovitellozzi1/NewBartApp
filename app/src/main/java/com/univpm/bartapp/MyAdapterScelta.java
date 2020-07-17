@@ -174,9 +174,9 @@ public class MyAdapterScelta extends FirebaseRecyclerAdapter<Oggetto, MyAdapterS
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 idUserOggAcquisto = dataSnapshot.child("idUser").getValue().toString();
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
                 final Map<String, Object> scambio = new HashMap<>();
-
+                scambio.put("emailVend", firebaseAuth.getCurrentUser().getEmail()); //email di chi fa l'offerta
                 //oggetto che voglio acquistare
                 scambio.put("idAcq", idUserOggAcquisto);
                 scambio.put("idProdAcq", idOggAcquisto);

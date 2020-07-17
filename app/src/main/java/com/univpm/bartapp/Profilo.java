@@ -51,8 +51,6 @@ import io.grpc.Context;
 
 public class Profilo extends AppCompatActivity implements View.OnClickListener {
 
-// DEVO METTERE IL SALDO DELLA MONETA VIRTUALE!
-
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private DatabaseReference firebaseDatabase;

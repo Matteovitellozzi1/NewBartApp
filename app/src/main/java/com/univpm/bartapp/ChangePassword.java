@@ -21,46 +21,48 @@ public class ChangePassword extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
-
     private EditText editText;
-    private String nuova_password;
+    private String nuova_password, conferma_password;
+    private EditText editText4;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
 
-        mAuth= FirebaseAuth.getInstance();
-        currentUser=mAuth.getCurrentUser();
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
 
-        editText= findViewById(R.id.editText3);
-        Button btnModifica= (Button) findViewById(R.id.button4);
+        editText = findViewById(R.id.editText3);
+        editText4 = findViewById(R.id.editText4);
+        Button btnModifica = (Button) findViewById(R.id.button4);
 
         Log.i("a", currentUser.getDisplayName().toString());
 
         btnModifica.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nuova_password= editText.getText().toString();
+                nuova_password = editText.getText().toString();
+                conferma_password = editText4.getText().toString();
 
-                if (nuova_password.length() == 0){
+                if (nuova_password.length() == 0) {
                     Toast.makeText(ChangePassword.this, "Inserisci dei caratteri", Toast.LENGTH_LONG).show();
-                }
-                else{
-
-                    Log.i("a", "password modificata");
+                } else if (nuova_password.length() <= 6) {
+                    Toast.makeText(ChangePassword.this, "La password deve essere di almeno 6 caratteri", Toast.LENGTH_LONG).show();
+                } else if (!conferma_password.equals(nuova_password)) {
+                    Toast.makeText(ChangePassword.this, "Password di conferma errata", Toast.LENGTH_LONG).show();
+                } else {
                     currentUser.updatePassword(nuova_password).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 Toast.makeText(ChangePassword.this, "Password cambiata", Toast.LENGTH_LONG).show();
-                                Intent intent= new Intent(ChangePassword.this, Profilo.class);
-                                startActivity(intent);
+                                finish();
                             }
                         }
                     });
                 }
             }
         });
-
     }
 }

@@ -98,7 +98,7 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
         viewHolder.nomeOggettoAcq.setText(offerta.getNomeOggettoVend());
         viewHolder.nomeOggettoVend.setText(offerta.getNomeOggettoAcq());
         viewHolder.prezzoAcq.setText(offerta.getPrezzoOggettoVend());
-        viewHolder.prezzoVend.setText(offerta.getPrezzoAcq());
+        viewHolder.prezzoVend.setText(offerta.getPrezzoAcq().toString());
 
         final Long keyId = this.getItemId(position);
 
@@ -197,15 +197,16 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if(task.isSuccessful()){
                             FirebaseFirestore firebaseFirestore= FirebaseFirestore.getInstance();
+                            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
                             DocumentSnapshot document = task.getResult();
-                            String email= document.getString("email");
-                            Log.i("email è=", email);
+                            String email = document.getString("emailVend");
                             final Map<String, Object> map= new HashMap<>();
                             map.put("emailVend", email);
                             map.put("nomeOggettoAcq", nomeOggettoAcq);
                             map.put("nomeOggettoVend", nomeOggettoVend);
                             map.put("nomeUtenteVend", nomeVend);
                             map.put("idAcq", idAcq);
+                            map.put("idVend", idVend);
                             firebaseFirestore.collection("riepilogoscambi").document().set(map);
                         }
                     }

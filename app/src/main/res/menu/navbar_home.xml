@@ -22,6 +22,11 @@
         android:title="Offerte Ricevute"/>
 
     <item
+        android:id="@+id/Offerte_inviate"
+        android:icon="@drawable/offerte_inviate"
+        android:title="Offerte Inviate"/>
+
+    <item
         android:id="@+id/Riepilogo_scambi"
         android:title="Riepilogo Scambi"
         android:icon="@drawable/riepilogo_offerta"/>
