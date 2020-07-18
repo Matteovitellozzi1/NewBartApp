@@ -70,11 +70,6 @@ public class VisualizzaProdottoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_visualizza_prodotto, container, false);
 
-
-
-        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("Dettagli del prodotto");
-
         descrizione = view.findViewById(R.id.descrizione);
         descrizione.setText(getArguments().getString("descrizione"));
         nomeOggetto = view.findViewById(R.id.nome_oggetto1);

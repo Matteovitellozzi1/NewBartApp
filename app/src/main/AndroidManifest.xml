@@ -28,7 +28,7 @@
             android:name=".HomeScreen"
             android:theme="@style/NoActionBar" />
         <activity android:name=".Profilo" />
-        <activity android:name=".Registrazione" />
+        <activity android:name=".Registrazione" android:noHistory="true"/>
         <activity android:name=".Login_Screen" android:noHistory="true"/>
         <activity android:name=".MainActivity" android:noHistory="true">
             <intent-filter>

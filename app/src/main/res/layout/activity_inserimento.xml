@@ -24,7 +24,8 @@
             android:layout_gravity="center"
             android:layout_marginTop="8dp"
             android:layout_marginLeft="8dp"
-            android:hint="Aggiungi una foto del prodotto" />
+            android:textColor="@color/colorPrimaryDark"
+            android:text="Aggiungi una foto del prodotto" />
 
         <ImageView
             android:id="@+id/foto_prodotto"
@@ -66,6 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:gravity="center"
+            android:textColor="@color/colorPrimaryDark"
             android:text="Aggiungi prezzo di vendita o scambio" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -87,7 +89,7 @@
             android:layout_height="wrap_content"
             android:text="Inserisci Prodotto"
             android:backgroundTint="@android:color/white"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorPrimaryDark"
             android:layout_marginTop="35dp"
             android:layout_gravity="center"/>
 

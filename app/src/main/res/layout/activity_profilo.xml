@@ -64,13 +64,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:gravity="center"
-                android:text="Nome Utente: " />
+                android:textSize="15dp"
+                android:text="Nome Utente: "
+                android:textColor="@color/colorPrimaryDark"/>
 
             <TextView
                 android:id="@+id/nome_utente"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textSize="15dp"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <ImageButton
                 android:id="@+id/edit1"
@@ -100,13 +104,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:gravity="center"
-                android:text="Email :" />
+                android:textSize="15dp"
+                android:text="Email :"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <TextView
                 android:id="@+id/emailProfilo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textSize="15dp"
+                android:textColor="@color/colorPrimaryDark"/>
 
         </LinearLayout>
 
@@ -128,7 +136,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:gravity="center"
-                android:text="Password " />
+                android:text="Password "
+                android:textSize="15dp"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <ImageButton
                 android:id="@+id/edit2"
@@ -147,11 +157,6 @@
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:text="Salva Modifica" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="50dp" />
 
         <Button
             android:id="@+id/btn_eliminaAccount"

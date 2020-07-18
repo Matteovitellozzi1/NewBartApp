@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="30dp"
-    tools:context=".VisualizzaProdotto">
+    android:padding="30dp">
 
 
     <LinearLayout
@@ -32,14 +31,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nome Oggetto: "
-                android:textColor="@color/design_default_color_primary"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="17dp" />
 
             <TextView
                 android:id="@+id/nome_oggetto1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/design_default_color_primary"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="17dp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -54,14 +53,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nome del Venditore: "
-                android:textColor="@color/design_default_color_primary_dark"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="17dp" />
 
             <TextView
                 android:id="@+id/nome_venditore1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/design_default_color_primary_dark"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="17dp"
                 android:textStyle="bold" />
 
@@ -77,14 +76,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Descrizione:  "
-                android:textColor="@color/design_default_color_primary_dark"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="17dp" />
 
             <TextView
                 android:id="@+id/descrizione"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/design_default_color_primary_dark"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="17dp"
                 android:textStyle="bold" />
 
@@ -100,7 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Prezzo:  "
-                android:textColor="@color/design_default_color_primary_dark"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="17dp" />
 
 
@@ -108,7 +107,7 @@
                 android:id="@+id/prezzo1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/design_default_color_primary_dark"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="17dp"
                 android:textStyle="bold" />
 
@@ -120,9 +119,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorPrimaryDark"
             android:backgroundTint="@android:color/white"
-            android:shadowColor="@color/colorPrimary"
+            android:shadowColor="@color/colorPrimaryDark"
             android:text="Formula Offerta" />
 
 

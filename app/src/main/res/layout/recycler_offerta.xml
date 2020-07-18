@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text="Scegli l'oggetto che vuoi scambiare:"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="17dp" />
 
         <androidx.recyclerview.widget.RecyclerView

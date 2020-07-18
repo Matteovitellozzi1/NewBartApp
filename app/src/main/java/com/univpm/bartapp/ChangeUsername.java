@@ -1,11 +1,13 @@
 package com.univpm.bartapp;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +34,10 @@ public class ChangeUsername extends AppCompatActivity {
 
         mAuth= FirebaseAuth.getInstance();
         currentUser=mAuth.getCurrentUser();
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Modifica Nome Utente");
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         editText= findViewById(R.id.editText2);
         Button btnModifica= (Button) findViewById(R.id.button);
@@ -64,5 +70,16 @@ public class ChangeUsername extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected (MenuItem menuItem) {
+        this.finish();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.finish();
     }
 }

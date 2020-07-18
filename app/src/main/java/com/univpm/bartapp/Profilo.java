@@ -185,13 +185,11 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
 
 
     public void modificaNome(View v){
-
         Intent intent= new Intent(Profilo.this, ChangeUsername.class);
         startActivity(intent);
     }
 
     public void modificaPassword(View v){
-
         Intent intent= new Intent(Profilo.this, ChangePassword.class);
         startActivity(intent);
     }
@@ -264,6 +262,8 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     public boolean onOptionsItemSelected (MenuItem menuItem) {
+        Intent intent = new Intent(this, HomeScreen.class);
+        startActivity(intent);
         this.finish();
         return true;
     }

@@ -106,4 +106,11 @@ public class Registrazione extends AppCompatActivity {
         db.collection("utenti"). document(uid).set(user);
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent1 = new Intent(Registrazione.this, Login_Screen.class);
+        startActivity(intent1);
+    }
 }
