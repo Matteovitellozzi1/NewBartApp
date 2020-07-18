@@ -62,6 +62,7 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
     private String idVend;
     private String nomeOggettoVend, nomeVend;
     private String nomeOggettoAcq;
+    private String emailVend;
     Context context;
     FirebaseFirestore firebaseFirestore;
 
@@ -119,7 +120,7 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
                 idAcq = offerta.getIdAcq();
                 idVend = offerta.getIdVend();
                 nomeVend=offerta.getNomeVend();
-                String emailVend=offerta.getEmailVend();
+                emailVend=offerta.getEmailVend();
                 accetta(a, idProdAcq, idProdVend,idAcq, idVend, nomeOggettoAcq, nomeOggettoVend, nomeVend, emailVend);
             }
 
@@ -201,6 +202,7 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
                             FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
                             DocumentSnapshot document = task.getResult();
                             final Map<String, Object> map= new HashMap<>();
+                            map.put("emailAcq", FirebaseAuth.getInstance().getCurrentUser().getEmail());
                             map.put("emailVend", emailVend);
                             map.put("nomeOggettoAcq", nomeOggettoAcq);
                             map.put("nomeOggettoVend", nomeOggettoVend);

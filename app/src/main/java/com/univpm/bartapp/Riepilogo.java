@@ -2,17 +2,21 @@ package com.univpm.bartapp;
 
 public class Riepilogo {
     private String emailVend;
+    private String emailAcq;
     private String nomeOggettoAcq;
     private String nomeOggettoVend;
     private String nomeUtenteVend;
     private String idVend;
 
-    public Riepilogo(String emailVend, String nomeOggettoAcq, String nomeOggettoVend, String nomeUtenteVend, String idVend) {
+    private String idAcq;
+
+    public Riepilogo(String emailVend, String nomeOggettoAcq, String nomeOggettoVend, String nomeUtenteVend, String idVend, String idAcq) {
         this.emailVend = emailVend;
         this.nomeOggettoAcq = nomeOggettoAcq;
         this.nomeOggettoVend = nomeOggettoVend;
         this.nomeUtenteVend = nomeUtenteVend;
         this.idVend = idVend;
+        this.idAcq = idAcq;
     }
 
     public Riepilogo () {}
@@ -52,5 +56,22 @@ public class Riepilogo {
     public String getIdVend() {return idVend;}
 
     public void setIdVend(String idVend) {this.idVend = idVend;}
+
+    public String getIdAcq() {
+        return idAcq;
+    }
+
+    public void setIdAcq(String idAcq) {
+        this.idAcq = idAcq;
+    }
+
+    public String getEmailAcq() {
+        return emailAcq;
+    }
+
+    public void setEmailAcq(String emailAcq) {
+        this.emailAcq = emailAcq;
+    }
+
 
 }

@@ -260,13 +260,10 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
 
         AlertDialog alertDialog= dialog.create();
         alertDialog.show();
-
     }
 
     @Override
     public boolean onOptionsItemSelected (MenuItem menuItem) {
-        Intent intent = new Intent(this, HomeScreen.class);
-        startActivity(intent);
         this.finish();
         return true;
     }
