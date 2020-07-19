@@ -152,7 +152,7 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
         }
 
         //Listener che si attiva quando viene cliccata l'immagine in maniera tale che venga prima attivata la richiesta dei permessi
-        //all'utente, il quale, se conferma, potrà inserire i dati 
+        //all'utente, il quale, se conferma, potrà inserire l'immagine del profilo nell'apposita ImageView
         proPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,10 +170,8 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
                     @Override
                     public void onClick(View v) {
                         StorageReference imageReference = storageReference.child("Image").child("Profile Pic").child(mAuth.getUid());
-                        Log.i("TAG", "prima dell'uri");
-                        //UploadTask uploadTask = imageReference.putFile(imagePath);
                         if (imagePath != null) {
-                            sendUserData();
+                            sendUserData(); // metodo per caricare l'immagine nello storage di Firebase
                         }
                         else{
                             Toast.makeText(Profilo.this, "Non hai inserito alcuna immagine!", Toast.LENGTH_SHORT).show();
@@ -278,11 +276,12 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
-    private void sendUserData() {
+    private void sendUserData() { //carico l'immagine nello storage di Firebase
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference(mAuth.getUid());
+        //Scelgo il percorso adatto per caricare l'immagine nello storage
         StorageReference imageReference = storageReference.child("Image").child("Profile Pic").child(mAuth.getUid()); //User id/Images/Profile Pic.jpg
-        UploadTask uploadTask = imageReference.putFile(imagePath); //uri dell'immagine
+        UploadTask uploadTask = imageReference.putFile(imagePath); //caricamento dell'immagine nello storage
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
@@ -296,7 +295,7 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
         });
     }
 
-    @Override
+    @Override // gestione dei vari click che vengono fatti a livello di modifica password email e elimina account
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_eliminaAccount:  eliminaAccount(v);
@@ -309,7 +308,7 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
     }
 
 
-    public void modificaNome(View v){
+    public void modificaNome(View v){ //parte l'intent per la modifica del nome
         Intent intent= new Intent(Profilo.this, ChangeUsername.class);
         startActivity(intent);
     }
@@ -317,10 +316,10 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
     public void modificaPassword(View v){
         Intent intent= new Intent(Profilo.this, ChangePassword.class);
         startActivity(intent);
-    }
+    } //parte l'intent per la modifica della password
 
 
-    public void eliminaAccount(View view) {
+    public void eliminaAccount(View view) { //Elimina l'account solo in caso di conferma ddel dialog dato che come procedura risulta essere 'delicata' quindi viene eseguita solo in caso di una eventuale conferma
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -334,17 +333,20 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
             @Override
             public void onClick(DialogInterface dialog, int i) {
                 final String idUser =currentUser.getUid();
+                //Elimino l'immagine del profilo dallo storage
                 StorageReference storageReference=FirebaseStorage.getInstance().getReference().child("Image").child("Profile Pic");
                 storageReference.child(idUser).delete();
-                operazione1(idUser);
-                operazione2(idUser);
+                //Elimino tutti gli scambi associati all'utente
+                operazione1(idUser); //Elimina gli scambi dove risulta aver ricevuto l'offerta
+                operazione2(idUser); //Elimina gli scambi dove risulta aver inviato l'offerta
+
                 firebaseDatabase=FirebaseDatabase.getInstance().getReference().child("oggetti");
                 Query query=firebaseDatabase.orderByChild("idUser").equalTo(idUser);
 
+                //Elimina tutti gli oggetti sul catalogo dell'utente viene eliminato
                 query.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Log.i("ciao1 ", dataSnapshot.toString());
                         for (DataSnapshot postsnapshot :dataSnapshot.getChildren()) {
                             FirebaseStorage.getInstance().getReference().child("Image").child("ImmaginiOggetti").child(idUser).child(postsnapshot.child("nome").getValue().toString()).delete();
                             postsnapshot.getRef().removeValue();

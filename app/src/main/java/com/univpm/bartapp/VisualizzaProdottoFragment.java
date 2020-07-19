@@ -70,6 +70,7 @@ public class VisualizzaProdottoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_visualizza_prodotto, container, false);
 
+        //Prendo i dati del bundle e li inietto nella vista
         descrizione = view.findViewById(R.id.descrizione);
         descrizione.setText(getArguments().getString("descrizione"));
         nomeOggetto = view.findViewById(R.id.nome_oggetto1);
@@ -99,7 +100,7 @@ public class VisualizzaProdottoFragment extends Fragment {
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
 
-
+        //Inserisco l'immagine nel visualizza prodotto del Visualizza prodotto
         storageReference.child("Image").child("ImmaginiOggetti").child(idUser).child(nome).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -107,16 +108,13 @@ public class VisualizzaProdottoFragment extends Fragment {
             }
         });
 
-        if (idUser.equals(utente)) {
+        if (idUser.equals(utente)) { //Controllo se l'oggetto che ho cercato di visualizzare e' stato inserito da me
+            // se così è rendo invisibile il bottone per effettuare un'offerta, viceversa lo mostro
             btnOfferta.setVisibility(View.INVISIBLE);
             btnElimina.setVisibility(View.VISIBLE);
-            //introduzione.setText("è un oggetto da te messo in vendita");
         } else {
             btnOfferta.setVisibility(View.VISIBLE);
-
         }
-
-
 
         btnElimina.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,6 +123,7 @@ public class VisualizzaProdottoFragment extends Fragment {
             }
         });
 
+        //Al click sull'offerta creo un bundle per la nuova vista e cambio fragment con lo scelta prodotto fragment
         btnOfferta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,7 +140,7 @@ public class VisualizzaProdottoFragment extends Fragment {
         return view;
     }
 
-    public void eliminaAlert() {
+    public void eliminaAlert() { //Funzione per eliminare l'oggetto anche qui
         AlertDialog.Builder dialog = new AlertDialog.Builder(this.getContext());
         dialog.setTitle("Attenzione!");
         dialog.setCancelable(false);

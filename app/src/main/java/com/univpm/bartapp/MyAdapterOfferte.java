@@ -181,7 +181,7 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
         AlertDialog alertDialog = dialog.create();
         alertDialog.show();
     }
-
+    //Funzione per accettare lo scambio in cui creo un database in firestore per registrare un riepilogo dello scambio.
     public void accetta(final String keyId, final String idProdAcq, final String idProdVend, final String idAcq, final
                         String idVend, final String nomeOggettoAcq, final String nomeOggettoVend, final String nomeVend, final String emailVend) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
@@ -226,7 +226,6 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-
             }
         });
 
@@ -235,82 +234,73 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
 
     }
 
+    //Elimino tutte le offerte che mi sono state fatte sullo stesso oggetto
     public void operazione1 (String idProdAcq) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("scambi").whereEqualTo("idProdAcq", idProdAcq)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                Log.i("ciao1 ", "ciao1");
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot document : task.getResult()) {
-                        Log.d("cascadsscciaoaciacoaico", document.getId() + "->" + document.getData());
                         document.getReference().delete();
                         Toast.makeText(context, "Scambio effettuato", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Log.i("errore" , "c'e stato un errore");
                 }
             }
         });
-    } //oggetto rosso corretto
-    public void operazione2 (String idProdAcq) { //oggetto verde dell'altro
+    }
+    //Elimino tutte le offerte che IO ho inviato ad altri dell'oggetto che scambio con l'utente.
+    public void operazione2 (String idProdAcq) {
         FirebaseFirestore db0 = FirebaseFirestore.getInstance();
         db0.collection("scambi").whereEqualTo("idProdVend", idProdAcq).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                Log.i("ciao2 ", "ciao2");
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot document : task.getResult()) {
-                        Log.d("cascadsscciaoaciacoaico", document.getId() + "->" + document.getData());
                         document.getReference().delete();
                         Toast.makeText(context, "Scambio effettuato", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Log.i("errore" , "c'e stato un errore");
                 }
             }
         });
 
-    } //oggetto verde dell'altro corretto
+    }
+    //Elimino tutte le offerte in cui l'oggetto che mi offre l'altro utente è stato richiesto da altri utenti.
     public void operazione3 (String idProdVend) {
         FirebaseFirestore db1 = FirebaseFirestore.getInstance();
         db1.collection("scambi").whereEqualTo("idProdAcq", idProdVend).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                Log.i("ciao3", "ciao3");
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot document : task.getResult()) {
-                        Log.d("cascadsscciaoaciacoaico", document.getId() + "->" + document.getData());
                         document.getReference().delete();
                     }
                 } else {
-                    Log.i("errore" , "c'e stato un errore");
                 }
             }
         });
-    } //offerte che IO HO INVIATO ad un altro utente dello stesso oggetto
-    // che scambio a causa di una offerta ricevuta
+    }
+    //Elimino tutte le offerte in cui l'oggetto che mi offre l'altro utente è stato proposto ad altri utenti.
     public void operazione4 (final String idProdVend, final  String idProdAcq, final String idAcq, final String idVend, final String nomeOggettoAcq, final String nomeOggettoVend) { //oggetto offerto
         FirebaseFirestore db2 = FirebaseFirestore.getInstance();
         db2.collection("scambi").whereEqualTo("idProdVend", idProdVend).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                Log.i("ciao4 ", "ciao4");
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot document : task.getResult()) {
-                        Log.d("cascadsscciaoaciacoaico", document.getId() + "->" + document.getData());
                         document.getReference().delete();
                         Toast.makeText(context, "Scambio effettuato", Toast.LENGTH_SHORT).show();
                         eliminaProdotti(idProdVend, idProdAcq, idAcq, idVend, nomeOggettoAcq, nomeOggettoVend);
                     }
                 } else {
-                    Log.i("errore" , "c'e stato un errore");
                 }
             }
         });
     }
-
+    //Elimino dal catalogo tutti i prodotti insieme alle immagini di cui accetto lo scambio.
     public void eliminaProdotti (String idProdVend, String idProdAcq, String idAcq, String idVend, String nomeOggettoAcq, String nomeOggettoVend){
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseDatabase.getReference("oggetti").child(idProdVend).removeValue();

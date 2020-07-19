@@ -59,6 +59,7 @@ public class RecyclerViewFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        //Inserisco nel fragment la recycler view
         View view = inflater.inflate(R.layout.recycler_view_fragment, container, false);
         final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(this.getContext());
@@ -83,9 +84,11 @@ public class RecyclerViewFragment extends Fragment {
             }
         });
 
+        //Connessione con il database "oggetti" di Firebase
         databaseReference = FirebaseDatabase.getInstance().getReference().child("oggetti");
         databaseReference.keepSynced(true);
 
+        //Estraggo tutti gli oggetti che verranno inseriti nella Recycler
         FirebaseRecyclerOptions<Oggetto> options = new FirebaseRecyclerOptions.Builder<Oggetto>()
                 .setQuery(databaseReference, Oggetto.class)
                 .build();
@@ -136,14 +139,6 @@ public class RecyclerViewFragment extends Fragment {
                         TextView idUser1 = v.findViewById(R.id.id_venditore);
                         String IdUser1 = idUser1.getText().toString();
                         String IdOggetto = getRef(i).toString();
-
-                        /*Intent intent = new Intent(v.getContext(), VisualizzaProdotto.class);
-                        intent.putExtra("IdOggetto", IdOggetto);
-                        intent.putExtra("Nome1", Nome1);
-                        intent.putExtra("NomeVend", NomeVend);
-                        intent.putExtra("Prezzo1", Prezzo1);
-                        intent.putExtra("idUser", IdUser1);
-                        startActivity(intent);*/
 
                         Bundle bundle= new Bundle();
                         bundle.putString("IdOggetto", keyId);
