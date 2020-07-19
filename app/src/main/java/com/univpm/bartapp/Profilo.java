@@ -6,12 +6,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
@@ -45,9 +51,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.io.IOException;
-
-import io.grpc.Context;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Profilo extends AppCompatActivity implements View.OnClickListener {
 
@@ -56,33 +63,49 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
     private DatabaseReference firebaseDatabase;
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
-    private static int PICK_IMAGE=123;
 
+    private ArrayList<String> permissionsToRequest;
+    private ArrayList<String> permissionsRejected = new ArrayList<>();
+    private ArrayList<String> permissions = new ArrayList<>();
+
+    private final static int ALL_PERMISSIONS_RESULT = 107;
+    private final static int PICK_IMAGE = 200;
 
     Button btnDelete;
     ImageButton btnModificaNome;
     ImageButton btnModificaPassword;
     Button btnSalvaModifica;
-    TextView nomeCognome, nomeUtente, emailProfilo;
-    ImageView immagineProfilo;
+    TextView textNome, nomeUtente, emailProfilo;
+    ImageView proPic;
     Uri imagePath;
     FrameLayout frameLayout;
 
     public static final int LOGIN_REQUEST=101;
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data.getData() != null) {
-            imagePath = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imagePath);
-                immagineProfilo.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if (requestCode == PICK_IMAGE) {
+            Bitmap bitmap = null;
+            if (resultCode == RESULT_OK) {
+                if (getPickImageResultUri(intent) != null) {
+                    imagePath = getPickImageResultUri(intent);
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imagePath);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    bitmap = (Bitmap) intent.getExtras().get("data");
+                }
             }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 
+            Glide.with(this)
+                    .load(bitmap)
+                    .centerCrop()
+                    .into(proPic);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,10 +116,11 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
         actionBar.setTitle("Profilo");
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        nomeCognome = (TextView) findViewById(R.id.text_nome);
+        textNome = findViewById(R.id.text_nome);
         nomeUtente = (TextView) findViewById(R.id.nome_utente);
         emailProfilo = (TextView) findViewById(R.id.emailProfilo);
-        immagineProfilo = (ImageView) findViewById(R.id.propic);
+        proPic = findViewById(R.id.propic);
+        proPic.setClipToOutline(true);
         btnDelete = (Button) findViewById(R.id.btn_eliminaAccount);
         btnModificaNome = (ImageButton) findViewById(R.id.edit1);
         btnModificaPassword = (ImageButton) findViewById(R.id.edit2);
@@ -109,29 +133,38 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-        nomeCognome.setText(currentUser.getDisplayName());
+        textNome.setText(currentUser.getDisplayName());
         nomeUtente.setText(currentUser.getDisplayName());
         emailProfilo.setText(currentUser.getEmail());
 
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
 
-        storageReference.child("Image").child("Profile Pic").child(mAuth.getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).fit().centerCrop().into(immagineProfilo);
-            }
-        });
+        //carica l'immagine del profilo se esiste effettivamente nello storage di firebase
+        //Picasso è una libreria che abbiamo trovato in Internet che ci ha aiutato nel caricaemento dell'immagine.
+        if (storageReference.child("Image").child("Profile Pic").child(mAuth.getUid()).getDownloadUrl() != null) {
+            storageReference.child("Image").child("Profile Pic").child(mAuth.getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Picasso.get().load(uri).fit().centerCrop().into(proPic);
+                }
+            });
+        }
 
-
-        immagineProfilo.setOnClickListener(new View.OnClickListener() {
+        //Listener che si attiva quando viene cliccata l'immagine in maniera tale che venga prima attivata la richiesta dei permessi
+        //all'utente, il quale, se conferma, potrà inserire i dati 
+        proPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent activityProfilo = new Intent();
-                activityProfilo.setType("image/*");
-                activityProfilo.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(activityProfilo, "Seleziona immagine."), PICK_IMAGE);
-
+                permissions.add(Manifest.permission.CAMERA);
+                permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+                permissionsToRequest = findUnaskedPermissions(permissions);
+                if(permissionsToRequest.size() > 0) {
+                    requestPermissions(permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
+                } else {
+                    startActivityForResult(getPickImageChooserIntent(), PICK_IMAGE);
+                }
                 btnSalvaModifica.setVisibility(View.VISIBLE);
                 btnSalvaModifica.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -152,6 +185,99 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
 
     }
 
+    private Uri getPickImageResultUri(Intent data) {
+        boolean isCamera = true;
+        if (data != null) {
+            String action = data.getAction();
+            isCamera = action != null && action.equals(MediaStore.ACTION_IMAGE_CAPTURE);
+        }
+
+        return isCamera ? getCaptureImageOutputUri() : data.getData();
+    }
+
+    private Intent getPickImageChooserIntent() {
+
+        Uri outputFileUri = getCaptureImageOutputUri();
+
+        List<Intent> allIntents = new ArrayList<>();
+        PackageManager packageManager = this.getPackageManager();
+
+        Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
+        for(ResolveInfo res : listCam) {
+            Intent intent = new Intent(captureIntent);
+            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+            intent.setPackage(res.activityInfo.packageName);
+            if(outputFileUri != null) {
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+            }
+            allIntents.add(intent);
+        }
+
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        List<ResolveInfo> listGallery = packageManager.queryIntentActivities(galleryIntent, 0);
+        for(ResolveInfo res : listGallery) {
+            Intent intent = new Intent(galleryIntent);
+            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+            intent.setPackage(res.activityInfo.packageName);
+            allIntents.add(intent);
+        }
+
+        Intent mainIntent = allIntents.get(allIntents.size()-1);
+        for(Intent intent : allIntents) {
+            if(intent.getComponent().getClassName().equals("com.android.documentsui.DocumentsActivity")) {
+                mainIntent = intent;
+                break;
+            }
+        }
+        allIntents.remove(mainIntent);
+
+        Intent chooserIntent = Intent.createChooser(mainIntent, getString(R.string.selsorgente));
+
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, allIntents.toArray(new Parcelable[allIntents.size()]));
+
+        return chooserIntent;
+    }
+
+    public Uri getCaptureImageOutputUri() {
+        Uri outputFileUri = null;
+        File getImage = this.getExternalCacheDir();
+        if(getImage != null) {
+            outputFileUri = Uri.fromFile(new File(getImage.getPath(), "propic.png"));
+        }
+        return outputFileUri;
+    }
+
+    private ArrayList findUnaskedPermissions(ArrayList<String> wanted) {
+        ArrayList<String> result = new ArrayList<>();
+
+        for(String perm : wanted) {
+            if(!(this.checkSelfPermission(perm) == PackageManager.PERMISSION_GRANTED)) {
+                result.add(perm);
+            }
+        }
+
+        return result;
+    }
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if(requestCode == ALL_PERMISSIONS_RESULT) {
+            for(String perm: permissionsToRequest) {
+                if(!(this.checkSelfPermission(perm)==PackageManager.PERMISSION_GRANTED)) {
+                    permissionsRejected.add(perm);
+                }
+            }
+            if(permissionsRejected.size() > 0) {
+                if(shouldShowRequestPermissionRationale(permissionsRejected.get(0))) {
+                    Toast.makeText(this,"Approva tutto", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else {
+                startActivityForResult(getPickImageChooserIntent(), PICK_IMAGE);
+            }
+        }
+    }
+
     private void sendUserData() {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference(mAuth.getUid());
@@ -169,7 +295,6 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
             }
         });
     }
-
 
     @Override
     public void onClick(View v) {
@@ -211,7 +336,8 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
                 final String idUser =currentUser.getUid();
                 StorageReference storageReference=FirebaseStorage.getInstance().getReference().child("Image").child("Profile Pic");
                 storageReference.child(idUser).delete();
-
+                operazione1(idUser);
+                operazione2(idUser);
                 firebaseDatabase=FirebaseDatabase.getInstance().getReference().child("oggetti");
                 Query query=firebaseDatabase.orderByChild("idUser").equalTo(idUser);
 
@@ -222,9 +348,6 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
                         for (DataSnapshot postsnapshot :dataSnapshot.getChildren()) {
                             FirebaseStorage.getInstance().getReference().child("Image").child("ImmaginiOggetti").child(idUser).child(postsnapshot.child("nome").getValue().toString()).delete();
                             postsnapshot.getRef().removeValue();
-                            operazione1(idUser);
-                            operazione2(idUser);
-
                         }
                     }
 
@@ -284,9 +407,7 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
 
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot document : task.getResult()) {
-
                         document.getReference().delete();
-
                     }
                 } else {
                     Log.i("errore" , "c'e stato un errore");
@@ -295,17 +416,14 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
         });
     }
 
-    public void operazione2 (String idVend) { //oggetto verde dell'altro
+    public void operazione2 (String idUser) { //oggetto verde dell'altro
         FirebaseFirestore db0 = FirebaseFirestore.getInstance();
-        db0.collection("scambi").whereEqualTo("idVend", idVend).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db0.collection("scambi").whereEqualTo("idVend", idUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
                 if (task.isSuccessful()) {
                     for (DocumentSnapshot document : task.getResult()) {
-
                         document.getReference().delete();
-
                     }
                 } else {
                     Log.i("errore" , "c'e stato un errore");

@@ -36,10 +36,7 @@ public class Registrazione extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrazione);
-
         mAuth = FirebaseAuth.getInstance();
-
-
         textNome= findViewById(R.id.text_nome);
         textCognome= findViewById(R.id.text_cognome);
         textEmail=findViewById(R.id.text_email);
@@ -53,7 +50,7 @@ public class Registrazione extends AppCompatActivity {
                     final String cognome= textCognome.getText().toString();
                     final String email=textEmail.getText().toString();
                     final String password=textPassword.getText().toString();
-
+                    //metodo predefinito di firebase per registrarsi
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -104,7 +101,6 @@ public class Registrazione extends AppCompatActivity {
         user.put("email", email);
         FirebaseFirestore db= FirebaseFirestore.getInstance();
         db.collection("utenti"). document(uid).set(user);
-
     }
 
     @Override

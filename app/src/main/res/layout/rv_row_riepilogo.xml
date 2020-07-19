@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/AppTheme"
     android:layout_width="match_parent"
-    android:layout_height="180dp"
+    android:layout_height="260dp"
     android:layout_marginStart="7dp"
     android:layout_marginLeft="5dp"
     android:layout_marginTop="5dp"
@@ -111,9 +111,10 @@
             android:text="Contatta"
             android:backgroundTint="@android:color/white"
             android:textColor="@color/colorPrimaryDark"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/btn_elimina"
-            android:layout_marginTop="50dp"/>
+            android:layout_below="@id/email_venditore"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="170dp"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -166,9 +167,9 @@
             android:text="Contatta"
             android:backgroundTint="@android:color/white"
             android:textColor="@color/colorPrimaryDark"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="50dp"/>
-
+            android:layout_below="@id/nome_oggetto_richiesto"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="170dp"/>
 
     </RelativeLayout>
 

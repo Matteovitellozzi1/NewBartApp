@@ -40,6 +40,7 @@ public class Login_Screen extends AppCompatActivity {
             public void onClick(View v) {
                 String email = inputEmail.getText().toString();
                 final String password = inputPassword.getText().toString();
+                //Metodo predefinito per effettuare il login su firebase
                 auth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -58,6 +59,7 @@ public class Login_Screen extends AppCompatActivity {
         });
 
         btnRegistra= (Button) findViewById(R.id.btn_registra);
+        //bottone che chiama un listener per registrarsi
         btnRegistra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

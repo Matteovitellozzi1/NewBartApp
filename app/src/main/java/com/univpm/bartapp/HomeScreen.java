@@ -108,13 +108,14 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         imageHeader = (ImageView) headerView.findViewById(R.id.button_add);
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
+        //inserisco l'immagine del profilo nell'header della navigation view
         storageReference.child("Image").child("Profile Pic").child(firebaseAuth.getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.get().load(uri).fit().centerCrop().into(imageHeader);
             }
         });
-
+        //inserimento fragment della recycler per la lista dei prodotti che sono sul mercato
         RecyclerViewFragment recyclerViewFragment = new RecyclerViewFragment();
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -122,16 +123,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         ft.commit();
     }
 
-
-    /*@Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }*/
-
+    //gestione della navigazione nella navigation view con tutti i fragment/activity utilizzabili
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) { // con uno switch potrò scegliere cosa fare in base a cosa premuto
         Fragment selected = null;
@@ -183,7 +175,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         return true;
     }
 
-
+    //metodo per il 'contattaci' e contattare gli sviluppatori in caso di problemi
     public void invioMail() {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.putExtra(Intent.EXTRA_SUBJECT, "Help Request");
@@ -192,18 +184,19 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         startActivity(intent);
     }
 
+    //navigazione per l'header che ci permette di giungere alla schermata del profilo
     public void headerNavigation(View v) {
         Intent intent = new Intent(this, Profilo.class);
         startActivity(intent);
         this.finish();
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
     }
 
+    //metodo per effettuare il logout dall'App con un dialog per confermare se effettivamente l'utente lo vuole fare.
     protected void logout() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(HomeScreen.this);
         dialog.setTitle("Attenzione");

@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
-
+    //Schermata iniziale
     Button bottone;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

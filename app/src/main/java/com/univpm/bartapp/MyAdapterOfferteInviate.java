@@ -1,6 +1,7 @@
 package com.univpm.bartapp;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -60,8 +62,12 @@ public class MyAdapterOfferteInviate extends FirestoreRecyclerAdapter<Offerta, M
         viewHolder.nomeOggettoRichiesto.setText(offerta.getNomeOggettoAcq());
         viewHolder.prezzoProposto.setText(offerta.getPrezzoOggettoVend());
         viewHolder.prezzoRichiesto.setText(offerta.getPrezzoAcq());
-
-        final Long keyId = this.getItemId(position);
+        viewHolder.elimina.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eliminaRiepilogo(a);
+            }
+        });
 
     }
 
@@ -90,6 +96,27 @@ public class MyAdapterOfferteInviate extends FirestoreRecyclerAdapter<Offerta, M
             immagineOggettoProposto = (ImageView) v.findViewById(R.id.immagine_oggetto_proposto);
             elimina = (Button) v.findViewById(R.id.button_elimina);
         }
+    }
 
+    public void eliminaRiepilogo(final String id) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        dialog.setTitle("Attenzione!");
+        dialog.setCancelable(false);
+        dialog.setMessage("Sei sicuro di voler ritirare l'offerta?");
+        dialog.setPositiveButton("Elimina", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection("scambi").document(id).delete();
+            }
+        });
+        dialog.setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = dialog.create();
+        alertDialog.show();
     }
 }
