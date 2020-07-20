@@ -40,7 +40,7 @@ public class RiepilogoFragment extends Fragment {
         layoutManager= new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(layoutManager);
         FirebaseFirestore firebaseFirestore= FirebaseFirestore.getInstance();
-        //Query query= firebaseFirestore.collection("riepilogoscambi").whereEqualTo("idAcq", FirebaseAuth.getInstance().getCurrentUser().getUid()).whereEqualTo("idVend", FirebaseAuth.getInstance().getCurrentUser().getUid());
+
         Query query= firebaseFirestore.collection("riepilogoscambi");
         FirestoreRecyclerOptions<Riepilogo> options = new FirestoreRecyclerOptions.Builder<Riepilogo>()
                 .setQuery(query, Riepilogo.class)

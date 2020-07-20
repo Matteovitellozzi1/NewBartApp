@@ -36,9 +36,6 @@ import java.util.ArrayList;
 
 public class RecyclerViewFragment extends Fragment {
 
-    private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle actionBarDrawerToggle;
-    private RecyclerView recyclerView;
     public FirebaseRecyclerOptions<Oggetto> options;
 
     private MyAdapter adapter;
@@ -105,8 +102,8 @@ public class RecyclerViewFragment extends Fragment {
         final Query query = databaseReference.orderByChild("nome").equalTo(searchText.toLowerCase());
 
         options = new FirebaseRecyclerOptions.Builder<Oggetto>().setQuery(query, Oggetto.class).build();
-        //FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewHolder>
-                firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewHolder>(options) {
+
+        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull final MyAdapter.FirebaseViewHolder firebaseViewHolder, final int i, @NonNull Oggetto oggetto) {
                 firebaseViewHolder.nome.setText(oggetto.getNome());
@@ -138,7 +135,6 @@ public class RecyclerViewFragment extends Fragment {
                         String Prezzo1 = prezzo1.getText().toString();
                         TextView idUser1 = v.findViewById(R.id.id_venditore);
                         String IdUser1 = idUser1.getText().toString();
-                        String IdOggetto = getRef(i).toString();
 
                         Bundle bundle= new Bundle();
                         bundle.putString("IdOggetto", keyId);
@@ -172,7 +168,7 @@ public class RecyclerViewFragment extends Fragment {
     public void onStop() {
         super.onStop();
         adapter.stopListening();
-        //firebaseRecyclerAdapter.stopListening(); è da implementare
+
     }
 
     @Override

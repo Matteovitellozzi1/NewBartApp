@@ -40,5 +40,4 @@
         app:headerLayout="@layout/header"
         app:menu="@menu/navbar_home" />
 
-
 </androidx.drawerlayout.widget.DrawerLayout>

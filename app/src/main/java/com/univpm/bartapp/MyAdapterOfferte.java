@@ -54,8 +54,6 @@ import java.util.Map;
 
 public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapterOfferte.FirestoreViewHolder> {
 
-    private ArrayList<Offerta> offerta;
-    private DatabaseReference databaseReference;
     private String idProdAcq;
     private String idProdVend;
     private String idAcq;
@@ -99,7 +97,7 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
         viewHolder.nomeOggettoAcq.setText(offerta.getNomeOggettoVend());
         viewHolder.nomeOggettoVend.setText(offerta.getNomeOggettoAcq());
         viewHolder.prezzoAcq.setText(offerta.getPrezzoOggettoVend());
-        viewHolder.prezzoVend.setText(offerta.getPrezzoAcq().toString());
+        viewHolder.prezzoVend.setText(offerta.getPrezzoAcq());
 
         final Long keyId = this.getItemId(position);
 
@@ -166,7 +164,7 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                //Query query=db.collection("scambi").orderBy(a);
+
                 db.collection("scambi").document(keyId).delete();
 
             }
@@ -191,16 +189,10 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
         dialog.setPositiveButton("Accetta", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //DocumentReference documentReference= FirebaseFirestore.getInstance().collection("utenti").document(idVend);
-                //final Map<String, Object> map= new HashMap<>();
-                //documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    //@Override
-                    //public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        //if(task.isSuccessful()){
+
                             FirebaseFirestore firebaseFirestore= FirebaseFirestore.getInstance();
-                            //FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-                            //DocumentSnapshot document = task.getResult();
                             final Map<String, Object> map= new HashMap<>();
+
                             map.put("emailAcq", FirebaseAuth.getInstance().getCurrentUser().getEmail());
                             map.put("emailVend", emailVend);
                             map.put("nomeOggettoAcq", nomeOggettoAcq);
@@ -208,15 +200,13 @@ public class MyAdapterOfferte extends FirestoreRecyclerAdapter<Offerta, MyAdapte
                             map.put("nomeUtenteVend", nomeVend);
                             map.put("idAcq", idAcq);
                             map.put("idVend", idVend);
-                            firebaseFirestore.collection("riepilogoscambi").document().set(map);
-                        //}
-                    //}
-                //});
 
-                operazione1(idProdAcq);
-                operazione2(idProdAcq);
-                operazione3(idProdVend);
-                operazione4(idProdVend, idProdAcq, idAcq, idVend, nomeOggettoAcq, nomeOggettoVend);
+                            firebaseFirestore.collection("riepilogoscambi").document().set(map);
+
+                            operazione1(idProdAcq);
+                            operazione2(idProdAcq);
+                            operazione3(idProdVend);
+                            operazione4(idProdVend, idProdAcq, idAcq, idVend, nomeOggettoAcq, nomeOggettoVend);
 
             }
         });

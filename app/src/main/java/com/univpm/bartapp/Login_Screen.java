@@ -67,6 +67,5 @@ public class Login_Screen extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 }

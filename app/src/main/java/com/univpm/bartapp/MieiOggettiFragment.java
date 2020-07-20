@@ -50,23 +50,6 @@ public class MieiOggettiFragment extends Fragment {
         RecyclerView recyclerView= (RecyclerView) view.findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(layoutManager);
-        //recyclerView.setHasFixedSize(true);
-
-       /* mySearchView = (SearchView) view.findViewById(R.id.searchview);
-
-        mySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                //firebaseSearch(query);
-                //firebaseRecyclerAdapter.startListening();
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String query) {
-                return true;
-            }
-        }); */
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("oggetti");
         databaseReference.keepSynced(true);
@@ -79,10 +62,8 @@ public class MieiOggettiFragment extends Fragment {
                 .setQuery(databaseReference.orderByChild("idUser").equalTo(utente), Oggetto.class)
                 .build();
 
-
         adapter= new MyAdapter(options);
         recyclerView.setAdapter(adapter);
-
 
         return view;
     }
@@ -91,7 +72,7 @@ public class MieiOggettiFragment extends Fragment {
     public void onStop() {
         super.onStop();
         adapter.stopListening();
-        //firebaseRecyclerAdapter.stopListening(); è da implementare
+
     }
 
     @Override

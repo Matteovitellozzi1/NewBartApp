@@ -9,5 +9,4 @@
         app:showAsAction="always"
         android:onClick="profilo"/>
 
-
 </menu>

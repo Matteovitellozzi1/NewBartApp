@@ -45,9 +45,7 @@ public class OfferteRicevute extends Fragment {
 
         String mAuth= FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseFirestore db=FirebaseFirestore.getInstance();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("scambi");
         Query query = db.collection("scambi").whereEqualTo("idAcq",mAuth);
-
 
         FirestoreRecyclerOptions<Offerta> options = new FirestoreRecyclerOptions.Builder<Offerta>()
                 .setQuery(query , Offerta.class)

@@ -1,7 +1,6 @@
 package com.univpm.bartapp;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +17,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -88,16 +86,12 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         setContentView(R.layout.activity_home_screen);
 
         menuItem = (MenuItem) findViewById(R.id.Contattaci);
-
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         drawerLayout = findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-
         NavigationView navView = (NavigationView) findViewById(R.id.navigation);
         navView.setNavigationItemSelectedListener(this);
         firebaseAuth = FirebaseAuth.getInstance();
@@ -108,6 +102,7 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
         imageHeader = (ImageView) headerView.findViewById(R.id.button_add);
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
+
         //inserisco l'immagine del profilo nell'header della navigation view
         storageReference.child("Image").child("Profile Pic").child(firebaseAuth.getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -179,8 +174,8 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
     public void invioMail() {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.putExtra(Intent.EXTRA_SUBJECT, "Help Request");
-        //intent.putExtra(Intent.EXTRA_TEXT, et.getText().toString());
-        intent.setData(Uri.parse("mailto:mattiasospetti@libero.it"));
+
+        intent.setData(Uri.parse("mailto:BartApp@developers.com"));
         startActivity(intent);
     }
 
