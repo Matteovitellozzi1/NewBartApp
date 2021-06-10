@@ -41,5 +41,10 @@
         android:icon="@drawable/logout"
         android:title="Logout" />
 
+    <item
+        android:id="@+id/Statistiche"
+        android:icon="@drawable/logout"
+        android:title="Statistiche" />
+
 
 </menu>

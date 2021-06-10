@@ -165,6 +165,11 @@ public class HomeScreen extends AppCompatActivity implements NavigationView.OnNa
                 break;
             }
 
+            case R.id.Statistiche:{
+                selected = new Statistiche1();
+                break;
+            }
+
             case R.id.Logout: {
                 logout();
                 return true;

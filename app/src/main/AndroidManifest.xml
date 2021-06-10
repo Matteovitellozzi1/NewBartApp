@@ -21,16 +21,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Statistiche"></activity>
         <activity android:name=".ChangePassword" />
         <activity android:name=".ChangeUsername" />
-        <activity android:name=".Inserimento"/>
+        <activity android:name=".Inserimento" />
         <activity
             android:name=".HomeScreen"
             android:theme="@style/NoActionBar" />
         <activity android:name=".Profilo" />
-        <activity android:name=".Registrazione" android:noHistory="true"/>
-        <activity android:name=".Login_Screen" android:noHistory="true"/>
-        <activity android:name=".MainActivity" android:noHistory="true">
+        <activity
+            android:name=".Registrazione"
+            android:noHistory="true" />
+        <activity
+            android:name=".Login_Screen"
+            android:noHistory="true" />
+        <activity
+            android:name=".MainActivity"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
