@@ -78,9 +78,6 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
     TextView textNome, nomeUtente, emailProfilo;
     ImageView proPic;
     Uri imagePath;
-    FrameLayout frameLayout;
-
-    public static final int LOGIN_REQUEST=101;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -411,8 +408,6 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
                     for (DocumentSnapshot document : task.getResult()) {
                         document.getReference().delete();
                     }
-                } else {
-                    Log.i("errore" , "c'e stato un errore");
                 }
             }
         });
@@ -427,8 +422,6 @@ public class Profilo extends AppCompatActivity implements View.OnClickListener {
                     for (DocumentSnapshot document : task.getResult()) {
                         document.getReference().delete();
                     }
-                } else {
-                    Log.i("errore" , "c'e stato un errore");
                 }
             }
         });

@@ -37,7 +37,6 @@ public class SceltaProdottoFragment extends Fragment {
     ArrayList<Oggetto> arrayList;
     private FirebaseUser currentUser;
     private String idOggettoScelto;
-    private TextView prezzo, nome, nome_venditore;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,7 +78,6 @@ public class SceltaProdottoFragment extends Fragment {
     public void onStop() {
         super.onStop();
         adapter.stopListening();
-        //firebaseRecyclerAdapter.stopListening(); è da implementare
     }
 
     @Override

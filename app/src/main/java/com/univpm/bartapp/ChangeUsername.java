@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -41,8 +40,6 @@ public class ChangeUsername extends AppCompatActivity {
 
         editText= findViewById(R.id.editText2);
         Button btnModifica= (Button) findViewById(R.id.button);
-
-        Log.i("a", currentUser.getDisplayName().toString());
 
         btnModifica.setOnClickListener(new View.OnClickListener() {
             @Override

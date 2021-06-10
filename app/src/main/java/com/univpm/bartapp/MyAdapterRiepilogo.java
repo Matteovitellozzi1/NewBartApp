@@ -144,7 +144,6 @@ public class MyAdapterRiepilogo extends FirestoreRecyclerAdapter<Riepilogo, MyAd
         intent.putExtra(Intent.EXTRA_TEXT, "Sono interessato all'oggetto " +
                 nomeOggetto + " che ha inserito, in cambio del mio " + nomeOggetto2 + " possiamo effettuare lo scambio!");
         intent.putExtra(Intent.EXTRA_EMAIL, email);
-        //intent.setData(Uri.parse(email));
         context.startActivity(Intent.createChooser(intent, "Invia email.."));
     }
 

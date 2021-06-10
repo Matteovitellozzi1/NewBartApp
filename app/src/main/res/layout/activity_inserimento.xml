@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:inputType="number"
-                android:hint="Coins" />
+                android:hint="Monete" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button

@@ -109,7 +109,6 @@ class MyAdapter extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewH
 
     }
 
-
     static class FirebaseViewHolder extends RecyclerView.ViewHolder {
         public ImageView immagineOggetto;
         public TextView nome;
@@ -125,5 +124,4 @@ class MyAdapter extends FirebaseRecyclerAdapter<Oggetto, MyAdapter.FirebaseViewH
 
         }
     }
-
 }

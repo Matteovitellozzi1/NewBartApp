@@ -1,8 +1,6 @@
 package com.univpm.bartapp;
 
 import android.os.Parcelable;
-import android.util.Log;
-
 import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
@@ -15,7 +13,7 @@ public class Oggetto {
     private String descrizione;
     private String idUser;
 
-    public Oggetto(String nome, String nomeVenditore, String descrizione, int prezzo, String idUser, String imageid){
+    public Oggetto(String nome, String nomeVenditore, String descrizione, int prezzo, String idUser){
         this.nome=nome;
         this.nomeVenditore=nomeVenditore;
         this.descrizione=descrizione;
@@ -23,7 +21,7 @@ public class Oggetto {
         this.idUser=idUser;
     }
     public Oggetto (){
-        Log.i("a", "COSTRUTTORE OGGETTO NO PARAMS");
+
     }
 
     public String getNome() {

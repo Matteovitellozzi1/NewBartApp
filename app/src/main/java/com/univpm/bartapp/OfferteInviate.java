@@ -40,7 +40,6 @@ public class OfferteInviate extends Fragment {
         FirebaseFirestore db=FirebaseFirestore.getInstance();
         Query query = db.collection("scambi").whereEqualTo("idVend",mAuth);
 
-
         FirestoreRecyclerOptions<Offerta> options = new FirestoreRecyclerOptions.Builder<Offerta>()
                 .setQuery(query , Offerta.class)
                 .build();

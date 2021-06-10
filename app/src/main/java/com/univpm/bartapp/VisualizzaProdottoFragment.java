@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,14 +44,14 @@ public class VisualizzaProdottoFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private TextView nomeOggetto, nomeVenditore, prezzoOggetto, descrizione;
-    private Button btnOfferta, btnConferma, btnCambia, btnElimina;
+    private Button btnOfferta, btnElimina;
     private FirebaseUser currentUser;
     private ImageView immagineOggetto;
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
     private DatabaseReference databaseReference;
     private String nome, nomeVend, prezzo, utente;
-    private String IdOggetto, descrizioneOggetto;
+    private String IdOggetto;
    
 
     @Override

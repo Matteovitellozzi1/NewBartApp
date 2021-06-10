@@ -17,7 +17,7 @@ public class Offerta {
     private int ciao;
 
     public Offerta (){
-        Log.i("a", "COSTRUTTORE OFFERTA NO PARAMS");
+
     }
     public Offerta(String idAcq, String idVend, String idProdAcq, String idProdVend, String prezzoAcq, String prezzoOggettoVend,
                    String nomeOggettoAcq, String nomeOggettoVend, String nomeVend, String nomeAcq, String emailVend) {

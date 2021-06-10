@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -42,8 +41,6 @@ public class ChangePassword extends AppCompatActivity {
         editText = findViewById(R.id.editText3);
         editText4 = findViewById(R.id.editText4);
         Button btnModifica = (Button) findViewById(R.id.button4);
-
-        Log.i("a", currentUser.getDisplayName().toString());
 
         btnModifica.setOnClickListener(new View.OnClickListener() {
             @Override
